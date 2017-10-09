@@ -1,0 +1,7 @@
+antes de guardar cambios que tu hallas hecho
+
+	git pull (descargar posibles cambios que hallan hecho otros mientras trabajabas
+	git commit (pedira un ensaje en el que describes lo que has trabajado)
+	git add -A (añades lo trabajado de otros)
+	git commit (este commit une las 2 ramas/branches que se subira al repositorio)
+	git push (te pide mensaje que por defecto es "merge branches ...", no cambiar mensaje y a otra cosa)
