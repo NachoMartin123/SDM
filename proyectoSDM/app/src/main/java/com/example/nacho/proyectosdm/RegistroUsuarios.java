@@ -1,0 +1,75 @@
+package com.example.nacho.proyectosdm;
+
+import android.content.ContentValues;
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.example.nacho.proyectosdm.persistence.esquemas.Esquemas;
+import com.example.nacho.proyectosdm.persistence.utils.MyDBHelper;
+
+public class RegistroUsuarios extends AppCompatActivity {
+
+    EditText usuario,contraseña;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_registroUsuario);
+
+    // recoger los datos de los componentes
+
+        usuario =(EditText) findViewById(R.id.usuario);
+        contraseña = (EditText) findViewById(R.id.contraseña);
+
+        //llamamos a la  base de datos
+
+        MyDBHelper myBD = new MyDBHelper(this,"bd_usuaarios",null, MyDBHelper.DBVERSION);
+
+    }
+
+    public void onClick(View view){
+
+        //llamamos a la otra activity
+        Intent miIntent = null;
+        switch (view.getId()){
+            case R.id.btnUsuarioRegistrado:
+                miIntent = new Intent(RegistroUsuarios.this,PlatosCercaDeTi.class);
+                break; }
+        if(miIntent!=null){
+            startActivity(miIntent);}
+
+        usuarioRegistrado();
+    }
+
+    // registra los usuarios en la base de datos
+    public void usuarioRegistrado(){
+
+
+        MyDBHelper myBD = new MyDBHelper(this,"bd_usuaarios",null, MyDBHelper.DBVERSION);
+
+        SQLiteDatabase db = myBD.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(Esquemas.NOMBRE, usuario.getText().toString());
+        values.put(Esquemas.CONTRASEÑA, contraseña.getText().toString());
+
+        Long idResultante = db.insert(Esquemas.TABLA_USUARIO,Esquemas.CONTRASEÑA,values);
+
+        // ventana emergente confirmando lo que se hace bien
+        Toast.makeText(getApplicationContext(),"id Registro: " + idResultante,Toast.LENGTH_SHORT); // aqui falta un show peor nose porque no me lo genera
+
+        db.close();
+
+    }
+
+    //almacena los usuarios que se registran
+
+
+
+}

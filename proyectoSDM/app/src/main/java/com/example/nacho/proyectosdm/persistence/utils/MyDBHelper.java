@@ -1,12 +1,11 @@
 package com.example.nacho.proyectosdm.persistence.utils;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.nacho.proyectosdm.modelo.Lawyer;
-import com.example.nacho.proyectosdm.persistence.esquemas.LawyerContract;
+import com.example.nacho.proyectosdm.modelo.Usuario;
+import com.example.nacho.proyectosdm.persistence.esquemas.Esquemas;
 
 /**
  * Created by Laura Mambo on 18/10/2017.
@@ -16,37 +15,39 @@ import com.example.nacho.proyectosdm.persistence.esquemas.LawyerContract;
 
 public class MyDBHelper extends SQLiteOpenHelper {
 
-    public static final String DBNAME ="Lawyer.db";
+
     public static final int DBVERSION = 1;
 
-    public static final String BDCREATE = "CREATE TABLE " + LawyerContract.LawyerEntry.TABLE_NAME + " ("
-            + LawyerContract.LawyerEntry.ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + LawyerContract.LawyerEntry.NOMBRE + " TEXT NOT NULL,"
-            + LawyerContract.LawyerEntry.TELEFONO + " TEXT NOT NULL)";
 
 
-    public MyDBHelper(Context context){
 
-        super(context, DBNAME, null, DBVERSION);
+    public MyDBHelper(Context context, String name,SQLiteDatabase.CursorFactory factory, int version){
+
+        super(context, name, null, DBVERSION);
     }
 
+    // genera las tablas
     @Override
     public void onCreate(SQLiteDatabase db) {
 
         // creamos la base de datos
-        db.execSQL(BDCREATE);
+        db.execSQL(Esquemas.CREAR_TABLA_USUARIO);
     }
-
+// cada vez que iniciamos la app revisa si existe los datos buscados en la base de datos
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+// si existe actualizala
+
+        db.execSQL("DROP TABLE IF EXISTS usuarios");
+        onCreate(db);
 
     }
 
-    public void insertLawyer(Lawyer lawyer){
+ //   public void insertLawyer(Usuario usuario){
 
-        SQLiteDatabase db = getWritableDatabase();
-        db.insert(LawyerContract.LawyerEntry.TABLE_NAME,null,lawyer.toContentValues());
-    }
+   //     SQLiteDatabase db = getWritableDatabase();
+     //   db.insert(Esquemas.LawyerEntry.TABLE_NAME,null, usuario.toContentValues());
+    //}
 
 
 }
