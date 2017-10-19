@@ -12,14 +12,14 @@ import android.widget.Toast;
 import com.example.nacho.proyectosdm.persistence.esquemas.Esquemas;
 import com.example.nacho.proyectosdm.persistence.utils.MyDBHelper;
 
-public class RegistroUsuarios extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     EditText usuario,contraseña;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registroUsuario);
+        setContentView(R.layout.activity_main_activity);
 
     // recoger los datos de los componentes
 
@@ -38,7 +38,7 @@ public class RegistroUsuarios extends AppCompatActivity {
         Intent miIntent = null;
         switch (view.getId()){
             case R.id.btnUsuarioRegistrado:
-                miIntent = new Intent(RegistroUsuarios.this,PlatosCercaDeTi.class);
+                miIntent = new Intent(MainActivity.this,PlatosCercaDeTi.class);
                 break; }
         if(miIntent!=null){
             startActivity(miIntent);}
