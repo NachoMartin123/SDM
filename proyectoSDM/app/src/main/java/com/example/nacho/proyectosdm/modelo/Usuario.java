@@ -4,14 +4,16 @@ import android.content.ContentValues;
 
 import com.example.nacho.proyectosdm.persistence.esquemas.Esquemas;
 
+import java.io.Serializable;
+
 /**
  * Created by Laura Mambo on 18/10/2017.
  */
 
 // Objeto abogado == Usuario
-public class Usuario {
+public class Usuario implements Serializable {
 
-     private Long id;
+    private Long id;
     private String nombre;
     private String contraseña;
 
@@ -48,14 +50,5 @@ public class Usuario {
     }
 
 
-    // empaquetar objetos
 
- //   public ContentValues toContentValues(){
-
-   //     ContentValues values = new ContentValues();
-     //   values.put(Esquemas.LawyerEntry.NOMBRE, nombre);
-       // values.put(Esquemas.LawyerEntry.TELEFONO, contraseña);
-
-        //return  values;
-    //}
 }

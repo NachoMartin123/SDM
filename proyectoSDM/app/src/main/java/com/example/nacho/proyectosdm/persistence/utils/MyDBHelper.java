@@ -16,14 +16,9 @@ import com.example.nacho.proyectosdm.persistence.esquemas.Esquemas;
 public class MyDBHelper extends SQLiteOpenHelper {
 
 
-    public static final int DBVERSION = 1;
-
-
-
-
     public MyDBHelper(Context context, String name,SQLiteDatabase.CursorFactory factory, int version){
 
-        super(context, name, null, DBVERSION);
+        super(context, name, null, version);
     }
 
     // genera las tablas
@@ -38,7 +33,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 // si existe actualizala
 
-        db.execSQL("DROP TABLE IF EXISTS usuarios");
+        db.execSQL("DROP TABLE IF EXISTS usuarios" + Esquemas.TABLA_USUARIO);
         onCreate(db);
 
     }
