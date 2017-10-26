@@ -15,10 +15,7 @@ public class Esquemas {
     public static final String NOMBRE = "nombre";
     public static final String CONTRASEÑA = "contraseña";
 
-
-    public static final String CREAR_TABLA_USUARIO="CREATE TABLE " +
-            ""+TABLA_USUARIO+" ("+ID+" " +
-            "INTEGER, "+NOMBRE+" TEXT,"+CONTRASEÑA+" TEXT)";
+    public static final String CREAR_TABLA_USUARIO = "CREATE TABLE" + TABLA_USUARIO + " ( " + ID + " INTEGER, " + NOMBRE + " TEXT," + CONTRASEÑA + " TEXT, )";
 
 }
 

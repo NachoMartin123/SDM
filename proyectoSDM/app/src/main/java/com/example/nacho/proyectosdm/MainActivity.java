@@ -1,9 +1,11 @@
 package com.example.nacho.proyectosdm;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -28,48 +30,44 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void onClick(View view){
+
+        //llamamos a la otra activity
+        Intent miIntent = null;
+        switch (view.getId()){
+            case R.id.btnUsuarioRegistrado:
+                miIntent = new Intent(MainActivity.this,PlatosCercaDeTi.class);
+                break; }
+        if(miIntent!=null){
+            startActivity(miIntent);}
+
+        usuarioRegistrado();
+    }
+
+    // registra los usuarios en la base de datos
+    public void usuarioRegistrado(){
 
 
-    // registra los usuarios en la base de datos "OnClick();
-    //public void usuarioRegistrado(){
+        MyDBHelper myBD = new MyDBHelper(this,"bd_usuaarios",null, 1);
 
-        //llamamos a la  base de datos
+        SQLiteDatabase db = myBD.getWritableDatabase();
 
-      //  MyDBHelper newBD = new MyDBHelper(this,"bd_usuarios",null, 1);
+        ContentValues values = new ContentValues();
 
-        //SQLiteDatabase db = newBD.getWritableDatabase();
+        values.put(Esquemas.NOMBRE, usuario.getText().toString());
+        values.put(Esquemas.CONTRASEÑA, contraseña.getText().toString());
 
-       // ContentValues values = new ContentValues();
-
-       // values.put(Esquemas.ID, usuario.getText().toString());
-        //values.put(Esquemas.NOMBRE, usuario.getText().toString());
-       // values.put(Esquemas.CONTRASEÑA, contraseña.getText().toString());
-
-    //    Long idResultante = db.insert(Esquemas.TABLA_USUARIO,Esquemas.ID,values);
+        Long idResultante = db.insert(Esquemas.TABLA_USUARIO,Esquemas.NOMBRE,values);
 
         // ventana emergente confirmando lo que se hace bien
-    //    Toast.makeText(getApplicationContext(),"id Registro: " + idResultante,Toast.LENGTH_SHORT).show();
-
-    //    db.close();
-
-
-    public void usuarioRegistrado() {
-    //insert into usuario (id,nombre,telefono) values (123,'Cristian','85665223')
-        MyDBHelper newBD = new MyDBHelper(this,"bd_usuarios",null, 1);
-
-        SQLiteDatabase db = newBD.getWritableDatabase();
-
-        String insert = "INSERT INTO " + Esquemas.TABLA_USUARIO
-                + " ( " + Esquemas.ID + "," + Esquemas.NOMBRE + "," + Esquemas.CONTRASEÑA + ")" +
-                " VALUES (" + "1" + ", '" + usuario.getText().toString() + "','"
-                + contraseña.getText().toString() + "')";
-
-        db.execSQL(insert);
-
+        Toast.makeText(getApplicationContext(),"id Registro: " + idResultante,Toast.LENGTH_SHORT); // aqui falta un show peor nose porque no me lo genera
 
         db.close();
-        //almacena los usuarios que se registran
 
     }
+
+    //almacena los usuarios que se registran
+
+
 
 }

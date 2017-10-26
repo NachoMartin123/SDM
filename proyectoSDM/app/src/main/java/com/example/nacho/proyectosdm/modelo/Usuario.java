@@ -13,7 +13,7 @@ import java.io.Serializable;
 // Objeto abogado == Usuario
 public class Usuario implements Serializable {
 
-    private Long id;
+     private Long id;
     private String nombre;
     private String contraseña;
 
@@ -50,5 +50,14 @@ public class Usuario implements Serializable {
     }
 
 
+    // empaquetar objetos
 
+ //   public ContentValues toContentValues(){
+
+   //     ContentValues values = new ContentValues();
+     //   values.put(Esquemas.LawyerEntry.NOMBRE, nombre);
+       // values.put(Esquemas.LawyerEntry.TELEFONO, contraseña);
+
+        //return  values;
+    //}
 }

@@ -15,10 +15,9 @@ import com.example.nacho.proyectosdm.persistence.esquemas.Esquemas;
 
 public class MyDBHelper extends SQLiteOpenHelper {
 
-
     public MyDBHelper(Context context, String name,SQLiteDatabase.CursorFactory factory, int version){
 
-        super(context, name, null, version);
+        super(context, name, null, 1);
     }
 
     // genera las tablas
@@ -38,11 +37,6 @@ public class MyDBHelper extends SQLiteOpenHelper {
 
     }
 
- //   public void insertLawyer(Usuario usuario){
-
-   //     SQLiteDatabase db = getWritableDatabase();
-     //   db.insert(Esquemas.LawyerEntry.TABLE_NAME,null, usuario.toContentValues());
-    //}
 
 
 }
