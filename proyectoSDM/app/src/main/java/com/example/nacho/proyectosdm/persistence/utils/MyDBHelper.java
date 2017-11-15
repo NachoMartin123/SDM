@@ -15,9 +15,15 @@ import com.example.nacho.proyectosdm.persistence.esquemas.Esquemas;
 
 public class MyDBHelper extends SQLiteOpenHelper {
 
+    //Nombre y version de la base de datos
+
+    private static final String DATABASE_NAME = "usuario.db";
+    private static final int DATABASE_VERSION = 1;
+
+
     public MyDBHelper(Context context, String name,SQLiteDatabase.CursorFactory factory, int version){
 
-        super(context, name, null, 1);
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     // genera las tablas

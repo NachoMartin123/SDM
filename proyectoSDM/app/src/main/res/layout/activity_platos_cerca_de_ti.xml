@@ -6,4 +6,9 @@
     android:layout_height="match_parent"
     tools:context="com.example.nacho.proyectosdm.PlatosCercaDeTi">
 
+    <Space
+        android:layout_width="384dp"
+        android:layout_height="0dp"
+        tools:layout_editor_absoluteX="-16dp"
+        tools:layout_editor_absoluteY="87dp" />
 </android.support.constraint.ConstraintLayout>
