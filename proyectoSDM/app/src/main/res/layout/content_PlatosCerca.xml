@@ -8,7 +8,15 @@
     tools:context="com.example.nacho.proyectosdm.persistence.PrincipalActivity"
     tools:showIn="@layout/app_bar_PlatosCerca">
 
+<<<<<<< HEAD:proyectoSDM/app/src/main/res/layout/content_PlatosCerca.xml
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+=======
+    <Space
+        android:layout_width="384dp"
+        android:layout_height="0dp"
+        tools:layout_editor_absoluteX="-16dp"
+        tools:layout_editor_absoluteY="87dp" />
+>>>>>>> e3c329c7adde1dd941708ef8b1f835b14daa4cbe:proyectoSDM/app/src/main/res/layout/activity_platos_cerca_de_ti.xml
 </android.support.constraint.ConstraintLayout>
