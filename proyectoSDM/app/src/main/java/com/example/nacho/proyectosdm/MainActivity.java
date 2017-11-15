@@ -19,8 +19,17 @@ import java.security.spec.ECField;
 
 public class MainActivity extends AppCompatActivity {
 
+<<<<<<< HEAD
     private SQLiteDatabase database;
+=======
+<<<<<<< HEAD
+    final Intennt miIntent = new Intent(activity1, activity2);
+    startActivity(myIntent, );
+
+=======
+>>>>>>> 4600975a9a6f1418b7832a44ce995871ddbf2014
     EditText usuario,contraseña;
+>>>>>>> f1a10b6b1c0e4e2560b1aed5846492438e7e5f4f
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
