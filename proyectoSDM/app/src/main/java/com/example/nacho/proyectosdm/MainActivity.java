@@ -5,6 +5,10 @@ import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
 
+    final Intennt miIntent = new Intent(activity1, activity2);
+    startActivity(myIntent, );
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
