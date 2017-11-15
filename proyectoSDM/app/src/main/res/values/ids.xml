@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="mensajes" type="id">mensajes</item>
+    <item name="subirPlato" type="id">subirPlato</item>
+    <item name="misReservas" type="id">misReservas</item>
+    <item name="misPlatos" type="id">misPlatos</item>
+    <item name="configuracion" type="id">configuracion</item>
+    <item name="ayuda" type="id">ayuda</item>
+</resources>

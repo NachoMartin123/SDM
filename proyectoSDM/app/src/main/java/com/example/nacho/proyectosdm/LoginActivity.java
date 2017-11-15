@@ -12,46 +12,41 @@ import android.widget.Toast;
 import com.example.nacho.proyectosdm.persistence.esquemas.Esquemas;
 import com.example.nacho.proyectosdm.persistence.utils.MyDBHelper;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
-<<<<<<< HEAD
-    final Intennt miIntent = new Intent(activity1, activity2);
-    startActivity(myIntent, );
-
-=======
     EditText usuario,contraseña;
->>>>>>> f1a10b6b1c0e4e2560b1aed5846492438e7e5f4f
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_activity);
-
-    // recoger los datos de los componentes
-
-        usuario =(EditText) findViewById(R.id.usuario);
-        contraseña = (EditText) findViewById(R.id.contraseña);
-
-
+        setContentView(R.layout.activity_login);
 
     }
 
-    public void onClick(View view){
+    public void verificarUsuario(View view){
 
-        //llamamos a la otra activity
-        Intent miIntent = null;
+        // recoger los datos de los componentes
+        usuario =(EditText) findViewById(R.id.usuario);
+        contraseña = (EditText) findViewById(R.id.contraseña);
+
         switch (view.getId()){
             case R.id.btnUsuarioRegistrado:
-                miIntent = new Intent(MainActivity.this,PlatosCercaDeTi.class);
+                miIntent = new Intent(LoginActivity.this,PlatosCercaDeTi.class);
                 break; }
         if(miIntent!=null){
             startActivity(miIntent);}
 
-        usuarioRegistrado();
+        registrarUsuario();
+
+
+        //llamamos a la otra activity
+        final Intent miIntent = new Intent(LoginActivity.this, PlatosCercaDeTi.class);
+        startActivity(miIntent);
     }
 
     // registra los usuarios en la base de datos
-    public void usuarioRegistrado(){
+    public void registrarUsuario(){
 
 
         MyDBHelper myBD = new MyDBHelper(this,"bd_usuaarios",null, 1);
