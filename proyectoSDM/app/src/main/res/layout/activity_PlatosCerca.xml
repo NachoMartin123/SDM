@@ -9,7 +9,7 @@
     tools:openDrawer="start">
 
     <include
-        layout="@layout/app_bar_PlatosCerca"
+        layout="@layout/app_barra_platoscerca"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
@@ -19,7 +19,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_PlatosCerca"
-        app:menu="@menu/menuLista_Desplegable_PlatosCerca" />
+        app:headerLayout="@layout/nav_header_platoscerca"
+        app:menu="@menu/menu_desplegable_platoscerca" />
 
 </android.support.v4.widget.DrawerLayout>

@@ -7,4 +7,12 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+    <string name="subirplato">Subir plato</string>
+    <string name="mensajes">Mensajes</string>
+    <string name="misreservas">Mis reservas</string>
+    <string name="misplatos">Mis platos</string>
+    <string name="configuracion">Configuracion</string>
+    <string name="ayuda">Ayuda</string>
+    <string name="buscar">Buscar</string>
 </resources>

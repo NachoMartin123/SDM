@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import com.example.nacho.proyectosdm.persistence.esquemas.Esquemas;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 /**
  * Created by Laura Mambo on 18/10/2017.
@@ -13,24 +14,44 @@ import java.io.Serializable;
 // Objeto abogado == Usuario
 public class Usuario implements Serializable {
 
-    private Long id;
+    private String correo;
     private String nombre;
     private String contraseña;
+    private String ciudad;
+    private Timestamp fecha_alta;
+    private boolean activo;
 
     public Usuario(String nombre, String contraseña){
-
-
-
         this.nombre = nombre;
         this.contraseña = contraseña;
 
     }
-    public Long getId() {
-        return id;
+
+    /**
+     * necesario para manejar objetos con todos los datos
+     * @param correo
+     * @param nombre
+     * @param contraseña
+     * @param ciudad
+     * @param fecha_alta
+     */
+    public Usuario(String correo, String nombre, String contraseña, String ciudad, Timestamp fecha_alta, boolean activo) {
+        this.correo = correo;
+        this.nombre = nombre;
+        this.contraseña = contraseña;
+        this.ciudad = ciudad;
+        this.fecha_alta = fecha_alta;
+        this.activo = activo;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Usuario(){}
+
+    public String getId() {
+        return correo;
+    }
+
+    public void setId(String correo) {
+        this.correo = correo;
     }
 
     public String getNombre() {
@@ -47,6 +68,38 @@ public class Usuario implements Serializable {
 
     public void setContraseña(String contraseña) {
         this.contraseña = contraseña;
+    }
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
+    }
+
+    public Timestamp getFecha_alta() {
+        return fecha_alta;
+    }
+
+    public void setFecha_alta(Timestamp fecha_alta) {
+        this.fecha_alta = fecha_alta;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
     }
 
 

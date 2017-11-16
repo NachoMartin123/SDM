@@ -18,14 +18,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<<<<<<< HEAD
-        <activity
-            android:name=".persistence.PrincipalActivity"
-            android:label="@string/title_activity_principal"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-=======
-        <activity android:name=".PlatosCercaDeTi" />
->>>>>>> e3c329c7adde1dd941708ef8b1f835b14daa4cbe
+        <activity android:name=".PlatosCercaActivity" />
+        <activity android:name=".MensajesActivity" />
+        <activity android:name=".SubirPlatoActivity" />
+        <activity android:name=".ConfiguracionActivity" />
+        <activity android:name=".MisReservasActivity" />
+        <activity android:name=".MisPlatosActivity"></activity>
     </application>
 
 </manifest>

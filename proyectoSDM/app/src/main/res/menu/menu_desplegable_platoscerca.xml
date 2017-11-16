@@ -3,29 +3,29 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/subirPlato"
+            android:id="@+id/subirplato"
             android:icon="@android:drawable/ic_input_add"
-            android:title="Subir Plato" />
+            android:title="@string/subirplato" />
         <item
             android:id="@+id/mensajes"
             android:icon="@android:drawable/ic_dialog_email"
-            android:title="Mensajes" />
+            android:title="@string/mensajes" />
         <item
             android:id="@+id/misReservas"
             android:icon="@android:drawable/btn_star_big_on"
-            android:title="Mis reservas" />
+            android:title="@string/misreservas" />
         <item
             android:id="@+id/misPlatos"
             android:icon="@mipmap/ic_launcher_round"
-            android:title="Mis Platos" />
+            android:title="@string/misplatos" />
         <item
             android:id="@+id/configuracion"
             android:icon="@android:drawable/ic_menu_preferences"
-            android:title="Configuracion" />
+            android:title="@string/configuracion" />
         <item
             android:id="@+id/ayuda"
             android:icon="@android:drawable/ic_menu_info_details"
-            android:title="Ayuda" />
+            android:title="@string/ayuda" />
     </group>
 
 </menu>
