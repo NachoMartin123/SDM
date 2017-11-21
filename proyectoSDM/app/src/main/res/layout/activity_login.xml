@@ -28,10 +28,12 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="16dp"
-        android:onClick="registrarUsuario"
+        android:layout_marginTop="8dp"
+        android:onClick="iniciarSesion"
         android:text="Ya estoy registrado"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textLayoutContraseña" />
 
     <Button
         android:id="@+id/btnRegistrarse"
@@ -39,54 +41,72 @@
         android:layout_height="46dp"
         android:layout_marginBottom="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
         android:onClick="registrarse"
         android:text="Registrarse"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.568"
         app:layout_constraintLeft_toRightOf="@+id/btnUsuarioRegistrado"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textLayoutContraseña"
+        app:layout_constraintVertical_bias="0.483" />
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/TextInPutUsuario"
+        android:id="@+id/textInputLayoutUsuario"
         android:layout_width="362dp"
-        android:layout_height="82dp"
-        tools:layout_editor_absoluteX="7dp"
-        tools:layout_editor_absoluteY="237dp">
+        android:layout_height="64dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutEmail">
 
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/TextUsuario"
-            android:layout_width="353dp"
-            android:layout_height="wrap_content"
+        <EditText
+            android:id="@+id/usuario"
+            android:layout_width="382dp"
+            android:layout_height="44dp"
             android:hint="usuario" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/TextInpEmail"
-        android:layout_width="371dp"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="7dp"
-        tools:layout_editor_absoluteY="136dp">
+        android:id="@+id/textInputLayoutEmail"
+        android:layout_width="362dp"
+        android:layout_height="64dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginLeft="33dp"
+        android:layout_marginTop="36dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView">
 
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/TextEmail"
-            android:layout_width="353dp"
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="352dp"
             android:layout_height="wrap_content"
-            android:hint="Email" />
-
+            android:hint="email" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/TextInpContraseña"
-        android:layout_width="339dp"
-        android:layout_height="65dp"
-        tools:layout_editor_absoluteX="13dp"
-        tools:layout_editor_absoluteY="343dp">
+        android:id="@+id/textLayoutContraseña"
+        android:layout_width="362dp"
+        android:layout_height="64dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutUsuario"
+        app:passwordToggleEnabled="false">
 
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/TextContraseña"
-            android:layout_width="353dp"
+        <EditText
+            android:id="@+id/contraseña"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="contraseña" />
+            android:hint="contraseña"
+            android:inputType="textPassword"
+            android:password="true" />
     </android.support.design.widget.TextInputLayout>
 
 </android.support.constraint.ConstraintLayout>
+

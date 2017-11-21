@@ -36,29 +36,31 @@ public class MyDBHelper extends SQLiteOpenHelper {
     public MyDBHelper(Context context, String name,SQLiteDatabase.CursorFactory factory, int version){
 
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+
+       // super(context, name, factory, version);
     }
 
     // genera las tablas
     @Override
     public void onCreate(SQLiteDatabase db) {
         // creamos la base de datos
-        db.execSQL(Esquemas.CREAR_TABLA_USUARIO);
-        db.execSQL(Esquemas.CREAR_TABLA_COMIDA);
+        db.execSQL(Esquemas.CREAR_TABLA_USUARIO);    // HASTA AQUI FUNCIONA, TEN CUIDADO CON LO QUE AÑADES PORQUE SINO LO HACES BIEN NO FUNCIONA NADA.
+       /** db.execSQL(Esquemas.CREAR_TABLA_COMIDA);
         db.execSQL(Esquemas.CREAR_TABLA_VENDIDOS);
         db.execSQL(Esquemas.CREAR_TABLA_MENSAJES);
-        db.execSQL(Esquemas.SCRIPT_CREACION);
+        db.execSQL(Esquemas.SCRIPT_CREACION); */
     }
 
 // cada vez que iniciamos la app revisa si existe los datos buscados en la base de datos
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // si existe actualizala
-        db.execSQL("DROP TABLE IF EXISTS usuarios" + Esquemas.TABLA_USUARIO);
+        db.execSQL("DROP TABLE IF EXISTS " + Esquemas.TABLA_USUARIO);
         onCreate(db);
 
     }
 
-
+    ////////////////////////////////////////////////***********************///////////////////////////////////////////////////////////////////
     //metodos usuario
     public boolean insertUsuario(Usuario usuario) {
         //Open connection to write data
@@ -129,13 +131,13 @@ public class MyDBHelper extends SQLiteOpenHelper {
             // looping through all rows and adding to list
             Usuario user=null;
             if (cursor.moveToFirst()) {//forma de recorrer la tabla, equivalente a resultset
-                    user = new Usuario();
-                    user.setCorreo(cursor.getString(cursor.getColumnIndex("CORREO")));
-                    user.setNombre(cursor.getString(cursor.getColumnIndex("NOMBRE")));
-                    user.setContraseña(cursor.getString(cursor.getColumnIndex("CONTRASEÑA")));
-                    user.setCiudad(cursor.getString(cursor.getColumnIndex("CIUDAD")));
-                    user.setFecha_alta(Timestamp.valueOf(cursor.getString(cursor.getColumnIndex("FECHA_ALTA"))));
-                    user.setActivo(cursor.getInt(cursor.getColumnIndex("ACTIVO"))>0);
+                user = new Usuario();
+                user.setCorreo(cursor.getString(cursor.getColumnIndex("CORREO")));
+                user.setNombre(cursor.getString(cursor.getColumnIndex("NOMBRE")));
+                user.setContraseña(cursor.getString(cursor.getColumnIndex("CONTRASEÑA")));
+                user.setCiudad(cursor.getString(cursor.getColumnIndex("CIUDAD")));
+                user.setFecha_alta(Timestamp.valueOf(cursor.getString(cursor.getColumnIndex("FECHA_ALTA"))));
+                user.setActivo(cursor.getInt(cursor.getColumnIndex("ACTIVO"))>0);
             }
             cursor.close();
             db.close();
