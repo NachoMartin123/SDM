@@ -46,6 +46,9 @@ public class LoginActivity extends AppCompatActivity {
                 case R.id.btnRegistrarse:
                     miIntent=new Intent(LoginActivity.this,PlatosCercaActivity.class);
                     break;}
+            if (miIntent!=null){
+                startActivity(miIntent);
+            }
 
         } catch(Exception e) {
             Toast.makeText(getApplicationContext(),"No se pudo registrar" + e, Toast.LENGTH_SHORT).show();
@@ -69,7 +72,6 @@ public class LoginActivity extends AppCompatActivity {
 
             limpiar();
             Toast.makeText(getApplicationContext(),"El usuario no existe",Toast.LENGTH_LONG).show();
-
         }
    }
     public void escribirMyDB() {
@@ -91,11 +93,12 @@ public class LoginActivity extends AppCompatActivity {
             SQLiteDatabase database=conn.getWritableDatabase();
 
             ContentValues values=new ContentValues();
+            values.put(Esquemas.EMAIL, email.getText().toString());
             values.put(Esquemas.NOMBRE, usuario.getText().toString());
             values.put(Esquemas.CONTRASEÑA, contraseña.getText().toString());
-            values.put(Esquemas.EMAIL, email.getText().toString());
 
-            Long idResultante=database.insert(Esquemas.TABLA_USUARIO,Esquemas.NOMBRE,values);
+
+            Long idResultante=database.insert(Esquemas.TABLA_USUARIO,Esquemas.EMAIL,values);
             Toast.makeText(getApplicationContext(), "ID" + idResultante, Toast.LENGTH_SHORT).show();
 
             if (idResultante != -1) {
@@ -104,7 +107,6 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Usuario  ya esta registrado ", Toast.LENGTH_SHORT).show();
             }
             database.close();
-
         }
     }
 
