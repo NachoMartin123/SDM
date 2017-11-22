@@ -148,7 +148,6 @@ public class LoginActivity extends AppCompatActivity {
 
            Toast.makeText(getApplicationContext(), "Bienvenido: " + usuario.getText() + " , ¿que te apetece comer hoy?", Toast.LENGTH_LONG).show();
 
-
     }
 
 
