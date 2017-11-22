@@ -23,7 +23,9 @@
         <activity android:name=".SubirPlatoActivity" />
         <activity android:name=".ConfiguracionActivity" />
         <activity android:name=".MisReservasActivity" />
-        <activity android:name=".MisPlatosActivity"></activity>
+        <activity android:name=".MisPlatosActivity">
+
+        </activity>
     </application>
 
 </manifest>

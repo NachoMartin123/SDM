@@ -1,9 +1,5 @@
 package com.example.nacho.proyectosdm.modelo;
 
-import android.content.ContentValues;
-
-import com.example.nacho.proyectosdm.persistence.esquemas.Esquemas;
-
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -14,29 +10,30 @@ import java.sql.Timestamp;
 // Objeto abogado == Usuario
 public class Usuario implements Serializable {
 
-    private String correo;
+    private String email;
     private String nombre;
     private String contraseña;
     private String ciudad;
     private Timestamp fecha_alta;
     private boolean activo;
 
-    public Usuario(String nombre, String contraseña){
+    public Usuario(String nombre, String contraseña, String email){
         this.nombre = nombre;
         this.contraseña = contraseña;
+        this.email = email;
 
     }
 
     /**
      * necesario para manejar objetos con todos los datos
-     * @param correo
+     * @param email
      * @param nombre
      * @param contraseña
      * @param ciudad
      * @param fecha_alta
      */
-    public Usuario(String correo, String nombre, String contraseña, String ciudad, Timestamp fecha_alta, boolean activo) {
-        this.correo = correo;
+    public Usuario(String email, String nombre, String contraseña, String ciudad, Timestamp fecha_alta, boolean activo) {
+        this.email = email;
         this.nombre = nombre;
         this.contraseña = contraseña;
         this.ciudad = ciudad;
@@ -47,11 +44,11 @@ public class Usuario implements Serializable {
     public Usuario(){}
 
     public String getId() {
-        return correo;
+        return email;
     }
 
     public void setId(String correo) {
-        this.correo = correo;
+        this.email = correo;
     }
 
     public String getNombre() {
@@ -86,12 +83,12 @@ public class Usuario implements Serializable {
         this.fecha_alta = fecha_alta;
     }
 
-    public String getCorreo() {
-        return correo;
+    public String getEmail() {
+        return email;
     }
 
-    public void setCorreo(String correo) {
-        this.correo = correo;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public boolean isActivo() {

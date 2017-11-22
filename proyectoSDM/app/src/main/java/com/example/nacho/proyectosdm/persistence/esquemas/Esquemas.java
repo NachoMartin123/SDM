@@ -11,10 +11,10 @@ public class Esquemas {
 
     // Nombre de la tabla valoratios y sus columnas
     public static final String TABLA_USUARIO = "USUARIOS";
-    public static final String ID = "id";
+    public static final String ID = "email";
     public static final String NOMBRE = "nombre";
     public static final String CONTRASEÑA = "contraseña";
-    public static final String EMAIL = "email";
+
 
     public static final String TABLA_COMIDA = "COMIDAS";
     public static final String TABLA_MENSAJES = "MENSAJES";
@@ -28,10 +28,9 @@ public class Esquemas {
 
     public static final String CREAR_TABLA_USUARIO =
             "CREATE TABLE " + TABLA_USUARIO + " ( " +
-                    ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+                    ID + " TEXT NOT NULL, " +
                     NOMBRE + " TEXT NOT NULL, " +
                     CONTRASEÑA + " TEXT  NOT NULL, " +
-                    EMAIL + "TEXT NOT NULL, " +
                     "CONSTRAINT nombre_unique UNIQUE (" + NOMBRE + ")," +
                     "CHECK ( length(" + NOMBRE + ") > 0), " +
                     "CHECK ( length(" + CONTRASEÑA + ") > 0)"+

@@ -41,17 +41,10 @@ public class LoginActivity extends AppCompatActivity {
     public void registrarse(View view) {
         try {
             escribirMyDB();
-            Intent miIntent = null;
-            switch (view.getId()){
-                case R.id.btnRegistrarse:
-                    miIntent=new Intent(LoginActivity.this,PlatosCercaActivity.class);
-                    break;}
-            if (miIntent!=null){
-                startActivity(miIntent);
-            }
 
         } catch(Exception e) {
-            Toast.makeText(getApplicationContext(),"No se pudo registrar" + e, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"No se pudo registrar" , Toast.LENGTH_SHORT).show();
+            limpiar();
         }
     }
 
@@ -60,15 +53,18 @@ public class LoginActivity extends AppCompatActivity {
         try {
             // consultamos la base de datos
             consultarMyBD();
-        //Cambiamos de activity
-        Intent miIntent=null;
-        switch (view.getId()){
-            case R.id.btnUsuarioRegistrado:
-                miIntent=new Intent(LoginActivity.this,PlatosCercaActivity.class);
-                break;}
-        if (miIntent!=null){
-            startActivity(miIntent);
-        } } catch (Exception e){
+            //Cambiamos de activity
+            Intent miIntent = null;
+            switch (view.getId()){
+                case R.id.btnUsuarioRegistrado:
+                    miIntent=new Intent(LoginActivity.this,SubirPlatoActivity.class);
+                    break;}
+            if (miIntent!=null){
+                startActivity(miIntent);
+            }
+
+
+        }catch (Exception e){
 
             limpiar();
             Toast.makeText(getApplicationContext(),"El usuario no existe",Toast.LENGTH_LONG).show();
@@ -82,33 +78,55 @@ public class LoginActivity extends AppCompatActivity {
         }else if (contraseña.getText().toString().length() == 0) {
             Toast.makeText(getApplicationContext(), "Contraseña no valido", Toast.LENGTH_SHORT).show();
             limpiar(); }
-        else if (email.getText().toString().length() == 0) {
+        else if (email.getText().toString().length() == 0 ) {
             Toast.makeText(getApplicationContext(), "Email no valido", Toast.LENGTH_SHORT).show();
             limpiar();
-        }else{
+        }else {
 
             // creamos una conexion a la bbdd
-            MyDBHelper conn=new MyDBHelper(this,"chefya.db",null,1);
+            MyDBHelper conn = new MyDBHelper(this, "chefya.db", null, 1);
             // nos conecctamo  y escribimos
-            SQLiteDatabase database=conn.getWritableDatabase();
+            SQLiteDatabase database = conn.getWritableDatabase();
 
-            ContentValues values=new ContentValues();
-            values.put(Esquemas.EMAIL, email.getText().toString());
+            ContentValues values = new ContentValues();
+
             values.put(Esquemas.NOMBRE, usuario.getText().toString());
             values.put(Esquemas.CONTRASEÑA, contraseña.getText().toString());
+            values.put(Esquemas.ID, email.getText().toString());
 
 
-            Long idResultante=database.insert(Esquemas.TABLA_USUARIO,Esquemas.EMAIL,values);
-            Toast.makeText(getApplicationContext(), "ID" + idResultante, Toast.LENGTH_SHORT).show();
+            Long idResultante = database.insert(Esquemas.TABLA_USUARIO, Esquemas.ID, values);
+            //Toast.makeText(getApplicationContext(), "ID" + idResultante, Toast.LENGTH_SHORT).show();
 
             if (idResultante != -1) {
                 Toast.makeText(getApplicationContext(), "Usuario registrado correctamente", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(getApplicationContext(), "Usuario  ya esta registrado ", Toast.LENGTH_SHORT).show();
-            }
-            database.close();
-        }
-    }
+                Intent miIntent = null;
+                miIntent = new Intent(LoginActivity.this, PlatosCercaActivity.class);
+                    if (miIntent != null) {
+                        startActivity(miIntent); }
+
+                limpiar();
+
+                }
+            else {
+                    Toast.makeText(getApplicationContext(), "Usuario  ya esta registrado ", Toast.LENGTH_SHORT).show();
+                    limpiar();
+                }
+
+                database.close();
+
+                //insert into usuario (id,nombre,telefono) values (123,'Cristian','85665223')
+
+                /**   String insert="INSERT INTO "+Esquemas.TABLA_USUARIO
+                 +" ( " +Esquemas.ID+","+Esquemas.NOMBRE+","+Esquemas.CONTRASEÑA+")" +
+                 " VALUES ("+ email.getText().toString()+", '"+usuario.getText().toString()+"','"
+                 +contraseña.getText().toString()+"')";
+
+                 database.execSQL(insert);
+                 database.close();*/
+
+            } }
+
 
         // consultamos la base de datos con el usuario.
 
@@ -117,7 +135,7 @@ public class LoginActivity extends AppCompatActivity {
         MyDBHelper conn = new MyDBHelper(this,"chefya.db",null,1);
         SQLiteDatabase database =  conn.getReadableDatabase();
         String[] parametros = {usuario.getText().toString()};
-        String[] campos = {Esquemas.NOMBRE, Esquemas.CONTRASEÑA, Esquemas.EMAIL};
+        String[] campos = {Esquemas.NOMBRE, Esquemas.CONTRASEÑA, Esquemas.ID};
 
         // recorrer la base de datos                        Lo consultamos por el nombre de usuario
 

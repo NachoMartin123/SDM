@@ -1,20 +1,15 @@
 package com.example.nacho.proyectosdm.persistence.utils;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteStatement;
 
 import com.example.nacho.proyectosdm.modelo.Categoria;
 import com.example.nacho.proyectosdm.modelo.Comida;
 import com.example.nacho.proyectosdm.modelo.Usuario;
 import com.example.nacho.proyectosdm.persistence.esquemas.Esquemas;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +62,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         // Inserting Row
         try {
-            db.execSQL("INSERT INTO USUARIOS VALUES('" + usuario.getCorreo() + "','"
+            db.execSQL("INSERT INTO USUARIOS VALUES('" + usuario.getEmail() + "','"
                     + usuario.getNombre() + "','"
                     + usuario.getCiudad() + "'','"
                     + usuario.getFecha_alta() + "','"
@@ -106,7 +101,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {//forma de recorrer la tabla, equivalente a resultset
             do {
                 Usuario user = new Usuario();
-                user.setCorreo(cursor.getString(cursor.getColumnIndex("CORREO")));
+                user.setEmail(cursor.getString(cursor.getColumnIndex("CORREO")));
                 user.setNombre(cursor.getString(cursor.getColumnIndex("NOMBRE")));
                 user.setContraseña(cursor.getString(cursor.getColumnIndex("CONTRASEÑA")));
                 user.setCiudad(cursor.getString(cursor.getColumnIndex("CIUDAD")));
@@ -132,7 +127,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
             Usuario user=null;
             if (cursor.moveToFirst()) {//forma de recorrer la tabla, equivalente a resultset
                 user = new Usuario();
-                user.setCorreo(cursor.getString(cursor.getColumnIndex("CORREO")));
+                user.setEmail(cursor.getString(cursor.getColumnIndex("CORREO")));
                 user.setNombre(cursor.getString(cursor.getColumnIndex("NOMBRE")));
                 user.setContraseña(cursor.getString(cursor.getColumnIndex("CONTRASEÑA")));
                 user.setCiudad(cursor.getString(cursor.getColumnIndex("CIUDAD")));
