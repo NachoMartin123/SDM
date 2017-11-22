@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -20,14 +21,17 @@ public class LoginActivity extends AppCompatActivity {
      * ESTA ACTIVITY FUNCIONA PERFECTAMENTE NO TOQUES NADA, SI NECESITAS MODIFICACIONES HAZMELAS SABER.
      */
 
+    MyDBHelper conn;
     EditText usuario,contraseña,email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("", "PRUEBA BBDD");
+        conn=new MyDBHelper(this,"chefya.db",null,1);
+        conn.pruebaBBDD();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        MyDBHelper conn=new MyDBHelper(this,"chefya.db",null,1);
 
         //verificar Usuario
         usuario =(EditText) findViewById(R.id.usuario);
@@ -83,8 +87,7 @@ public class LoginActivity extends AppCompatActivity {
             limpiar();
         }else {
 
-            // creamos una conexion a la bbdd
-            MyDBHelper conn = new MyDBHelper(this, "chefya.db", null, 1);
+
             // nos conecctamo  y escribimos
             SQLiteDatabase database = conn.getWritableDatabase();
 
