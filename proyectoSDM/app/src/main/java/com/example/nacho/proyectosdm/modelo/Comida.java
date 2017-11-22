@@ -7,7 +7,7 @@ package com.example.nacho.proyectosdm.modelo;
 public class Comida {
 
     private Long id;
-    private String correo_usuario;
+    private String email_usuario;
     private String nombre;
     private int raciones;
     private double precio;
@@ -18,9 +18,9 @@ public class Comida {
     private boolean celiaco;
     private Categoria categoria;
 
-    public Comida(Long id, String correo_usuario, String nombre, int raciones, double precio, String descripcion, boolean salado, boolean dulce, boolean vegetariano, boolean celiaco, Categoria categoria) {
+    public Comida(Long id, String email_usuario, String nombre, int raciones, double precio, String descripcion, boolean salado, boolean dulce, boolean vegetariano, boolean celiaco, Categoria categoria) {
         this.id = id;
-        this.correo_usuario = correo_usuario;
+        this.email_usuario = email_usuario;
         this.nombre = nombre;
         this.raciones = raciones;
         this.precio = precio;
@@ -42,12 +42,12 @@ public class Comida {
         this.id = id;
     }
 
-    public String getCorreo_usuario() {
-        return correo_usuario;
+    public String getEmail_usuario() {
+        return email_usuario;
     }
 
-    public void setCorreo_usuario(String correo_usuario) {
-        this.correo_usuario = correo_usuario;
+    public void setEmail_usuario(String email_usuario) {
+        this.email_usuario = email_usuario;
     }
 
     public String getNombre() {

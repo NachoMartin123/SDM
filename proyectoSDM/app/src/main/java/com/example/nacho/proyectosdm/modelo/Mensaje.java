@@ -6,34 +6,43 @@ import java.sql.Timestamp;
  * Created by Nacho on 15/11/2017.
  */
 
-public class Mensaje {
+public class Mensaje implements Comparable<Mensaje>{
 
-    private String correo_emisor;
-    private String correo_receptor;
+    private Long id_chat;
+    private String email_emisor;
+    private String email_receptor;
     private String mensaje;
     private Timestamp fecha;
 
-    public Mensaje(String correo_emisor, String correo_receptor, String mensaje, Timestamp fecha) {
-        this.correo_emisor = correo_emisor;
-        this.correo_receptor = correo_receptor;
+    public Mensaje(Long id_chat, String email_emisor, String mensaje, Timestamp fecha) {
+        this.id_chat = id_chat;
+        this.email_emisor = email_emisor;
         this.mensaje = mensaje;
         this.fecha = fecha;
     }
 
-    public String getCorreo_emisor() {
-        return correo_emisor;
+    public Long getId_chat() {
+        return id_chat;
     }
 
-    public void setCorreo_emisor(String id_emisor) {
-        this.correo_emisor = correo_emisor;
+    public void setId_chat(Long id_chat) {
+        this.id_chat = id_chat;
     }
 
-    public String getICorreo_receptor() {
-        return correo_receptor;
+    public String getEmail_emisor() {
+        return email_emisor;
     }
 
-    public void setCorreo_receptor(String correo_receptor) {
-        this.correo_receptor = correo_receptor;
+    public void setEmail_emisor(String email_emisor) {
+        this.email_emisor = email_emisor;
+    }
+
+    public String getEmail_receptor() {
+        return email_receptor;
+    }
+
+    public void setEmail_receptor(String email_receptor) {
+        this.email_receptor = email_receptor;
     }
 
     public String getMensaje() {
@@ -50,5 +59,9 @@ public class Mensaje {
 
     public void setFecha(Timestamp fecha) {
         this.fecha = fecha;
+    }
+
+    public int compareTo(Mensaje m2){
+        return getFecha().compareTo(m2.getFecha());
     }
 }

@@ -16,6 +16,8 @@ public class Usuario implements Serializable {
     private String ciudad;
     private Timestamp fecha_alta;
     private boolean activo;
+    private int telefono;
+
 
     public Usuario(String nombre, String contraseña, String email){
         this.nombre = nombre;
@@ -24,6 +26,7 @@ public class Usuario implements Serializable {
 
     }
 
+
     /**
      * necesario para manejar objetos con todos los datos
      * @param email
@@ -31,25 +34,20 @@ public class Usuario implements Serializable {
      * @param contraseña
      * @param ciudad
      * @param fecha_alta
+     * @param telefono
      */
-    public Usuario(String email, String nombre, String contraseña, String ciudad, Timestamp fecha_alta, boolean activo) {
+    public Usuario(String email, String nombre, String contraseña, String ciudad, Timestamp fecha_alta, boolean activo, int telefono) {
         this.email = email;
         this.nombre = nombre;
         this.contraseña = contraseña;
         this.ciudad = ciudad;
         this.fecha_alta = fecha_alta;
         this.activo = activo;
+        this.telefono = telefono;
     }
 
     public Usuario(){}
 
-    public String getId() {
-        return email;
-    }
-
-    public void setId(String correo) {
-        this.email = correo;
-    }
 
     public String getNombre() {
         return nombre;
@@ -88,6 +86,8 @@ public class Usuario implements Serializable {
     }
 
     public void setEmail(String email) {
+        if(!email.contains("@"))
+            throw new IllegalArgumentException("el email debe contener el caracter '@'");
         this.email = email;
     }
 
@@ -99,6 +99,15 @@ public class Usuario implements Serializable {
         this.activo = activo;
     }
 
+    public int getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(int telefono) {
+        if(telefono < 100000000 || telefono > 999999999)
+            throw new IllegalArgumentException("el numero de telefono debe tener 9 digitos");
+        this.telefono = telefono;
+    }
 
     // empaquetar objetos
 
