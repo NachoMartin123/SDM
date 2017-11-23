@@ -2,6 +2,7 @@ package com.example.nacho.proyectosdm;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         DdbbDataSource datos = new DdbbDataSource(getApplicationContext());
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); // para que no se gire
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
@@ -61,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
             Intent miIntent = null;
             switch (view.getId()){
                 case R.id.btnUsuarioRegistrado:
-                    miIntent=new Intent(LoginActivity.this,SubirPlatoActivity.class);
+                    miIntent=new Intent(LoginActivity.this,PlatosCercaActivity.class);
                     break;}
             if (miIntent!=null){
                 startActivity(miIntent);
@@ -89,6 +91,8 @@ public class LoginActivity extends AppCompatActivity {
 
 
             // nos conecctamo  y escribimos
+
+
             SQLiteDatabase database = conn.getWritableDatabase();
 
             ContentValues values = new ContentValues();
@@ -120,13 +124,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 //insert into usuario (id,nombre,telefono) values (123,'Cristian','85665223')
 
-                /**   String insert="INSERT INTO "+Esquemas.TABLA_USUARIO
-                 +" ( " +Esquemas.ID+","+Esquemas.NOMBRE+","+Esquemas.CONTRASEÑA+")" +
-                 " VALUES ("+ email.getText().toString()+", '"+usuario.getText().toString()+"','"
-                 +contraseña.getText().toString()+"')";
 
-                 database.execSQL(insert);
-                 database.close();*/
 
             } }
 

@@ -37,7 +37,6 @@ public class Esquemas {
                     "CHECK ( length(" + CONTRASEÑA + ") > 0)"+
                     ");";*/
 
-
     //ESTA ES LA DEFINITIVA
     public static final String CREAR_TABLA_USUARIO ="CREATE TABLE " + TABLA_USUARIO + " ( " +
             "EMAIL TEXT NOT NULL UNIQUE PRIMARY KEY, " +
@@ -64,8 +63,7 @@ public class Esquemas {
             "DULCE BOOLEAN," +
             "VEGETARIANO BOOLEAN," +
             "CELIACO BOOLEAN," +
-            "CATEGORIA TEXT, " +
-             "FOREIGN KEY (EMAIL_USUARIO) REFERENCES USUARIOS(EMAIL))";
+            "CATEGORIA TEXT, )";
 
     public static final String CREAR_TABLA_VENDIDOS = "CREATE TABLE "+TABLA_VENDIDOS+" (" +
             "ID_COMIDA BIGINT NOT NULL PRIMARY KEY, " +
@@ -116,6 +114,8 @@ public class Esquemas {
             "INSERT INTO MENSAJES VALUES(1, 'jon@gmail.com', 'De hoy por la mismo', '2017-11-14 18:00:00.000000');\n"+
             "INSERT INTO MENSAJES VALUES(1, 'sansa@gmail.com', 'No te creo', '2017-11-15 19:00:00.000000');\n"+
             "INSERT INTO CHATS VALUES(1, 'jon@gmail.com', 'sansa@gmail.com');";;
+
+
 
 }
 

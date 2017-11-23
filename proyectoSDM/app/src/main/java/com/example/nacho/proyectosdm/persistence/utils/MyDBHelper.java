@@ -43,15 +43,14 @@ public class MyDBHelper extends SQLiteOpenHelper {
     // genera las tablas
     @Override
     public void onCreate(SQLiteDatabase db) {
-            // creamos la base de datos
-        db.execSQL(Esquemas.CREAR_TABLA_USUARIO);    // HASTA AQUI FUNCIONA, TEN CUIDADO CON LO QUE AÑADES PORQUE SINO LO HACES BIEN NO FUNCIONA NADA.
-        db.execSQL(Esquemas.CREAR_TABLA_COMIDA);
+        // creamos la base de datos
+
+        db.execSQL(Esquemas.CREAR_TABLA_USUARIO);    // HASTA AQUI FUNCIONA, TEN CUIDADO CON LO QUE AÑADES PORQUE SINO LO HACES BIEN NO FUNCIONA NADA
+        /*db.execSQL(Esquemas.CREAR_TABLA_COMIDA);
         db.execSQL(Esquemas.CREAR_TABLA_VENDIDOS);
         db.execSQL(Esquemas.CREAR_TABLA_MENSAJES);
-        db.execSQL(Esquemas.CREAR_TABLA_CHATS);
+        db.execSQL(Esquemas.CREAR_TABLA_CHATS); */
 
-        //db.execSQL(Esquemas.SCRIPT_COMIDAS);
-        //db.execSQL(Esquemas.SCRIPT_RESTO);
 
     }
 
@@ -66,41 +65,6 @@ public class MyDBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + Esquemas.TABLA_VENDIDOS);
         db.execSQL("DROP TABLE IF EXISTS " + Esquemas.TABLA_CHATS);
         onCreate(db);
-
-    }
-
-    /*public void pruebaBBDD(){
-        Log.i("", "PRUEBA BBDD2");
-
-
-        boolean a1 = isTableExists("USUARIOS");
-        boolean a2 = isTableExists("COMIDAS");
-        boolean a3 = isTableExists("MENSAJES");
-        boolean a4 = isTableExists("CHATS");
-        boolean a5 = isTableExists("VENDIDOS");
-
-        int b1 = sizeTable("USUARIOS");
-        int b2 = sizeTable("COMIDAS");
-        int b3 = sizeTable("MENSAJES");
-        int b4 = sizeTable("CHATS");
-        int b5 = sizeTable("VENDIDOS");
-
-        Usuario usuario = getUserByEmail("jon@gmail.com");
-        Comida comida = getComidaById((long) 1);
-
-
-        for(Comida u: getComidasUsuario("jon@gmail.com"))
-            Log.i("", u.getNombre());
-
-        for (Usuario u: getAllUsuarios()) {
-            Log.i("", u.getEmail()+", "+u.getNombre()+", "+u.getCiudad());
-        }
-
-        for(Chat chat: getChatsUsuario("jon@gmail.com")){
-            for(Mensaje m: chat.getMensajes()){
-                Log.i("", m.getEmail_emisor()+": "+m.getMensaje());
-            }
-        }
     }
 
 
