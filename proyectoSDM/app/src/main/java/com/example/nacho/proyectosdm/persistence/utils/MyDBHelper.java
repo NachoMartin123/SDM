@@ -1,5 +1,6 @@
 package com.example.nacho.proyectosdm.persistence.utils;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -49,9 +50,8 @@ public class MyDBHelper extends SQLiteOpenHelper {
         db.execSQL(Esquemas.CREAR_TABLA_MENSAJES);
         db.execSQL(Esquemas.CREAR_TABLA_CHATS);
 
-        db.execSQL(Esquemas.SCRIPT_USUARIOS);
-        db.execSQL(Esquemas.SCRIPT_COMIDAS);
-        db.execSQL(Esquemas.SCRIPT_RESTO);
+        //db.execSQL(Esquemas.SCRIPT_COMIDAS);
+        //db.execSQL(Esquemas.SCRIPT_RESTO);
 
     }
 
@@ -59,6 +59,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // si existe actualizala
+
         db.execSQL("DROP TABLE IF EXISTS " + Esquemas.TABLA_USUARIO);
         db.execSQL("DROP TABLE IF EXISTS " + Esquemas.TABLA_COMIDA);
         db.execSQL("DROP TABLE IF EXISTS " + Esquemas.TABLA_MENSAJES);
@@ -68,7 +69,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
 
     }
 
-    public void pruebaBBDD(){
+    /*public void pruebaBBDD(){
         Log.i("", "PRUEBA BBDD2");
 
 
@@ -102,18 +103,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public boolean isTableExists(String nombreTabla) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        boolean isExist = false;
-        Cursor cursor = db.rawQuery("select DISTINCT tbl_name from sqlite_master where tbl_name = '" + nombreTabla + "'", null);
-        if (cursor != null) {
-            if (cursor.getCount() > 0) {
-                isExist = true;
-            }
-            cursor.close();
-        }
-        return isExist;
-    }
+
 
     public int sizeTable(String nombreTabla) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -126,24 +116,8 @@ public class MyDBHelper extends SQLiteOpenHelper {
     }
     /////////////////////////////***********************////////////////////////////////////////
     //metodos usuario
-    public boolean insertUsuario(Usuario usuario) {
-        //Open connection to write data
-        SQLiteDatabase db = this.getWritableDatabase();
-        // Inserting Row
-        try {
-            db.execSQL("INSERT INTO USUARIOS VALUES('" + usuario.getEmail() + "','"
-                    + usuario.getNombre() + "','"
-                    + usuario.getCiudad() + "'','"
-                    + usuario.getFecha_alta() + "','"
-                    + usuario.getContraseña() + "',"
-                    + usuario.isActivo() + ", "
-                    + usuario.getTelefono()+ ")");
-        }catch (Exception e) {
-            return false;
-        }
-        db.close();
-        return true;
-    }
+
+
 
     public boolean deleteUsuario(String email) {
         //Open connection to write data
@@ -173,7 +147,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
             // looping through all rows and adding to list
             if (cursor.moveToFirst()) {//forma de recorrer la tabla, equivalente a resultset
                 do {
-                    Usuario user = new Usuario();
+                   Usuario user = new Usuario();
                     user.setEmail(cursor.getString(cursor.getColumnIndex("EMAIL")));
                     user.setNombre(cursor.getString(cursor.getColumnIndex("NOMBRE")));
                     user.setContraseña(cursor.getString(cursor.getColumnIndex("CONTRASEÑA")));

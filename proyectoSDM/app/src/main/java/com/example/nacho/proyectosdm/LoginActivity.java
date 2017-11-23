@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.nacho.proyectosdm.persistence.esquemas.Esquemas;
+import com.example.nacho.proyectosdm.persistence.utils.DdbbDataSource;
 import com.example.nacho.proyectosdm.persistence.utils.MyDBHelper;
 
 
@@ -26,9 +27,8 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.i("", "PRUEBA BBDD");
-        conn=new MyDBHelper(this,"chefya.db",null,1);
-        conn.pruebaBBDD();
+        DdbbDataSource datos = new DdbbDataSource(getApplicationContext());
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
