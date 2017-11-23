@@ -7,6 +7,226 @@
     tools:context="com.example.nacho.proyectosdm.SubirPlatoActivity">
 
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imagenChefYa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="80dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@mipmap/chef_ya" />
+
+            <ImageButton
+                android:id="@+id/imageButton"
+                android:layout_width="match_parent"
+                android:layout_height="93dp"
+                android:layout_marginBottom="59dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/TxtinputDescripcion"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imagenChefYa"
+                app:srcCompat="@drawable/ic_menu_camera" />
+
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/textTitulo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="8dp"
+                    android:hint="Titulo"
+                    android:inputType="textLongMessage" />
+
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/textDescripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="8dp"
+                android:hint="Descripcion"
+                android:inputType="textLongMessage" />
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/textPrecio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="8dp"
+                android:hint="Precio €/racion:"
+                android:inputType="textLongMessage" />
+
+        <TextView
+            android:id="@+id/textCategoria"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="8dp"
+            android:text="Categoria:"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/radioGroup"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextPrecio"
+            app:layout_constraintVertical_bias="0.8" />
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/buttonSubirPlato"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <RadioButton
+                android:id="@+id/radioButtonMerienda"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Merienda"
+                tools:layout_editor_absoluteX="34dp"
+                tools:layout_editor_absoluteY="64dp" />
+
+            <RadioButton
+                android:id="@+id/radioButtonDesayuno"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Desayuno"
+                tools:layout_editor_absoluteX="34dp"
+                tools:layout_editor_absoluteY="96dp" />
+
+            <RadioButton
+                android:id="@+id/radioButtonComida"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Comida"
+                tools:layout_editor_absoluteX="34dp"
+                tools:layout_editor_absoluteY="128dp" />
+
+            <RadioButton
+                android:id="@+id/radioButtonCena"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Cena"
+                tools:layout_editor_absoluteX="29dp"
+                tools:layout_editor_absoluteY="155dp" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/textViewExtras"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="8dp"
+            android:text="Extras:"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@+id/textCategoria"
+            app:layout_constraintTop_toBottomOf="@+id/editTextPrecio" />
+
+        <CheckBox
+            android:id="@+id/checkBoxVegetariano"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:text="Vegetariano"
+            app:layout_constraintBottom_toTopOf="@+id/checkBoxCeliaco"
+            app:layout_constraintStart_toEndOf="@+id/radioGroup"
+            app:layout_constraintTop_toBottomOf="@+id/textViewExtras"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <CheckBox
+            android:id="@+id/checkBoxCeliaco"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:text="Celiaco"
+            app:layout_constraintBottom_toTopOf="@+id/checkBoxSalado"
+            app:layout_constraintStart_toEndOf="@+id/radioGroup" />
+
+        <CheckBox
+            android:id="@+id/checkBoxSalado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:text="Salado"
+            app:layout_constraintBottom_toTopOf="@+id/checkBoxDulce"
+            app:layout_constraintStart_toEndOf="@+id/radioGroup" />
+
+        <CheckBox
+            android:id="@+id/checkBoxDulce"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:text="Dulce"
+            app:layout_constraintBottom_toTopOf="@+id/buttonSubirPlato"
+            app:layout_constraintStart_toEndOf="@+id/radioGroup" />
+
+        <TextView
+            android:id="@+id/textViewRaciones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:text="Raciones:"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.568"
+            app:layout_constraintStart_toEndOf="@+id/textViewExtras"
+            app:layout_constraintTop_toBottomOf="@+id/editTextPrecio" />
+
+        <Spinner
+            android:id="@+id/spinnerRaciones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/buttonSubirPlato"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.466"
+            app:layout_constraintStart_toEndOf="@+id/checkBoxCeliaco"
+            app:layout_constraintTop_toBottomOf="@+id/textViewRaciones"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/buttonSubirPlato"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+
+
+
+
+            android:text="Subir Plato"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+        </LinearLayout>
+    </ScrollView>
 
 
 </android.support.constraint.ConstraintLayout>

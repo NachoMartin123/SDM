@@ -42,12 +42,13 @@ public class MyDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // creamos la base de datos
-        db.execSQL(Esquemas.CREAR_TABLA_USUARIO);    // HASTA AQUI FUNCIONA, TEN CUIDADO CON LO QUE AÑADES PORQUE SINO LO HACES BIEN NO FUNCIONA NADA.
-        db.execSQL(Esquemas.CREAR_TABLA_COMIDA);
+
+        db.execSQL(Esquemas.CREAR_TABLA_USUARIO);    // HASTA AQUI FUNCIONA, TEN CUIDADO CON LO QUE AÑADES PORQUE SINO LO HACES BIEN NO FUNCIONA NADA
+        /*db.execSQL(Esquemas.CREAR_TABLA_COMIDA);
         db.execSQL(Esquemas.CREAR_TABLA_VENDIDOS);
         db.execSQL(Esquemas.CREAR_TABLA_MENSAJES);
-        db.execSQL(Esquemas.CREAR_TABLA_CHATS);
-        db.execSQL(Esquemas.SCRIPT_CREACION);
+        db.execSQL(Esquemas.CREAR_TABLA_CHATS); */
+
     }
 
 // cada vez que iniciamos la app revisa si existe los datos buscados en la base de datos
@@ -56,7 +57,6 @@ public class MyDBHelper extends SQLiteOpenHelper {
         // si existe actualizala
         db.execSQL("DROP TABLE IF EXISTS " + Esquemas.TABLA_USUARIO);
         onCreate(db);
-
     }
 
     ////////////////////////////////////////////////***********************///////////////////////////////////////////////////////////////////

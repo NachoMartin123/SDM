@@ -26,7 +26,7 @@ public class Esquemas {
 
     //## POR EL MOMENTO VAMOS A USAR ESTA HASTA QUE HAYA MAS PARAMETROS.
 
-    /*public static final String CREAR_TABLA_USUARIO =
+    public static final String CREAR_TABLA_USUARIO =
             "CREATE TABLE " + TABLA_USUARIO + " ( " +
                     ID + " TEXT NOT NULL, " +
                     NOMBRE + " TEXT NOT NULL, " +
@@ -34,22 +34,22 @@ public class Esquemas {
                     "CONSTRAINT nombre_unique UNIQUE (" + NOMBRE + ")," +
                     "CHECK ( length(" + NOMBRE + ") > 0), " +
                     "CHECK ( length(" + CONTRASEÑA + ") > 0)"+
-                    ");";*/
+                    ");";
 
 
-    //ESTA ES LA DEFINITIVA
-    public static final String CREAR_TABLA_USUARIO ="CREATE TABLE " + TABLA_USUARIO + " ( " +
-            "EMAIL INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+    //ESTA MAL NO COMPILA
+   /*public static final String CREAR_TABLA_USUARIO ="CREATE TABLE " + TABLA_USUARIO + " ( " +
+            ID +" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
             NOMBRE + " TEXT NOT NULL, " +
-            "CIUDAD VARCHAR(255) NOT NULL, "+
-            "FECHA_ALTA TIMESTAMP,"+
+            "CIUDAD VARCHAR NOT NULL, "+
+            "FECHA_ALTA TIMESTAMP, "+
             CONTRASEÑA + " TEXT  NOT NULL, " +
             "ACTIVO BOOLEAN, "+
-            "TELEFONO INT "+
+            "TELEFONO INT, "+
             "CONSTRAINT nombre_unique UNIQUE (" + NOMBRE + ")," +
             "CHECK ( length(" + NOMBRE + ") > 0), " +
             "CHECK ( length(" + CONTRASEÑA + ") > 0)"+
-            ");";
+            ");"; */
 
 
      public static final String CREAR_TABLA_COMIDA = "CREATE TABLE "+TABLA_COMIDA+" " +
@@ -82,11 +82,12 @@ public class Esquemas {
             "CONSTRAINT EMAIL_USER_2 FOREIGN KEY(EMAIL) REFERENCES PUBLIC.USUARIO(EMAIL)";
 
 
-    public static final String SCRIPT_CREACION=
+    public static final String SCRIPT_CREACION =
             "INSERT INTO USUARIOS VALUES('jon@gmail.com','Jon','Gijón','2017-10-16 14:00:00.000000', 'password', true, 638111111)\n" +
             "INSERT INTO USUARIOS VALUES('sansa@gmail.com','Sansa','Oviedo','2017-10-16 14:00:00.000000', 'password', true, 638222222)\n" +
             "INSERT INTO USUARIOS VALUES('bran@gmail.com','Bran','Gijón','2017-10-16 14:00:00.000000', 'password', true, 638333333)\n" +
             "INSERT INTO USUARIOS VALUES('aria@gmail.com','Aria','Oviedo','2017-10-16 14:00:00.000000', 'password', true, 638444444)"+
+
             "INSERT INTO COMIDAS VALUES(1, 'sansa@gmail.com', 'Macarrones boloñesa', 5, 5.95, 'macarrones como los que hacia mi abuela', true, false, false,true,'comida')\n"+
             "INSERT INTO COMIDAS VALUES(2, 'jon@gmail.com', 'Pizza margarita', 4, 3.15, 'pizza traicional con queso y tomate', true, false, true,false,'comida')\n"+
             "INSERT INTO COMIDAS VALUES(3, 'aria@gmail.com', 'Paella', 4, 5.95, 'pizza traicional con queso y tomate', true, false, false,false,'comida')\n"+
@@ -94,11 +95,10 @@ public class Esquemas {
             "INSERT INTO COMIDAS VALUES(5, 'jon@gmail.com', 'Macedonia', 3, 1.00, 'Manzana, naranja, piña, plátano y pera', false, true, true,true,'Merienda')\n"+
             "INSERT INTO COMIDAS VALUES(6, 'sansa@gmail.com', 'Lentejas', 8, 2.15, '', true, false, true,false,'comida')\n"+
             "INSERT INTO COMIDAS VALUES(7, 'bran@gmail.com', 'Rosquillas', 4, 1.20, '', false, true, false,false,'Desayuno')\n"+
-            "INSERT INTO COMIDAS VALUES(8, 'aria@gmail.com', 'Tortilla de patata', 6, , '', true, false, false,false,'Merienda')"+
-            "INSERT INTO MENSAJES VALUES(1, 'sansa@gmail.com', 'La foto de esos macarrones de cuando es?', '2017-11-15 17:00:00.000000')"+
-            "INSERT INTO MENSAJES VALUES(1, 'jon@gmail.com', 'De hoy por la mañana', '2017-11-14 18:00:00.000000')"+
+            "INSERT INTO COMIDAS VALUES(8, 'aria@gmail.com', 'Tortilla de patata', 6, , '', true, false, false,false,'Merienda')"+ "INSERT INTO MENSAJES VALUES(1, 'sansa@gmail.com', 'La foto de esos macarrones de cuando es?', '2017-11-15 17:00:00.000000')"+ "INSERT INTO MENSAJES VALUES(1, 'jon@gmail.com', 'De hoy por la mañana', '2017-11-14 18:00:00.000000')"+
             "INSERT INTO MENSAJES VALUES(1, 'sansa@gmail.com', 'No te creo', '2017-11-15 19:00:00.000000')"+
             "INSERT INTO CHATS VALUES(1, 'jon@gmail.com', 'sansa@gmail.com')";;
+
 
 }
 
