@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.example.nacho.proyectosdm.modelo.Categoria;
 import com.example.nacho.proyectosdm.modelo.Chat;
@@ -41,6 +42,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
     // genera las tablas
     @Override
     public void onCreate(SQLiteDatabase db) {
+<<<<<<< HEAD
         // creamos la base de datos
 
         db.execSQL(Esquemas.CREAR_TABLA_USUARIO);    // HASTA AQUI FUNCIONA, TEN CUIDADO CON LO QUE AÑADES PORQUE SINO LO HACES BIEN NO FUNCIONA NADA
@@ -48,6 +50,18 @@ public class MyDBHelper extends SQLiteOpenHelper {
         db.execSQL(Esquemas.CREAR_TABLA_VENDIDOS);
         db.execSQL(Esquemas.CREAR_TABLA_MENSAJES);
         db.execSQL(Esquemas.CREAR_TABLA_CHATS); */
+=======
+            // creamos la base de datos
+        db.execSQL(Esquemas.CREAR_TABLA_USUARIO);    // HASTA AQUI FUNCIONA, TEN CUIDADO CON LO QUE AÑADES PORQUE SINO LO HACES BIEN NO FUNCIONA NADA.
+        db.execSQL(Esquemas.CREAR_TABLA_COMIDA);
+        db.execSQL(Esquemas.CREAR_TABLA_VENDIDOS);
+        db.execSQL(Esquemas.CREAR_TABLA_MENSAJES);
+        db.execSQL(Esquemas.CREAR_TABLA_CHATS);
+
+        db.execSQL(Esquemas.SCRIPT_USUARIOS);
+        db.execSQL(Esquemas.SCRIPT_COMIDAS);
+        db.execSQL(Esquemas.SCRIPT_RESTO);
+>>>>>>> cb3da04dc48753f26d437069b1d19351ca265a42
 
     }
 
@@ -56,10 +70,70 @@ public class MyDBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // si existe actualizala
         db.execSQL("DROP TABLE IF EXISTS " + Esquemas.TABLA_USUARIO);
+        db.execSQL("DROP TABLE IF EXISTS " + Esquemas.TABLA_COMIDA);
+        db.execSQL("DROP TABLE IF EXISTS " + Esquemas.TABLA_MENSAJES);
+        db.execSQL("DROP TABLE IF EXISTS " + Esquemas.TABLA_VENDIDOS);
+        db.execSQL("DROP TABLE IF EXISTS " + Esquemas.TABLA_CHATS);
         onCreate(db);
     }
 
-    ////////////////////////////////////////////////***********************///////////////////////////////////////////////////////////////////
+    public void pruebaBBDD(){
+        Log.i("", "PRUEBA BBDD2");
+
+
+        boolean a1 = isTableExists("USUARIOS");
+        boolean a2 = isTableExists("COMIDAS");
+        boolean a3 = isTableExists("MENSAJES");
+        boolean a4 = isTableExists("CHATS");
+        boolean a5 = isTableExists("VENDIDOS");
+
+        int b1 = sizeTable("USUARIOS");
+        int b2 = sizeTable("COMIDAS");
+        int b3 = sizeTable("MENSAJES");
+        int b4 = sizeTable("CHATS");
+        int b5 = sizeTable("VENDIDOS");
+
+        Usuario usuario = getUserByEmail("jon@gmail.com");
+        Comida comida = getComidaById((long) 1);
+
+
+        for(Comida u: getComidasUsuario("jon@gmail.com"))
+            Log.i("", u.getNombre());
+
+        for (Usuario u: getAllUsuarios()) {
+            Log.i("", u.getEmail()+", "+u.getNombre()+", "+u.getCiudad());
+        }
+
+        for(Chat chat: getChatsUsuario("jon@gmail.com")){
+            for(Mensaje m: chat.getMensajes()){
+                Log.i("", m.getEmail_emisor()+": "+m.getMensaje());
+            }
+        }
+    }
+
+    public boolean isTableExists(String nombreTabla) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        boolean isExist = false;
+        Cursor cursor = db.rawQuery("select DISTINCT tbl_name from sqlite_master where tbl_name = '" + nombreTabla + "'", null);
+        if (cursor != null) {
+            if (cursor.getCount() > 0) {
+                isExist = true;
+            }
+            cursor.close();
+        }
+        return isExist;
+    }
+
+    public int sizeTable(String nombreTabla) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        boolean isExist = false;
+        Cursor cursor = db.rawQuery("select * from " + nombreTabla,null);
+        if (cursor != null) {
+           return cursor.getCount();
+        }
+        return -1;
+    }
+    /////////////////////////////***********************////////////////////////////////////////
     //metodos usuario
     public boolean insertUsuario(Usuario usuario) {
         //Open connection to write data
@@ -101,26 +175,31 @@ public class MyDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         String selectQuery =  "SELECT * FROM USUARIOS ";
 
-        List<Usuario> userList = new ArrayList<Usuario>();
+        try {
+            List<Usuario> userList = new ArrayList<Usuario>();
 
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {//forma de recorrer la tabla, equivalente a resultset
-            do {
-                Usuario user = new Usuario();
-                user.setEmail(cursor.getString(cursor.getColumnIndex("EMAIL")));
-                user.setNombre(cursor.getString(cursor.getColumnIndex("NOMBRE")));
-                user.setContraseña(cursor.getString(cursor.getColumnIndex("CONTRASEÑA")));
-                user.setCiudad(cursor.getString(cursor.getColumnIndex("CIUDAD")));
-                user.setFecha_alta(Timestamp.valueOf(cursor.getString(cursor.getColumnIndex("FECHA_ALTA"))));
-                user.setActivo(cursor.getInt(cursor.getColumnIndex("ACTIVO"))>0);
-                user.setTelefono(cursor.getInt(cursor.getColumnIndex("TELEFONO")));
-                userList.add(user);
-            } while (cursor.moveToNext());
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            // looping through all rows and adding to list
+            if (cursor.moveToFirst()) {//forma de recorrer la tabla, equivalente a resultset
+                do {
+                    Usuario user = new Usuario();
+                    user.setEmail(cursor.getString(cursor.getColumnIndex("EMAIL")));
+                    user.setNombre(cursor.getString(cursor.getColumnIndex("NOMBRE")));
+                    user.setContraseña(cursor.getString(cursor.getColumnIndex("CONTRASEÑA")));
+                    user.setCiudad(cursor.getString(cursor.getColumnIndex("CIUDAD")));
+                    user.setFecha_alta(Timestamp.valueOf(cursor.getString(cursor.getColumnIndex("FECHA_ALTA"))));
+                    user.setActivo(cursor.getInt(cursor.getColumnIndex("ACTIVO")) > 0);
+                    user.setTelefono(cursor.getInt(cursor.getColumnIndex("TELEFONO")));
+                    userList.add(user);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.close();
+            return userList;
+        }catch(Exception e){
+            Log.e(null, "error en getAllUsuarios()");
+            return null;
         }
-        cursor.close();
-        db.close();
-        return userList;
 
     }
 
@@ -133,7 +212,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         // Inserting Row
         try {
-            String selectQuery = "SELECT * FROM USUARIOS WHERE email="+email;
+            String selectQuery = "SELECT * FROM USUARIOS WHERE email='"+email+"';";
             Cursor cursor = db.rawQuery(selectQuery, null);
             // looping through all rows and adding to list
             Usuario user=null;
@@ -150,7 +229,8 @@ public class MyDBHelper extends SQLiteOpenHelper {
             cursor.close();
             db.close();
             return user;
-        }catch (Exception e) {
+        }catch(Exception ex){
+            Log.e(null, "error en getUserByEmail");
             return null;
         }
     }
@@ -184,12 +264,13 @@ public class MyDBHelper extends SQLiteOpenHelper {
                 comida.setDulce(cursor.getInt(cursor.getColumnIndex("DULCE"))>0);
                 comida.setVegetariano(cursor.getInt(cursor.getColumnIndex("VEGETARIANO"))>0);
                 comida.setCeliaco(cursor.getInt(cursor.getColumnIndex("CELIACO"))>0);
-                comida.setCategoria(Categoria.valueOf(cursor.getString(cursor.getColumnIndex("CATEGORIA"))));
+                comida.setCategoria(cursor.getString(cursor.getColumnIndex("CATEGORIA")));
             }
             cursor.close();
             db.close();
             return comida;
-        }catch (Exception e) {
+        }catch(Exception e){
+            Log.e(null, "error en getComidaById");
             return null;
         }
     }
@@ -244,13 +325,14 @@ public class MyDBHelper extends SQLiteOpenHelper {
                     comida.setDulce(cursor.getInt(cursor.getColumnIndex("DULCE"))>0);
                     comida.setVegetariano(cursor.getInt(cursor.getColumnIndex("VEGETARIANO"))>0);
                     comida.setCeliaco(cursor.getInt(cursor.getColumnIndex("CELIACO"))>0);
-                    comida.setCategoria(Categoria.valueOf(cursor.getString(cursor.getColumnIndex("CATEGORIA"))));
+                    comida.setCategoria(cursor.getString(cursor.getColumnIndex("CATEGORIA")));
                 } while (cursor.moveToNext());
             }
             cursor.close();
             db.close();
             return miscomidas;
         }catch (Exception e) {
+           Log.e(null, "error en getComidasUsuario()");
             return null;
         }
     }
@@ -268,49 +350,54 @@ public class MyDBHelper extends SQLiteOpenHelper {
         String selectQuery =  "SELECT * FROM CHATS " +
                 "where email_user_1 ='"+email+"' or email_user_2 ='"+email+"'";
 
-        List<Chat> mischats = new ArrayList<Chat>();
+        try {
+            List<Chat> mischats = new ArrayList<Chat>();
 
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {//forma de recorrer la tabla, equivalente a resultset
-            do {
-                Chat chat = new Chat(
-                        cursor.getLong(cursor.getColumnIndex("ID")),
-                        cursor.getString(cursor.getColumnIndex("EMAIL_USER_1")),
-                        cursor.getString(cursor.getColumnIndex("EMAIL_USER_2"))
-                );
-                mischats.add(chat);
-            } while (cursor.moveToNext());
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            // looping through all rows and adding to list
+            if (cursor.moveToFirst()) {//forma de recorrer la tabla, equivalente a resultset
+                do {
+                    Chat chat = new Chat(
+                            cursor.getLong(cursor.getColumnIndex("ID")),
+                            cursor.getString(cursor.getColumnIndex("EMAIL_USER_1")),
+                            cursor.getString(cursor.getColumnIndex("EMAIL_USER_2"))
+                    );
+                    mischats.add(chat);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            selectQuery = "SELECT * FROM MENSAJES ";
+
+            cursor = db.rawQuery(selectQuery, null);
+            // looping through all rows and adding to list
+            if (cursor.moveToFirst()) {//forma de recorrer la tabla, equivalente a resultset
+                do {
+                    Mensaje mensaje = new Mensaje(
+                            //Long id_chat, String email_emisor, String mensaje, Timestamp fecha
+                            cursor.getLong(cursor.getColumnIndex("ID_CHAT")),
+                            cursor.getString(cursor.getColumnIndex("EMAIL_EMISOR")),
+                            cursor.getString(cursor.getColumnIndex("MENSAJE")),
+                            Timestamp.valueOf(cursor.getString(cursor.getColumnIndex("FECHA")))
+
+                    );
+                    for (int i = 0; i < mischats.size(); i++) {
+                        if (mensaje.getId_chat() == mischats.get(i).getId())
+                            mischats.get(i).addMensaje(mensaje);
+                    }
+                } while (cursor.moveToNext());
+            }
+
+            //ordena todos los mensajes de cada chat segun la fehcha
+            for (int i = 0; i < mischats.size(); i++) {
+                Collections.sort(mischats.get(i).getMensajes());
+            }
+
+            db.close();
+            return mischats;
+        }catch(Exception e){
+            Log.e(null, "error en getChatsUsuario()");
+            return null;
         }
-        cursor.close();
-        selectQuery =  "SELECT * FROM MENSAJES ";
-
-        cursor = db.rawQuery(selectQuery, null);
-        // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {//forma de recorrer la tabla, equivalente a resultset
-            do {
-                Mensaje mensaje = new Mensaje(
-                        //Long id_chat, String email_emisor, String mensaje, Timestamp fecha
-                        cursor.getLong(cursor.getColumnIndex("ID_CHAT")),
-                        cursor.getString(cursor.getColumnIndex("EMAIL_EMISOR")),
-                        cursor.getString(cursor.getColumnIndex("MENSAJE")),
-                        Timestamp.valueOf(cursor.getString(cursor.getColumnIndex("FECHA")))
-
-                );
-                for(int i=0;i<mischats.size();i++){
-                    if(mensaje.getId_chat()==mischats.get(i).getId())
-                        mischats.get(i).addMensaje(mensaje);
-                }
-            } while (cursor.moveToNext());
-        }
-
-        //ordena todos los mensajes de cada chat segun la fehcha
-        for(int i=0;i<mischats.size();i++){
-            Collections.sort(mischats.get(i).getMensajes());
-        }
-
-        db.close();
-        return mischats;
     }
 
 

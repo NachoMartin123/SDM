@@ -18,7 +18,7 @@ public class Comida {
     private boolean celiaco;
     private Categoria categoria;
 
-    public Comida(Long id, String email_usuario, String nombre, int raciones, double precio, String descripcion, boolean salado, boolean dulce, boolean vegetariano, boolean celiaco, Categoria categoria) {
+    public Comida(Long id, String email_usuario, String nombre, int raciones, double precio, String descripcion, boolean salado, boolean dulce, boolean vegetariano, boolean celiaco, String categoria) {
         this.id = id;
         this.email_usuario = email_usuario;
         this.nombre = nombre;
@@ -29,7 +29,7 @@ public class Comida {
         this.dulce = dulce;
         this.vegetariano = vegetariano;
         this.celiaco = celiaco;
-        this.categoria = categoria;
+        setCategoria(categoria);
     }
 
     public Comida(){}
@@ -118,7 +118,7 @@ public class Comida {
         return categoria;
     }
 
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
+    public void setCategoria(String categoria) {
+        this.categoria = Categoria.valueOf(categoria);
     }
 }
