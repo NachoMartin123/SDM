@@ -12,16 +12,16 @@ public class Usuario implements Serializable {
 
     private String email;
     private String nombre;
-    private String contraseña;
+    private String password;
     private String ciudad;
     private Timestamp fecha_alta;
     private boolean activo;
     private int telefono;
 
 
-    public Usuario(String nombre, String contraseña, String email){
+    public Usuario(String nombre, String password, String email){
         this.nombre = nombre;
-        this.contraseña = contraseña;
+        this.password = password;
         this.email = email;
 
     }
@@ -31,15 +31,15 @@ public class Usuario implements Serializable {
      * necesario para manejar objetos con todos los datos
      * @param email
      * @param nombre
-     * @param contraseña
+     * @param password
      * @param ciudad
      * @param fecha_alta
      * @param telefono
      */
-    public Usuario(String email, String nombre, String contraseña, String ciudad, Timestamp fecha_alta, boolean activo, int telefono) {
+    public Usuario(String email, String nombre, String password, String ciudad, Timestamp fecha_alta, boolean activo, int telefono) {
         this.email = email;
         this.nombre = nombre;
-        this.contraseña = contraseña;
+        this.password = password;
         this.ciudad = ciudad;
         this.fecha_alta = fecha_alta;
         this.activo = activo;
@@ -57,12 +57,12 @@ public class Usuario implements Serializable {
         this.nombre = nombre;
     }
 
-    public String getContraseña() {
-        return contraseña;
+    public String getPassword() {
+        return password;
     }
 
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
+    public void setPassword(String contraseña) {
+        this.password = contraseña;
     }
 
     public String getCiudad() {
