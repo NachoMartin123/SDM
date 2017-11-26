@@ -50,14 +50,14 @@ public class DdbbDataSource {
         deleteAllUsuarios();
         int tam2 = sizeTable(Esquemas.TABLA_USUARIO);
         List<Usuario> users = getAllUsuarios();
-        insertUsuario(Esquemas.TABLA_USUARIO, "jon@gmail.com","Jon","Gijon","2017-10-16 14:00:00.000", "password", true, 638111111);
-        insertUsuario(Esquemas.TABLA_USUARIO,"sansa@gmail.com","Sansa","Oviedo","2017-10-16 14:00:00.000", "password", true, 638222222);
+        insertUsuario(Esquemas.TABLA_USUARIO, "jon@gmail.com","Jon","Gijon","2017-10-16 14:00:00.000", "password", true, "638111111");
+        insertUsuario(Esquemas.TABLA_USUARIO,"sansa@gmail.com","Sansa","Oviedo","2017-10-16 14:00:00.000", "password", true, "638222222");
         List<Usuario> users2  = getAllUsuarios();
         int tam3 = sizeTable(Esquemas.TABLA_USUARIO);
         deleteUsuario(Esquemas.TABLA_USUARIO, "sansa@gmail.com");
         int tam4 = sizeTable(Esquemas.TABLA_USUARIO);
         Usuario user1 = getUserByEmail("jon@gmail.com");
-        insertUsuario(Esquemas.TABLA_USUARIO,"sansa@gmail.com","Sansa","Oviedo","2017-10-16 14:00:00.000", "password", true, 638222222);
+        insertUsuario(Esquemas.TABLA_USUARIO,"sansa@gmail.com","Sansa","Oviedo","2017-10-16 14:00:00.000", "password", true, "638222222");
 
     }
 
@@ -92,7 +92,7 @@ public class DdbbDataSource {
      * @param telefono
      * @return numero de elementos insertados
      */
-    public long insertUsuario(String nombreTabla, String email, String nombre, String ciudad, String fecha_alta, String password, boolean activo, int telefono){
+    public long insertUsuario(String nombreTabla, String email, String nombre, String ciudad, String fecha_alta, String password, boolean activo, String telefono){
         open();
         ContentValues values = new ContentValues();
         values.put("EMAIL", email);

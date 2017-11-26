@@ -15,6 +15,8 @@ public class Esquemas {
     public static final String ID = "EMAIL";
     public static final String NOMBRE = "NOMBRE";
     public static final String CONTRASEÑA = "PASSWORD";
+    public static final String CIUDAD = "CIUDAD";
+    public static final String TELEFONO = "TELEFONO";
 
     public static final String TABLA_COMIDA = "COMIDAS";
     public static final String TABLA_MENSAJES = "MENSAJES";
@@ -45,25 +47,27 @@ public class Esquemas {
             "FECHA_ALTA TEXT,"+
             "PASSWORD TEXT, " +
             "ACTIVO BOOLEAN, "+
-            "TELEFONO INT, "+
+            "TELEFONO TEXT, "+
             "UNIQUE(EMAIL) , " +
-            //"CHECK ( length(" + NOMBRE + ") > 0), " +
-            //"CHECK ( length(PASSWORD) > 0)"+
+            "CHECK ( length(" + NOMBRE + ") > 0), " +
+            "CHECK ( length("+CONTRASEÑA+") > 0)"+
             ");";
 
 
      public static final String CREAR_TABLA_COMIDA = "CREATE TABLE "+TABLA_COMIDA+" (" +
             "ID BIGINT NOT NULL PRIMARY KEY," +
+            "IMAGEN BLOB," +
             "EMAIL_USUARIO TEXT," +
-            "NOMBRE TEXT NOT NULL," +
-            "RACIONES INTEGER," +
+            "TITULO TEXT NOT NULL," +
+            "RACIONES INT," +
             "PRECIO DOUBLE," +
             "DESCRIPCION TEXT," +
+             "LUGAR TEXT," +
             "SALADO BOOLEAN," +
             "DULCE BOOLEAN," +
             "VEGETARIANO BOOLEAN," +
             "CELIACO BOOLEAN," +
-            "CATEGORIA TEXT, )";
+            "CATEGORIA TEXT );";
 
     public static final String CREAR_TABLA_VENDIDOS = "CREATE TABLE "+TABLA_VENDIDOS+" (" +
             "ID_COMIDA BIGINT NOT NULL PRIMARY KEY, " +
