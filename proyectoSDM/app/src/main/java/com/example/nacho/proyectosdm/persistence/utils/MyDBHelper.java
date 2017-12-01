@@ -43,6 +43,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
     // genera las tablas
     @Override
     public void onCreate(SQLiteDatabase db) {
+
         // creamos la base de datos
         db.execSQL(Esquemas.CREAR_TABLA_USUARIO);    // HASTA AQUI FUNCIONA, TEN CUIDADO CON LO QUE AÑADES PORQUE SINO LO HACES BIEN NO FUNCIONA NADA
         db.execSQL(Esquemas.CREAR_TABLA_COMIDA);

@@ -52,6 +52,7 @@ public class DdbbDataSource {
         List<Usuario> users = getAllUsuarios();
         insertUsuario(Esquemas.TABLA_USUARIO, "jon@gmail.com","Jon","Gijon","2017-10-16 14:00:00.000", "password", true, "638111111");
         insertUsuario(Esquemas.TABLA_USUARIO,"sansa@gmail.com","Sansa","Oviedo","2017-10-16 14:00:00.000", "password", true, "638222222");
+        insertUsuario(Esquemas.TABLA_USUARIO,"niguateresa@gmail.com","nigua","Oviedo","2017-10-16 14:00:00.000", "1234", true, "638222222");
         List<Usuario> users2  = getAllUsuarios();
         int tam3 = sizeTable(Esquemas.TABLA_USUARIO);
         deleteUsuario(Esquemas.TABLA_USUARIO, "sansa@gmail.com");

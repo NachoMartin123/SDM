@@ -55,19 +55,19 @@ public class Esquemas {
 
 
      public static final String CREAR_TABLA_COMIDA = "CREATE TABLE "+TABLA_COMIDA+" (" +
-            "ID BIGINT NOT NULL PRIMARY KEY," +
+            "ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
             "IMAGEN BLOB," +
             "EMAIL_USUARIO TEXT," +
             "TITULO TEXT NOT NULL," +
             "RACIONES INT," +
             "PRECIO DOUBLE," +
             "DESCRIPCION TEXT," +
-             "LUGAR TEXT," +
+            "LUGAR TEXT," +
             "SALADO BOOLEAN," +
             "DULCE BOOLEAN," +
             "VEGETARIANO BOOLEAN," +
             "CELIACO BOOLEAN," +
-            "CATEGORIA TEXT );";
+            "CATEGORIA TEXT )";
 
     public static final String CREAR_TABLA_VENDIDOS = "CREATE TABLE "+TABLA_VENDIDOS+" (" +
             "ID_COMIDA BIGINT NOT NULL PRIMARY KEY, " +

@@ -3,6 +3,7 @@ package com.example.nacho.proyectosdm;
 import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
 public class ConfiguracionActivity extends AppCompatActivity {
 
@@ -11,5 +12,9 @@ public class ConfiguracionActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); // para que no se gire
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuracion);
+    }
+
+    public void actualizar (View view){
+
     }
 }

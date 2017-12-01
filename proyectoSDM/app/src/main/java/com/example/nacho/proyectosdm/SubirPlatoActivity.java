@@ -1,12 +1,12 @@
 package com.example.nacho.proyectosdm;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
+import android.Manifest;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,6 +20,8 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,7 +32,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -43,21 +44,18 @@ import com.example.nacho.proyectosdm.persistence.utils.MyDBHelper;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.security.AccessController;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-import static java.security.AccessController.*;
 
 public class SubirPlatoActivity extends AppCompatActivity {
 
     private final int MIS_PERMISOS = 100;
     private static final int COD_SELECCIONA = 10;
     private static final int COD_FOTO = 999;
+
 
 
     private static final String CARPETA_PRINCIPAL = "misImagenesApp/";//directorio principal
@@ -70,18 +68,16 @@ public class SubirPlatoActivity extends AppCompatActivity {
     File fileImagen;
     Bitmap bitmap;
 
+
     EditText mtitulo;
     EditText mdescripcion;
     EditText mprecio;
     Spinner mracion;
     EditText mlugar;
 
-    String categoria;
+
     RadioGroup mradioGroup;
-    RadioButton mmerienda;
-    RadioButton mdesayuno;
-    RadioButton mcomida;
-    RadioButton mcena;
+
 
     CheckBox mvegetariano;
     CheckBox mceliaco;
@@ -89,11 +85,13 @@ public class SubirPlatoActivity extends AppCompatActivity {
     CheckBox mdulce;
 
 
+
     protected void onCreate(Bundle savedInstanceState) {
+
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); // para que no se gire
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subir_plato);
-
+        int permissionCheck2 = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
         //Inicializamos
         init();
 
@@ -105,6 +103,24 @@ public class SubirPlatoActivity extends AppCompatActivity {
         }else{
             mImageButton.setEnabled(false);
         }
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.CAMERA)) {
+
+            } else {
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.CAMERA},
+                        COD_FOTO);
+
+            }
+        }
+
+
     }
 
     private void init() {
@@ -123,10 +139,6 @@ public class SubirPlatoActivity extends AppCompatActivity {
 
         mradioGroup = (RadioGroup) findViewById(R.id.radioGroup);
 
-        /**mmerienda = (RadioButton) findViewById(R.id.radioButtonMerienda);
-        mdesayuno = (RadioButton) findViewById(R.id.radioButtonDesayuno);
-        mcomida = (RadioButton) findViewById(R.id.radioButtonComida);
-        mcena = (RadioButton) findViewById(R.id.radioButtonCena); */
 
         mvegetariano = (CheckBox) findViewById(R.id.checkBoxVegetariano);
         mceliaco = (CheckBox) findViewById(R.id.checkBoxCeliaco);
@@ -165,15 +177,11 @@ public class SubirPlatoActivity extends AppCompatActivity {
             }
 
 
-    private double isNumeric(String cadena){
-         Double precio =    Double.valueOf(cadena);
-            return precio;
-
-    }
-
    public void subirPlato (View view){
        try {
            escribirMyDB();
+           //consultarMyBD();
+
 
        } catch(Exception e) {
            Toast.makeText(getApplicationContext(),"No se ha podido subir el plato" , Toast.LENGTH_SHORT).show();
@@ -182,7 +190,26 @@ public class SubirPlatoActivity extends AppCompatActivity {
 
    }
 
-    private void escribirMyDB() {
+    public String CategoriaMax() {
+        MyDBHelper conn = new MyDBHelper(this, "chefya.db", null, 1);
+        String sql = "select * from " + Esquemas.TABLA_COMIDA;
+        SQLiteDatabase db = conn.getReadableDatabase();
+        List lista1 = new ArrayList();
+        Cursor cursor = db.rawQuery(sql, null);
+        String id ="";
+        if (cursor.moveToFirst()) {
+            do {
+                id = cursor.getString(0);
+                lista1.add(id);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        // return String.valueOf(lista1);
+        return id; //lleva el último valor
+    }
+
+
+    public void escribirMyDB() {
 
 
         if (mtitulo.getText().toString().length() == 0) {
@@ -205,8 +232,8 @@ public class SubirPlatoActivity extends AppCompatActivity {
         ContentValues values = new ContentValues();
 
 
-
-        values.put("IMAGEN",  imageViewToByte(mImageFoto));
+     //   values.put("IMAGEN",  imageViewToByte(mImageFoto)
+        values.put("ID", CategoriaMax()+1 );
         values.put("TITULO", mtitulo.getText().toString());
         values.put("DESCRIPCION", mdescripcion.getText().toString());
         values.put("PRECIO", mprecio.getText().toString());
@@ -218,7 +245,7 @@ public class SubirPlatoActivity extends AppCompatActivity {
         values.put( "SALADO",  msalado.isChecked());
         values.put( "DULCE", mdulce.isChecked());
 
-       Long idResultante = database.insert(Esquemas.TABLA_COMIDA, "DESCRIPCION", values);
+       Long idResultante = database.insert(Esquemas.TABLA_COMIDA, "TITULO", values);
 
         Toast.makeText(getApplicationContext(), "Plato Subido Correctamente " + idResultante, Toast.LENGTH_SHORT).show();
         Intent miIntent = null;
@@ -227,17 +254,18 @@ public class SubirPlatoActivity extends AppCompatActivity {
         if (miIntent != null) {
             startActivity(miIntent); }
                 database.close();
+
+
             } catch (Exception e){
                 Toast.makeText(getApplicationContext(), "No se ha podido subir el plato", Toast.LENGTH_SHORT).show();
 
             }
-
        }
 
     }
     public static byte[] imageViewToByte(ImageView image) {
         Bitmap bitmap = ((BitmapDrawable)image.getDrawable()).getBitmap();
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream(20480);
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
         return byteArray;
@@ -245,7 +273,7 @@ public class SubirPlatoActivity extends AppCompatActivity {
 
 //permisos
     ////////////////
-private void solicitarPermisosManual() {
+    private void solicitarPermisosManual() {
     final CharSequence[] opciones={"si","no"};
     final android.support.v7.app.AlertDialog.Builder alertOpciones=new android.support.v7.app.AlertDialog.Builder(SubirPlatoActivity.this);//estamos en fragment
     alertOpciones.setTitle("¿Desea configurar los permisos de forma manual?");
@@ -313,11 +341,13 @@ private void solicitarPermisosManual() {
         }
     }
 
+ //OnClick
     public void subirFoto(View view){
 
         mostrarDialogOpciones();
 
     }
+
 
     private void mostrarDialogOpciones() {
         final CharSequence[] opciones={"Tomar Foto","Elegir de Galeria","Cancelar"};

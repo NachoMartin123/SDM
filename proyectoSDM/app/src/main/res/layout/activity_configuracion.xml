@@ -6,4 +6,114 @@
     android:layout_height="match_parent"
     tools:context="com.example.nacho.proyectosdm.ConfiguracionActivity">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imagenChefYa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@mipmap/chef_ya" />
+
+
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/textActualizarNombreUsuario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="8dp"
+                android:hint="Actualizar Nombre Usuario"
+                android:inputType="textLongMessage" />
+
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/textActualizarEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="8dp"
+                android:hint="Actualizar Email"
+                android:inputType="textLongMessage" />
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/txtActualizarTelefono"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="8dp"
+                android:hint="Actualizar Telefono:"
+                android:inputType="numberDecimal"
+
+
+                />
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/textLayoutContraseña"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutUsuario"
+                app:passwordToggleEnabled="false" >
+
+            <EditText
+                android:id="@+id/contraseña"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Cambiar contraseña"
+                android:inputType="textPassword"
+                android:textColorLink="@android:color/holo_red_dark"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textLayoutReContraseña"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textLayoutUsuario"
+            app:passwordToggleEnabled="false">
+
+            <EditText
+                android:id="@+id/Recontraseña"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:hint="Repetir contraseña"
+                android:inputType="textPassword"
+                android:textColorLink="@android:color/holo_red_dark"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/btnActualizar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+
+
+                android:onClick="actualizar"
+                android:text="Actualizar Datos"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </LinearLayout>
+    </ScrollView>
+
+
 </android.support.constraint.ConstraintLayout>
