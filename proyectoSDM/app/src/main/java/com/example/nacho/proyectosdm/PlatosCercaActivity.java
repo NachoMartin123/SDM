@@ -2,31 +2,56 @@ package com.example.nacho.proyectosdm;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class PlatosCercaActivity extends AppCompatActivity {
+public class PlatosCercaActivity extends AppCompatActivity
+    implements NavigationView.OnNavigationItemSelectedListener{
+
+    private ActionBarDrawerToggle mDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); // para que no se gire
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_platoscerca);
-        ;
+
+        DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        NavigationView navigationView = (NavigationView)findViewById(R.id.nav_view);
+
+        mDrawerToggle = new ActionBarDrawerToggle(
+                this,
+                drawerLayout,
+                R.string.drawer_open,
+                R.string.drawer_close
+        );
+
+        drawerLayout.addDrawerListener(mDrawerToggle);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+        navigationView.setNavigationItemSelectedListener(this);
     }
 
-    //metodos menu
     @Override
-    public boolean onCreateOptionsMenu(final Menu menu) {
-        //Inflate the menu
-        getMenuInflater().inflate(R.menu.barramenu_platoscerca, menu);
-        return true;
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
     }
 
-    public boolean onOptionsItemSelected(MenuItem item) {
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
         int id = item.getItemId();
+
         //noinspection SimplifiableIfStatement
         if (id == R.id.subirplato) {
             final Intent intento = new Intent(PlatosCercaActivity.this, SubirPlatoActivity.class);
@@ -58,6 +83,24 @@ public class PlatosCercaActivity extends AppCompatActivity {
             //startActivity(intento);
             return true;
         }
+
+        return false;
+    }
+
+    //metodos menu
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        //Inflate the menu
+        getMenuInflater().inflate(R.menu.barramenu_platoscerca, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 }

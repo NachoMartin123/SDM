@@ -30,4 +30,8 @@
         completions."
     </string>
     <string name="title_activity_login2">Sign in</string>
+
+    <string name="drawer_open">Abriendo menu</string>
+    <string name="drawer_close">Cerrando menu</string>
+
 </resources>
