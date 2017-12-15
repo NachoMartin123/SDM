@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,9 +13,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class PlatosCercaActivity extends AppCompatActivity
-    implements NavigationView.OnNavigationItemSelectedListener{
+    implements NavigationView.OnNavigationItemSelectedListener,
+        SeleccionExtrasDialog.OnSeleccionExtrasRealizada{
 
     private ActionBarDrawerToggle mDrawerToggle;
+
+    private boolean[] extraSeleccionados = {true, true, true, true};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +49,6 @@ public class PlatosCercaActivity extends AppCompatActivity
         super.onPostCreate(savedInstanceState);
         mDrawerToggle.syncState();
     }
-
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -100,7 +103,19 @@ public class PlatosCercaActivity extends AppCompatActivity
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
+        else if (item.getItemId() == R.id.itemExtras) {
+            DialogFragment dialogo = SeleccionExtrasDialog.crear(extraSeleccionados);
+            dialogo.show(getSupportFragmentManager(), "dialogoExtras");
+        }
+        else {
+            item.setChecked(!item.isChecked());
+        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSeleccionExtraRealizada(boolean[] seleccion) {
+        this.extraSeleccionados = seleccion;
     }
 }

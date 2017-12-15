@@ -33,5 +33,12 @@
 
     <string name="drawer_open">Abriendo menu</string>
     <string name="drawer_close">Cerrando menu</string>
+    <string name="desayunos">Desayunos</string>
+    <string name="meriendas">Meriendas</string>
+    <string name="comidas">Comidas</string>
+    <string name="cenas">Cenas</string>
+    <string name="todos">Todos</string>
+    <string name="extras">Extras</string>
+    <string name="title_activity_maps">Map</string>
 
 </resources>
