@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="extras">
+        <item>Vegetariano</item>
+        <item>Celiaco</item>
+        <item>Salado</item>
+        <item>Dulce</item>
+    </string-array>
+</resources>
