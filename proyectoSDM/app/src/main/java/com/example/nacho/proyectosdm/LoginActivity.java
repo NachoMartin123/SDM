@@ -14,31 +14,33 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.nacho.proyectosdm.modelo.Usuario;
 import com.example.nacho.proyectosdm.persistence.esquemas.Esquemas;
 import com.example.nacho.proyectosdm.persistence.utils.DdbbDataSource;
 import com.example.nacho.proyectosdm.persistence.utils.MyDBHelper;
+
+import org.w3c.dom.Text;
 
 
 public class LoginActivity extends AppCompatActivity {
 
 
-    EditText mUsuario;
+    //EditText mUsuario;
+    String emailUsuario;
     EditText mContraseña;
-    EditText email;
+    //EditText email;
+    DdbbDataSource datos;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        DdbbDataSource datos = new DdbbDataSource(getApplicationContext());
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); // para que no se gire
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        datos = new DdbbDataSource(getApplicationContext());
 
         //verificar Usuario
-        mUsuario =(EditText) findViewById(R.id.usuario);
-        mContraseña = (EditText) findViewById(R.id.contraseña);
-
+        emailUsuario = ((EditText)findViewById(R.id.contraseña)).getText().toString();
     }
 
     public void registrarse(View view) {
@@ -51,7 +53,9 @@ public class LoginActivity extends AppCompatActivity {
 
         try {
             // consultamos la base de datos
-            consultarMyBD();
+            Usuario usuario = datos.getUserByEmail(emailUsuario);
+            if(usuario==null)
+                ;//toast usuario no completado
             //Cambiamos de activity
             Intent miIntent = null;
             switch (view.getId()){
@@ -73,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // consultamos la base de datos con el usuario.
 
-    public void consultarMyBD() {
+    /*public void consultarMyBD() {
 
         MyDBHelper conn = new MyDBHelper(this,"chefya.db",null,1);
         SQLiteDatabase database =  conn.getReadableDatabase();
@@ -90,7 +94,8 @@ public class LoginActivity extends AppCompatActivity {
 
            Toast.makeText(getApplicationContext(), "Bienvenido: " + mUsuario.getText() + " , ¿que te apetece comer hoy?", Toast.LENGTH_LONG).show();
 
-    }
+
+    }*/
 
 
     // limpia los campos si el usuario no esta registrado.
