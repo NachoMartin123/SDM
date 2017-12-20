@@ -42,7 +42,7 @@ public class Usuario implements Serializable{
      * @param fecha_alta
      * @param telefono
      */
-    public Usuario(String email, String nombre, String password, String ciudad, Timestamp fecha_alta, boolean activo, int telefono) {
+    public Usuario(String email, String nombre, String password, String ciudad, Timestamp fecha_alta, boolean activo, int telefono, ImageView imagen) {
         this.email = email;
         this.nombre = nombre;
         this.password = password;
@@ -50,6 +50,7 @@ public class Usuario implements Serializable{
         this.fecha_alta = fecha_alta;
         this.activo = activo;
         this.telefono = telefono;
+        this.imagen=imagen;
     }
 
     public Usuario(){}

@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.example.nacho.proyectosdm.modelo.Categoria;
 import com.example.nacho.proyectosdm.modelo.Chat;
 import com.example.nacho.proyectosdm.modelo.Comida;
 import com.example.nacho.proyectosdm.modelo.Mensaje;
@@ -52,18 +53,14 @@ public class DdbbDataSource {
         dbHelper = new MyDBHelper(context, null, null, 1);
         //int tam1 = sizeTable(Esquemas.TABLA_USUARIO);
         deleteAllUsuarios();
-        //int tam2 = sizeTable(Esquemas.TABLA_USUARIO);
-        //List<Usuario> users = getAllUsuarios();
-        //insertUsuario(Esquemas.TABLA_USUARIO, "jon@gmail.com","Jon","Gijon","2017-10-16 14:00:00.000", "password", true, "638111111");
-        insertUsuario(Esquemas.TABLA_USUARIO, "jon@gmail.com","Jon","Gijon","2017-10-16 14:00:00.000", "password", true, "638111111", null);
-        insertUsuario(Esquemas.TABLA_USUARIO,"sansa@gmail.com","Sansa","Oviedo","2017-10-16 14:00:00.000", "password", true, "638222222", null);
-        insertUsuario(Esquemas.TABLA_USUARIO,"niguateresa@gmail.com","nigua","Oviedo","2017-10-16 14:00:00.000", "1234", true, "638222222", null);
-        //List<Usuario> users2  = getAllUsuarios();
-        //int tam3 = sizeTable(Esquemas.TABLA_USUARIO);
-        //deleteUsuario(Esquemas.TABLA_USUARIO, "sansa@gmail.com");
-        //int tam4 = sizeTable(Esquemas.TABLA_USUARIO);
-        //Usuario user1 = getUserByEmail("jon@gmail.com");
-        //insertUsuario(Esquemas.TABLA_USUARIO,"sansa@gmail.com","Sansa","Oviedo","2017-10-16 14:00:00.000", "password", true, "638222222");
+        List<Usuario> usuariosIniciales = Esquemas.listaInicialUsuarios();
+        List<Comida> comidasIniciales = Esquemas.listaInicialComidas();
+        for (Usuario user: usuariosIniciales ) {
+            insertUsuario(user);
+        }
+        for (Comida comida: comidasIniciales ) {
+            insertComida(comida);
+        }
 
     }
 
@@ -88,31 +85,24 @@ public class DdbbDataSource {
 
     /**
      *
-     * @param nombreTabla
-     * @param email
-     * @param nombre
-     * @param ciudad
-     * @param fecha_alta
-     * @param password
-     * @param activo
-     * @param telefono
+     * @param u
      * @return numero de elementos insertados
      */
-    public long insertUsuario(String nombreTabla, String email, String nombre, String ciudad, String fecha_alta, String password, boolean activo, String telefono, ImageView imagen){
+    public long insertUsuario(Usuario u){
         open();
         ContentValues values = new ContentValues();
-        values.put("EMAIL", email);
-        values.put("NOMBRE", nombre);
-        values.put("CIUDAD", ciudad);
-        values.put("FECHA_ALTA", fecha_alta);
-        values.put("PASSWORD", password);
-        values.put("ACTIVO", activo);
-        values.put("TELEFONO", telefono);
-        Bitmap bitmap = imagen.getDrawingCache();
+        values.put("EMAIL", u.getEmail());
+        values.put("NOMBRE", u.getNombre());
+        values.put("CIUDAD", u.getCiudad());
+        values.put("FECHA_ALTA", String.valueOf(u.getFecha_alta()));
+        values.put("PASSWORD", u.getPassword());
+        values.put("ACTIVO", u.isActivo());
+        values.put("TELEFONO", u.getTelefono());
+        Bitmap bitmap = u.getImagen().getDrawingCache();
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         values.put("IMAGEN", bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos));
         // Insertamos la valoracion
-        long insertId = database.insert(nombreTabla, null, values);
+        long insertId = database.insert(Esquemas.TABLA_USUARIO, null, values);
         close();
         return insertId;
     }
@@ -245,6 +235,7 @@ public class DdbbDataSource {
                 comida.setCeliaco(cursor.getInt(cursor.getColumnIndex("CELIACO"))>0);
                 comida.setCategoria(cursor.getString(cursor.getColumnIndex("CATEGORIA")));
                 comida.setImagen(cursor.getBlob(cursor.getColumnIndex("IMAGEN")));
+                comida.setCategoria(Categoria.valueOf(cursor.getString(cursor.getColumnIndex("CATEGORIA"))));
             }
             cursor.close();
             close();
@@ -258,17 +249,8 @@ public class DdbbDataSource {
     public boolean insertComida(Comida comida){
         try {
             open();
-            database.execSQL("INSERT INTO USUARIOS VALUES(" + comida.getId() + ",'"
-                    + comida.getEmail_usuario() + "','"
-                    + comida.getNombre() + "'',"
-                    + comida.getRaciones() + ","
-                    + comida.getPrecio() + ",'"
-                    + comida.getDescripcion() + "', "
-                    + comida.isSalado()+","
-                    + comida.isDulce()+ ","
-                    + comida.isVegetariano()+","
-                    + comida.isCeliaco()+",'"
-                    + comida.getCategoria()+"')");
+            database.insert(Esquemas.TABLA_COMIDA, null, comida.toContentValues()
+            );
         }catch (Exception e) {
             return false;
         }
@@ -284,12 +266,20 @@ public class DdbbDataSource {
     public List<Comida> getComidasUsuario(String email){
         try {
             open();
-            String selectQuery = "SELECT * FROM COMIDAS WHERE EMAIL_USUARIO = '"+email+"'";
-            Cursor cursor = database.rawQuery(selectQuery, null);
+            Cursor cursor = database.query(
+                    Esquemas.TABLA_COMIDA,
+                    new String []{
+                            "ID", "DESCRIPCION", "LATITUD", "LONGITUD"
+                    },
+                    "EMAIL_USUARIO = ?",
+                    new String [] {
+                            email
+                    }, null, null, null);
             // looping through all rows and adding to list
             List<Comida> miscomidas = new ArrayList<Comida>();
             if (cursor.moveToFirst()) {//forma de recorrer la tabla, equivalente a resultset
                 do {
+                    /*
                     Comida comida = new Comida();
                     comida.setId(cursor.getLong(cursor.getColumnIndex("ID")));
                     comida.setEmail_usuario(cursor.getString(cursor.getColumnIndex("EMAIL_USUARIO")));
@@ -303,13 +293,22 @@ public class DdbbDataSource {
                     comida.setCeliaco(cursor.getInt(cursor.getColumnIndex("CELIACO"))>0);
                     comida.setCategoria(cursor.getString(cursor.getColumnIndex("CATEGORIA")));
                     comida.setImagen(cursor.getBlob(cursor.getColumnIndex("IMAGEN")));
+
+                    */
+                    Comida comida = new Comida();
+                    comida.setId(cursor.getLong(cursor.getColumnIndex("ID")));
+                    comida.setDescripcion(cursor.getString(cursor.getColumnIndex("DESCRIPCION")));
+                    comida.setLatitud(cursor.getDouble(cursor.getColumnIndex("LATITUD")));
+                    comida.setLongitud(cursor.getDouble(cursor.getColumnIndex("LONGITUD")));
+
+                    miscomidas.add(comida);
                 } while (cursor.moveToNext());
             }
             cursor.close();
             close();
             return miscomidas;
         }catch (Exception e) {
-            Log.e(null, "error en getComidasUsuario()");
+            Log.e(null, "error en getComidasUsuario()", e);
             return null;
         }
     }
@@ -334,10 +333,10 @@ public class DdbbDataSource {
             // looping through all rows and adding to list
             if (cursor.moveToFirst()) {//forma de recorrer la tabla, equivalente a resultset
                 do {
-                    Chat chat = new Chat(
-                            cursor.getLong(cursor.getColumnIndex("ID")),
-                            cursor.getString(cursor.getColumnIndex("EMAIL_USER_1")),
-                            cursor.getString(cursor.getColumnIndex("EMAIL_USER_2"))
+                        Chat chat = new Chat(
+                        cursor.getLong(cursor.getColumnIndex("ID")),
+                        cursor.getString(cursor.getColumnIndex("EMAIL_USER_1")),
+                        cursor.getString(cursor.getColumnIndex("EMAIL_USER_2"))
                     );
                     mischats.add(chat);
                 } while (cursor.moveToNext());

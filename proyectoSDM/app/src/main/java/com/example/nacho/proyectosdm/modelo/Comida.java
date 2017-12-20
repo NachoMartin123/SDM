@@ -1,11 +1,14 @@
 package com.example.nacho.proyectosdm.modelo;
 
 import android.graphics.Bitmap;
+
+import com.google.android.gms.maps.model.LatLng;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.widget.ImageView;
+import android.content.ContentValues;
 
-import java.sql.Blob;
-
+import com.google.android.gms.maps.model.LatLng;
 /**
  * Created by Nacho on 15/11/2017.
  */
@@ -24,8 +27,13 @@ public class Comida {
     private boolean celiaco;
     private Categoria categoria;
     private ImageView imagen;
+    private double latitud;
+    private double longitud;
 
-    public Comida(Long id, String email_usuario, String nombre, int raciones, double precio, String descripcion, boolean salado, boolean dulce, boolean vegetariano, boolean celiaco, String categoria, ImageView imagen) {
+    public Comida(){}
+
+    public Comida(Long id, String email_usuario, String nombre, int raciones, double precio, String descripcion, boolean salado, boolean dulce, boolean vegetariano, boolean celiaco, Categoria categoria, ImageView imagen, double latitud, double longitud) {
+
         this.id = id;
         this.email_usuario = email_usuario;
         this.nombre = nombre;
@@ -36,11 +44,11 @@ public class Comida {
         this.dulce = dulce;
         this.vegetariano = vegetariano;
         this.celiaco = celiaco;
-        setCategoria(categoria);
         this.imagen=imagen;
+        this.categoria = categoria;
+        this.latitud = latitud;
+        this.longitud = longitud;
     }
-
-    public Comida(){}
 
     public Long getId() {
         return id;
@@ -126,8 +134,50 @@ public class Comida {
         return categoria;
     }
 
-    public void setCategoria(String categoria) {
-        this.categoria = Categoria.valueOf(categoria);
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+
+    public double getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(double latitud) {
+        this.latitud = latitud;
+    }
+
+    public double getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(double longitud) {
+        this.longitud = longitud;
+    }
+
+    public ContentValues toContentValues() {
+        ContentValues cv = new ContentValues();
+        cv.put("ID", id);
+
+        cv.put("EMAIL_USUARIO", email_usuario);
+        cv.put("TITULO", nombre);
+        cv.put("RACIONES", raciones);
+        cv.put("PRECIO", precio);
+        cv.put("DESCRIPCION", descripcion);
+        cv.putNull("LUGAR");
+        cv.put("SALADO", salado);
+        cv.put("DULCE", dulce);
+        cv.put("VEGETARIANO", vegetariano);
+        cv.put("CELIACO", celiaco);
+        cv.put("CATEGORIA", categoria.name())
+        cv.putNull("imagen");
+
+        //cv.put("LATITUD", latitud);
+        //cv.put("LONGITUD", longitud);
+        return cv;
+    }
+
+    public LatLng crearPosicion() {
+        return new LatLng(latitud, longitud);
     }
 
     public ImageView getImagen() {

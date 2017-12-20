@@ -3,6 +3,14 @@ package com.example.nacho.proyectosdm.persistence.esquemas;
 import android.content.ContentValues;
 import android.provider.BaseColumns;
 
+import com.example.nacho.proyectosdm.modelo.Categoria;
+import com.example.nacho.proyectosdm.modelo.Comida;
+import com.example.nacho.proyectosdm.modelo.Usuario;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Laura Mambo on 18/10/2017.
  */
@@ -50,10 +58,12 @@ public class Esquemas {
             "LUGAR TEXT," +
             "SALADO BOOLEAN," +
             "DULCE BOOLEAN," +
-             "IMAGEN BLOB," +
+            "IMAGEN BLOB," +
             "VEGETARIANO BOOLEAN," +
             "CELIACO BOOLEAN," +
-            "CATEGORIA TEXT )";
+            "CATEGORIA TEXT,"+
+            "LATITUD DOUBLE," +
+            "LONGITUD DOUBLE )";
 
     public static final String CREAR_TABLA_VENDIDOS = "CREATE TABLE "+TABLA_VENDIDOS+" (" +
             "ID_COMIDA BIGINT NOT NULL PRIMARY KEY, " +
@@ -79,9 +89,60 @@ public class Esquemas {
             "FOREIGN KEY(EMAIL_USER_2) REFERENCES USUARIOS(EMAIL))";
 
 
+    public static List<Usuario> listaInicialUsuarios(){
+        List<Usuario> usuarios = new ArrayList<Usuario>();
+        usuarios.add(new Usuario("jon@gmail.com","Jon","password","Gijon",new Timestamp(2017,10,16,14,00,00,000), true, 638111111, null));
+        usuarios.add(new Usuario("sansa@gmail.com","Sansa", "password","Oviedo",new Timestamp(2017,10,16,14,00,00,000), true, 638222222, null));
+        usuarios.add(new Usuario("niguateresa@gmail.com","nigua", "1234","Oviedo",new Timestamp(2017,10,16,14,00,00,000), true, 638222222, null));
+        return usuarios;
+    }
+
+
+    public static List<Comida> listaInicialComidas(){
+
+       /* private Long id;
+        private String email_usuario;
+        private String nombre;
+        private int raciones;
+        private double precio;
+        private String descripcion;
+        private boolean salado;
+        private boolean dulce;
+        private boolean vegetariano;
+        private boolean celiaco;
+        private Categoria categoria;
+        private ImageView imagen;
+        private double latitud;
+        private double longitud;*/
+        List<Comida> comidas = new ArrayList<Comida>();
+        Comida comida = new Comida();
+        comida.setCategoria(Categoria.DESAYUNO);
+        comida.setCeliaco(true);
+        comida.setNombre("Bizcocho de chocolate");
+        comida.setDescripcion("Bizcocho de chocolate");
+        comida.setDulce(true);
+        comida.setEmail_usuario("jon@gmail.com");
+        comida.setRaciones(4);
+        comida.setLatitud(43.362119);
+        comida.setLongitud(-5.850375);
+
+        comida = new Comida();
+        comida.setCategoria(Categoria.COMIDA);
+        comida.setCeliaco(true);
+        comida.setNombre("Macarrones");
+        comida.setDescripcion("Macarrones");
+        comida.setSalado(true);
+        comida.setEmail_usuario("jon@gmail.com");
+        comida.setRaciones(4);
+        comida.setLatitud(43.540915);
+        comida.setLongitud(-5.922073);
+        return comidas;
+    }
 
 
 
+
+/*
     public static final String SCRIPT_USUARIOS=
             "INSERT INTO USUARIOS (EMAIL,NOMBRE,CIUDAD,FECHA_ALTA, PASSWORD, ACTIVO, TELEFONO) VALUES ('jon@gmail.com','Jon','Gijon','2017-10-16 14:00:00.000', 'password', true, 638111111)";
 
@@ -91,7 +152,7 @@ public class Esquemas {
 
 
     public static final String SCRIPT_COMIDAS =
-            "INSERT INTO COMIDAS VALUES(1, 'sansa@gmail.com', 'Macarrones carbonara', 5, 5.95, 'macarrones como los que hacia mi abuela', true, false, false,true,'comida');\n"+
+           /* "INSERT INTO COMIDAS VALUES(1, 'sansa@gmail.com', 'Macarrones carbonara', 5, 5.95, 'macarrones como los que hacia mi abuela', true, false, false,true,'comida');\n"+
             "INSERT INTO COMIDAS VALUES(2, 'jon@gmail.com', 'Pizza margarita', 4, 3.15, 'pizza traicional con queso y tomate', true, false, true,false,'comida');\n"+
             "INSERT INTO COMIDAS VALUES(3, 'aria@gmail.com', 'Paella', 4, 5.95, 'pizza traicional con queso y tomate', true, false, false,false,'comida');\n"+
             "INSERT INTO COMIDAS VALUES(4, 'bran@gmail.com', 'Pastel', 8, 1.95, 'Pastel de chocolate rico rico', false, true, true,false,'Merienda');\n"+
@@ -99,12 +160,14 @@ public class Esquemas {
             "INSERT INTO COMIDAS VALUES(6, 'sansa@gmail.com', 'Lentejas', 8, 2.15, 'comida de viejas', true, false, true,false,'comida');\n"+
             "INSERT INTO COMIDAS VALUES(7, 'bran@gmail.com', 'Rosquillas', 4, 1.20, 'muy redondas', false, true, false,false,'Desayuno');\n"+
             "INSERT INTO COMIDAS VALUES(8, 'aria@gmail.com', 'Tortilla de patata', 6, , 'producto spanish', true, false, false,false,'Merienda');";
-    public static final String SCRIPT_RESTO=
+            */
+//    public static final String SCRIPT_RESTO=
+           /*
             "INSERT INTO MENSAJES VALUES(1, 'sansa@gmail.com', 'La foto de esos macarrones de cuando es?', '2017-11-15 17:00:00.000000');\n"+
             "INSERT INTO MENSAJES VALUES(1, 'jon@gmail.com', 'De hoy por la mismo', '2017-11-14 18:00:00.000000');\n"+
             "INSERT INTO MENSAJES VALUES(1, 'sansa@gmail.com', 'No te creo', '2017-11-15 19:00:00.000000');\n"+
             "INSERT INTO CHATS VALUES(1, 'jon@gmail.com', 'sansa@gmail.com');";;
-
+            */
 
 
 }
