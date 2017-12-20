@@ -67,7 +67,9 @@ public class Esquemas {
             "DULCE BOOLEAN," +
             "VEGETARIANO BOOLEAN," +
             "CELIACO BOOLEAN," +
-            "CATEGORIA TEXT )";
+            "CATEGORIA TEXT," +
+            "LATITUD DOUBLE," +
+            "LONGITUD DOUBLE )";
 
     public static final String CREAR_TABLA_VENDIDOS = "CREATE TABLE "+TABLA_VENDIDOS+" (" +
             "ID_COMIDA BIGINT NOT NULL PRIMARY KEY, " +

@@ -7,6 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.example.nacho.proyectosdm.modelo.Categoria;
 import com.example.nacho.proyectosdm.modelo.Chat;
 import com.example.nacho.proyectosdm.modelo.Comida;
 import com.example.nacho.proyectosdm.modelo.Mensaje;
@@ -60,6 +61,29 @@ public class DdbbDataSource {
         Usuario user1 = getUserByEmail("jon@gmail.com");
         insertUsuario(Esquemas.TABLA_USUARIO,"sansa@gmail.com","Sansa","Oviedo","2017-10-16 14:00:00.000", "password", true, "638222222");
 
+        Comida comida = new Comida();
+        comida.setCategoria(Categoria.DESAYUNO);
+        comida.setCeliaco(true);
+        comida.setNombre("Bizcocho de chocolate");
+        comida.setDescripcion("Bizcocho de chocolate");
+        comida.setDulce(true);
+        comida.setEmail_usuario("jon@gmail.com");
+        comida.setRaciones(4);
+        comida.setLatitud(43.362119);
+        comida.setLongitud(-5.850375);
+        insertComida(comida);
+
+        comida = new Comida();
+        comida.setCategoria(Categoria.COMIDA);
+        comida.setCeliaco(true);
+        comida.setNombre("Macarrones");
+        comida.setDescripcion("Macarrones");
+        comida.setSalado(true);
+        comida.setEmail_usuario("jon@gmail.com");
+        comida.setRaciones(4);
+        comida.setLatitud(43.540915);
+        comida.setLongitud(-5.922073);
+        insertComida(comida);
     }
 
     /**
@@ -233,7 +257,7 @@ public class DdbbDataSource {
                 comida.setDulce(cursor.getInt(cursor.getColumnIndex("DULCE"))>0);
                 comida.setVegetariano(cursor.getInt(cursor.getColumnIndex("VEGETARIANO"))>0);
                 comida.setCeliaco(cursor.getInt(cursor.getColumnIndex("CELIACO"))>0);
-                comida.setCategoria(cursor.getString(cursor.getColumnIndex("CATEGORIA")));
+                comida.setCategoria(Categoria.valueOf(cursor.getString(cursor.getColumnIndex("CATEGORIA"))));
             }
             cursor.close();
             close();
@@ -247,17 +271,11 @@ public class DdbbDataSource {
     public boolean insertComida(Comida comida){
         try {
             open();
-            database.execSQL("INSERT INTO USUARIOS VALUES(" + comida.getId() + ",'"
-                    + comida.getEmail_usuario() + "','"
-                    + comida.getNombre() + "'',"
-                    + comida.getRaciones() + ","
-                    + comida.getPrecio() + ",'"
-                    + comida.getDescripcion() + "', "
-                    + comida.isSalado()+","
-                    + comida.isDulce()+ ","
-                    + comida.isVegetariano()+","
-                    + comida.isCeliaco()+",'"
-                    + comida.getCategoria()+"')");
+            database.insert(
+                    Esquemas.TABLA_COMIDA,
+                    null,
+                    comida.toContentValues()
+            );
         }catch (Exception e) {
             return false;
         }
@@ -273,12 +291,20 @@ public class DdbbDataSource {
     public List<Comida> getComidasUsuario(String email){
         try {
             open();
-            String selectQuery = "SELECT * FROM COMIDAS WHERE EMAIL_USUARIO = '"+email+"'";
-            Cursor cursor = database.rawQuery(selectQuery, null);
+            Cursor cursor = database.query(
+                    Esquemas.TABLA_COMIDA,
+                    new String []{
+                            "ID", "DESCRIPCION", "LATITUD", "LONGITUD"
+                    },
+                    "EMAIL_USUARIO = ?",
+                    new String [] {
+                            email
+                    }, null, null, null);
             // looping through all rows and adding to list
             List<Comida> miscomidas = new ArrayList<Comida>();
             if (cursor.moveToFirst()) {//forma de recorrer la tabla, equivalente a resultset
                 do {
+                    /*
                     Comida comida = new Comida();
                     comida.setId(cursor.getLong(cursor.getColumnIndex("ID")));
                     comida.setEmail_usuario(cursor.getString(cursor.getColumnIndex("EMAIL_USUARIO")));
@@ -290,14 +316,22 @@ public class DdbbDataSource {
                     comida.setDulce(cursor.getInt(cursor.getColumnIndex("DULCE"))>0);
                     comida.setVegetariano(cursor.getInt(cursor.getColumnIndex("VEGETARIANO"))>0);
                     comida.setCeliaco(cursor.getInt(cursor.getColumnIndex("CELIACO"))>0);
-                    comida.setCategoria(cursor.getString(cursor.getColumnIndex("CATEGORIA")));
+                    comida.setCategoria(Categoria.valueOf(cursor.getString(cursor.getColumnIndex("CATEGORIA"))));
+                    */
+                    Comida comida = new Comida();
+                    comida.setId(cursor.getLong(cursor.getColumnIndex("ID")));
+                    comida.setDescripcion(cursor.getString(cursor.getColumnIndex("DESCRIPCION")));
+                    comida.setLatitud(cursor.getDouble(cursor.getColumnIndex("LATITUD")));
+                    comida.setLongitud(cursor.getDouble(cursor.getColumnIndex("LONGITUD")));
+
+                    miscomidas.add(comida);
                 } while (cursor.moveToNext());
             }
             cursor.close();
             close();
             return miscomidas;
         }catch (Exception e) {
-            Log.e(null, "error en getComidasUsuario()");
+            Log.e(null, "error en getComidasUsuario()", e);
             return null;
         }
     }

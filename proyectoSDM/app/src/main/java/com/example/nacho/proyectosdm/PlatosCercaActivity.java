@@ -12,9 +12,23 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.nacho.proyectosdm.modelo.Comida;
+import com.example.nacho.proyectosdm.persistence.utils.DdbbDataSource;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.List;
+
 public class PlatosCercaActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener,
-        SeleccionExtrasDialog.OnSeleccionExtrasRealizada{
+        SeleccionExtrasDialog.OnSeleccionExtrasRealizada,
+        OnMapReadyCallback {
 
     private ActionBarDrawerToggle mDrawerToggle;
 
@@ -42,6 +56,10 @@ public class PlatosCercaActivity extends AppCompatActivity
         getSupportActionBar().setHomeButtonEnabled(true);
 
         navigationView.setNavigationItemSelectedListener(this);
+
+        SupportMapFragment mapFragment = (SupportMapFragment)getSupportFragmentManager()
+                .findFragmentById(R.id.mapa);
+        mapFragment.getMapAsync(this);
     }
 
     @Override
@@ -117,5 +135,25 @@ public class PlatosCercaActivity extends AppCompatActivity
     @Override
     public void onSeleccionExtraRealizada(boolean[] seleccion) {
         this.extraSeleccionados = seleccion;
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+        DdbbDataSource bd = new DdbbDataSource(this);
+
+        List<Comida> comidas = bd.getComidasUsuario("jon@gmail.com");
+
+        LatLngBounds.Builder creadorRango = LatLngBounds.builder();
+        for (Comida comida: comidas) {
+            LatLng posicion = comida.crearPosicion();
+            googleMap.addMarker(new MarkerOptions()
+                    .position(posicion)
+                    .title(comida.getDescripcion()));
+            creadorRango.include(posicion);
+        }
+
+        googleMap.moveCamera(CameraUpdateFactory
+            .newLatLngBounds(creadorRango.build(), 100));
     }
 }
