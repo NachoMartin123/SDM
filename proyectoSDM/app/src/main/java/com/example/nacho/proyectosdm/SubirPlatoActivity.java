@@ -209,9 +209,7 @@ public class SubirPlatoActivity extends AppCompatActivity {
     }
 
 
-    public void escribirMyDB() {
-
-
+    public void  escribirMyDB() {
         if (mtitulo.getText().toString().length() == 0) {
             Toast.makeText(getApplicationContext(), "Inserte un titulo", Toast.LENGTH_SHORT).show();
         }

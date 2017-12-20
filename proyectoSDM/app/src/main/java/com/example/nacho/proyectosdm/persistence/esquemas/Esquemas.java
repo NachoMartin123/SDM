@@ -23,23 +23,7 @@ public class Esquemas {
     public static final String TABLA_VENDIDOS = "VENDIDOS";
     public static final String TABLA_CHATS = "CHATS";
 
-    //Scrip para crear la base datos
 
-  //  public static final String CREAR_TABLA_USUARIO = "CREATE TABLE" + TABLA_USUARIO + " ( " + ID + " INTEGER, " + NOMBRE + " TEXT," + NOMBRE + " TEXT," + CONTRASEÑA + " TEXT )";
-
-    //## POR EL MOMENTO VAMOS A USAR ESTA HASTA QUE HAYA MAS PARAMETROS.
-
-    /*public static final String CREAR_TABLA_USUARIO =
-            "CREATE TABLE " + TABLA_USUARIO + " ( " +
-                    ID + " TEXT NOT NULL, " +
-                    NOMBRE + " TEXT NOT NULL, " +
-                    CONTRASEÑA + " TEXT  NOT NULL, " +
-                    "CONSTRAINT nombre_unique UNIQUE (" + NOMBRE + ")," +
-                    "CHECK ( length(" + NOMBRE + ") > 0), " +
-                    "CHECK ( length(" + CONTRASEÑA + ") > 0)"+
-                    ");";*/
-
-    //ESTA ES LA DEFINITIVA
     public static final String CREAR_TABLA_USUARIO ="CREATE TABLE " + TABLA_USUARIO + " ( " +
             "EMAIL TEXT NOT NULL UNIQUE PRIMARY KEY, " +
             "NOMBRE TEXT, " +
@@ -48,7 +32,9 @@ public class Esquemas {
             "PASSWORD TEXT, " +
             "ACTIVO BOOLEAN, "+
             "TELEFONO TEXT, "+
+            "IMAGEN BLOB," +
             "UNIQUE(EMAIL) , " +
+            "IMAGEN BLOB," +
             "CHECK ( length(" + NOMBRE + ") > 0), " +
             "CHECK ( length("+CONTRASEÑA+") > 0)"+
             ");";
@@ -56,7 +42,6 @@ public class Esquemas {
 
      public static final String CREAR_TABLA_COMIDA = "CREATE TABLE "+TABLA_COMIDA+" (" +
             "ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
-            "IMAGEN BLOB," +
             "EMAIL_USUARIO TEXT," +
             "TITULO TEXT NOT NULL," +
             "RACIONES INT," +
@@ -65,6 +50,7 @@ public class Esquemas {
             "LUGAR TEXT," +
             "SALADO BOOLEAN," +
             "DULCE BOOLEAN," +
+             "IMAGEN BLOB," +
             "VEGETARIANO BOOLEAN," +
             "CELIACO BOOLEAN," +
             "CATEGORIA TEXT )";

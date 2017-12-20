@@ -1,5 +1,11 @@
 package com.example.nacho.proyectosdm.modelo;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.widget.ImageView;
+
+import java.sql.Blob;
+
 /**
  * Created by Nacho on 15/11/2017.
  */
@@ -17,8 +23,9 @@ public class Comida {
     private boolean vegetariano;
     private boolean celiaco;
     private Categoria categoria;
+    private ImageView imagen;
 
-    public Comida(Long id, String email_usuario, String nombre, int raciones, double precio, String descripcion, boolean salado, boolean dulce, boolean vegetariano, boolean celiaco, String categoria) {
+    public Comida(Long id, String email_usuario, String nombre, int raciones, double precio, String descripcion, boolean salado, boolean dulce, boolean vegetariano, boolean celiaco, String categoria, ImageView imagen) {
         this.id = id;
         this.email_usuario = email_usuario;
         this.nombre = nombre;
@@ -30,6 +37,7 @@ public class Comida {
         this.vegetariano = vegetariano;
         this.celiaco = celiaco;
         setCategoria(categoria);
+        this.imagen=imagen;
     }
 
     public Comida(){}
@@ -120,5 +128,14 @@ public class Comida {
 
     public void setCategoria(String categoria) {
         this.categoria = Categoria.valueOf(categoria);
+    }
+
+    public ImageView getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(byte[] imagen) {
+        Bitmap bm = BitmapFactory.decodeByteArray(imagen, 0 ,imagen.length);
+        this.imagen.setImageBitmap(bm);
     }
 }

@@ -11,6 +11,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.example.nacho.proyectosdm.modelo.Comida;
+import com.example.nacho.proyectosdm.modelo.Usuario;
+import com.example.nacho.proyectosdm.persistence.utils.DdbbDataSource;
+
+import java.util.List;
 
 public class PlatosCercaActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener,
@@ -19,6 +28,10 @@ public class PlatosCercaActivity extends AppCompatActivity
     private ActionBarDrawerToggle mDrawerToggle;
 
     private boolean[] extraSeleccionados = {true, true, true, true};
+
+    DdbbDataSource datos;//acceso a datos bbdd
+    private Usuario usuarioActual=null;
+    private List<Comida> comidasUsuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +55,25 @@ public class PlatosCercaActivity extends AppCompatActivity
         getSupportActionBar().setHomeButtonEnabled(true);
 
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        datos = new DdbbDataSource(getApplicationContext());
+
+        String emailUsuarioActual = getIntent().getExtras().getString("emailUsuario");
+        usuarioActual = datos.getUserByEmail(emailUsuarioActual);
+        comidasUsuario = datos.getComidasUsuario(usuarioActual.getEmail());
+
+        actualizarCampos();
+    }
+
+    private void actualizarCampos(){
+        //actualizar campos nav
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View hView =  navigationView.getHeaderView(0);
+        TextView nombreHeader = (TextView)hView.findViewById(R.id.nomUserHeader);
+        ImageView imgHeader = (ImageView)hView.findViewById(R.id.imgUserHeader);
+        nombreHeader.setText(usuarioActual.getNombre());
+        imgHeader = (ImageView)hView.findViewById(R.id.imgUserHeader);
     }
 
     @Override

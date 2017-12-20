@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">proyectoSDM</string>
+    <string name="app_name">Chef Ya!</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_principal">PrincipalActivity</string>
 

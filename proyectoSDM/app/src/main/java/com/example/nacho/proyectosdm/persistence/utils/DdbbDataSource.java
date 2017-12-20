@@ -5,7 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.example.nacho.proyectosdm.modelo.Chat;
 import com.example.nacho.proyectosdm.modelo.Comida;
@@ -13,6 +16,7 @@ import com.example.nacho.proyectosdm.modelo.Mensaje;
 import com.example.nacho.proyectosdm.modelo.Usuario;
 import com.example.nacho.proyectosdm.persistence.esquemas.Esquemas;
 
+import java.io.ByteArrayOutputStream;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,19 +50,20 @@ public class DdbbDataSource {
     public DdbbDataSource(Context context) {
         //PRUEBAS DE FUNCINAMIENTO DE METODOS
         dbHelper = new MyDBHelper(context, null, null, 1);
-        int tam1 = sizeTable(Esquemas.TABLA_USUARIO);
+        //int tam1 = sizeTable(Esquemas.TABLA_USUARIO);
         deleteAllUsuarios();
-        int tam2 = sizeTable(Esquemas.TABLA_USUARIO);
-        List<Usuario> users = getAllUsuarios();
-        insertUsuario(Esquemas.TABLA_USUARIO, "jon@gmail.com","Jon","Gijon","2017-10-16 14:00:00.000", "password", true, "638111111");
-        insertUsuario(Esquemas.TABLA_USUARIO,"sansa@gmail.com","Sansa","Oviedo","2017-10-16 14:00:00.000", "password", true, "638222222");
-        insertUsuario(Esquemas.TABLA_USUARIO,"niguateresa@gmail.com","nigua","Oviedo","2017-10-16 14:00:00.000", "1234", true, "638222222");
-        List<Usuario> users2  = getAllUsuarios();
-        int tam3 = sizeTable(Esquemas.TABLA_USUARIO);
-        deleteUsuario(Esquemas.TABLA_USUARIO, "sansa@gmail.com");
-        int tam4 = sizeTable(Esquemas.TABLA_USUARIO);
-        Usuario user1 = getUserByEmail("jon@gmail.com");
-        insertUsuario(Esquemas.TABLA_USUARIO,"sansa@gmail.com","Sansa","Oviedo","2017-10-16 14:00:00.000", "password", true, "638222222");
+        //int tam2 = sizeTable(Esquemas.TABLA_USUARIO);
+        //List<Usuario> users = getAllUsuarios();
+        //insertUsuario(Esquemas.TABLA_USUARIO, "jon@gmail.com","Jon","Gijon","2017-10-16 14:00:00.000", "password", true, "638111111");
+        insertUsuario(Esquemas.TABLA_USUARIO, "jon@gmail.com","Jon","Gijon","2017-10-16 14:00:00.000", "password", true, "638111111", null);
+        insertUsuario(Esquemas.TABLA_USUARIO,"sansa@gmail.com","Sansa","Oviedo","2017-10-16 14:00:00.000", "password", true, "638222222", null);
+        insertUsuario(Esquemas.TABLA_USUARIO,"niguateresa@gmail.com","nigua","Oviedo","2017-10-16 14:00:00.000", "1234", true, "638222222", null);
+        //List<Usuario> users2  = getAllUsuarios();
+        //int tam3 = sizeTable(Esquemas.TABLA_USUARIO);
+        //deleteUsuario(Esquemas.TABLA_USUARIO, "sansa@gmail.com");
+        //int tam4 = sizeTable(Esquemas.TABLA_USUARIO);
+        //Usuario user1 = getUserByEmail("jon@gmail.com");
+        //insertUsuario(Esquemas.TABLA_USUARIO,"sansa@gmail.com","Sansa","Oviedo","2017-10-16 14:00:00.000", "password", true, "638222222");
 
     }
 
@@ -93,7 +98,7 @@ public class DdbbDataSource {
      * @param telefono
      * @return numero de elementos insertados
      */
-    public long insertUsuario(String nombreTabla, String email, String nombre, String ciudad, String fecha_alta, String password, boolean activo, String telefono){
+    public long insertUsuario(String nombreTabla, String email, String nombre, String ciudad, String fecha_alta, String password, boolean activo, String telefono, ImageView imagen){
         open();
         ContentValues values = new ContentValues();
         values.put("EMAIL", email);
@@ -103,6 +108,9 @@ public class DdbbDataSource {
         values.put("PASSWORD", password);
         values.put("ACTIVO", activo);
         values.put("TELEFONO", telefono);
+        Bitmap bitmap = imagen.getDrawingCache();
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        values.put("IMAGEN", bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos));
         // Insertamos la valoracion
         long insertId = database.insert(nombreTabla, null, values);
         close();
@@ -123,7 +131,7 @@ public class DdbbDataSource {
         List<Usuario> usuarios = new ArrayList<Usuario>();
          open();
         //hacemos una query porque queremos devolver un cursor
-         String[] allColumns = {   "EMAIL","NOMBRE".toUpperCase(), "CIUDAD", "FECHA_ALTA","PASSWORD","ACTIVO","TELEFONO" };
+         String[] allColumns = {   "EMAIL","NOMBRE".toUpperCase(), "CIUDAD", "FECHA_ALTA","PASSWORD","ACTIVO","TELEFONO", "IMAGEN" };
 
          Cursor cursor = database.query(Esquemas.TABLA_USUARIO, allColumns,
                 null, null, null, null, null);
@@ -141,6 +149,7 @@ public class DdbbDataSource {
                  user.setFecha_alta(Timestamp.valueOf(cursor.getString(cursor.getColumnIndex("FECHA_ALTA"))));
                  user.setActivo(cursor.getInt(cursor.getColumnIndex("ACTIVO")) > 0);
                  user.setTelefono(cursor.getInt(cursor.getColumnIndex("TELEFONO")));
+                 user.setImagen(cursor.getBlob(cursor.getColumnIndex("IMAGEN")));
                  usuarios.add(user);
                  cursor.moveToNext();
              }
@@ -155,7 +164,7 @@ public class DdbbDataSource {
 
     public int sizeTable(String nombreTabla) {
         open();
-        String[] allColumns = {   "EMAIL","NOMBRE".toUpperCase(), "CIUDAD", "FECHA_ALTA","PASSWORD","ACTIVO","TELEFONO" };
+        String[] allColumns = {   "EMAIL","NOMBRE".toUpperCase(), "CIUDAD", "FECHA_ALTA","PASSWORD","ACTIVO","TELEFONO","IMAGEN" };
 
         Cursor cursor = database.query(Esquemas.TABLA_USUARIO, allColumns,
                 null, null, null, null, null);
@@ -195,6 +204,7 @@ public class DdbbDataSource {
                 user.setFecha_alta(Timestamp.valueOf(cursor.getString(cursor.getColumnIndex("FECHA_ALTA"))));
                 user.setActivo(cursor.getInt(cursor.getColumnIndex("ACTIVO"))>0);
                 user.setTelefono(cursor.getInt(cursor.getColumnIndex("TELEFONO")));
+                user.setImagen(cursor.getBlob(cursor.getColumnIndex("IMAGEN")));
             }
             cursor.close();
             close();
@@ -234,6 +244,7 @@ public class DdbbDataSource {
                 comida.setVegetariano(cursor.getInt(cursor.getColumnIndex("VEGETARIANO"))>0);
                 comida.setCeliaco(cursor.getInt(cursor.getColumnIndex("CELIACO"))>0);
                 comida.setCategoria(cursor.getString(cursor.getColumnIndex("CATEGORIA")));
+                comida.setImagen(cursor.getBlob(cursor.getColumnIndex("IMAGEN")));
             }
             cursor.close();
             close();
@@ -291,6 +302,7 @@ public class DdbbDataSource {
                     comida.setVegetariano(cursor.getInt(cursor.getColumnIndex("VEGETARIANO"))>0);
                     comida.setCeliaco(cursor.getInt(cursor.getColumnIndex("CELIACO"))>0);
                     comida.setCategoria(cursor.getString(cursor.getColumnIndex("CATEGORIA")));
+                    comida.setImagen(cursor.getBlob(cursor.getColumnIndex("IMAGEN")));
                 } while (cursor.moveToNext());
             }
             cursor.close();

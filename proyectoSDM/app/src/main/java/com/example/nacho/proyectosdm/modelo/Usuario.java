@@ -1,5 +1,11 @@
 package com.example.nacho.proyectosdm.modelo;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.widget.ImageView;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -8,8 +14,7 @@ import java.sql.Timestamp;
  */
 
 // Objeto abogado == Usuario
-public class Usuario implements Serializable {
-
+public class Usuario implements Serializable{
     private String email;
     private String nombre;
     private String password;
@@ -17,6 +22,7 @@ public class Usuario implements Serializable {
     private Timestamp fecha_alta;
     private boolean activo;
     private int telefono;
+    private ImageView imagen;
 
 
     public Usuario(String nombre, String password, String email){
@@ -104,19 +110,17 @@ public class Usuario implements Serializable {
     }
 
     public void setTelefono(int telefono) {
-        if(telefono < 100000000 || telefono > 999999999)
+        if (telefono < 100000000 || telefono > 999999999)
             throw new IllegalArgumentException("el numero de telefono debe tener 9 digitos");
         this.telefono = telefono;
     }
 
-    // empaquetar objetos
+    public ImageView getImagen() {
+        return imagen;
+    }
 
- //   public ContentValues toContentValues(){
-
-   //     ContentValues values = new ContentValues();
-     //   values.put(Esquemas.LawyerEntry.NOMBRE, nombre);
-       // values.put(Esquemas.LawyerEntry.TELEFONO, contraseña);
-
-        //return  values;
-    //}
+    public void setImagen(byte[] imagen) {
+        Bitmap bm = BitmapFactory.decodeByteArray(imagen, 0 ,imagen.length);
+        this.imagen.setImageBitmap(bm);
+    }
 }
