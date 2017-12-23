@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    <TableRow>
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="162dp"
+            android:layout_height="107dp" />
+
+        <LinearLayout
+            android:layout_width="221dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/titulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="titulo" />
+
+            <TextView
+                android:id="@+id/raciones"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="raciones" />
+
+            <TextView
+                android:id="@+id/precio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="precio" />
+
+            <TextView
+                android:id="@+id/sabores"
+                android:layout_width="match_parent"
+                android:layout_height="43dp"
+                android:scrollbars="none"
+                android:inputType="textMultiLine|textCapSentences"
+                android:lines="2"
+                android:singleLine="false"
+                android:scrollHorizontally="false"
+                android:minLines="1"
+                android:gravity="top|left"
+                android:text="sabores" />
+
+        </LinearLayout>
+
+    </TableRow>
+</TableLayout>

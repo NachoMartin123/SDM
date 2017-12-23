@@ -53,11 +53,17 @@ public class DdbbDataSource {
         dbHelper = new MyDBHelper(context, null, null, 1);
         //int tam1 = sizeTable(Esquemas.TABLA_USUARIO);
         deleteAllUsuarios();
+        int tam1 = sizeTable(Esquemas.TABLA_COMIDA);
+        deleteAllComidas();
+        int tam2 = sizeTable(Esquemas.TABLA_COMIDA);
         List<Usuario> usuariosIniciales = Esquemas.listaInicialUsuarios();
         List<Comida> comidasIniciales = Esquemas.listaInicialComidas();
         for (Usuario user: usuariosIniciales ) {
             insertUsuario(user);
         }
+        int tam1a = sizeTable(Esquemas.TABLA_USUARIO);
+        int tam3 = sizeTable(Esquemas.TABLA_COMIDA);
+
         for (Comida comida: comidasIniciales ) {
             insertComida(comida);
         }
@@ -82,6 +88,19 @@ public class DdbbDataSource {
         dbHelper.close();
     }
 
+    /**
+     * metodo para guardar imageViews
+     * @param miImagen, byte[] para poder guardar
+     * @return
+     */
+    private static byte[] getImageViewAsByteArray(ImageView miImagen) {
+        if(miImagen==null)
+            return null;
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        miImagen.getDrawingCache().compress(Bitmap.CompressFormat.PNG, 0, outputStream);
+        return outputStream.toByteArray();
+    }
+
 
     /**
      *
@@ -98,9 +117,8 @@ public class DdbbDataSource {
         values.put("PASSWORD", u.getPassword());
         values.put("ACTIVO", u.isActivo());
         values.put("TELEFONO", u.getTelefono());
-        Bitmap bitmap = u.getImagen().getDrawingCache();
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        values.put("IMAGEN", bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos));
+        byte[] data = getImageViewAsByteArray(u.getImagen());
+        values.put("IMAGEN", data);
         // Insertamos la valoracion
         long insertId = database.insert(Esquemas.TABLA_USUARIO, null, values);
         close();
@@ -118,7 +136,7 @@ public class DdbbDataSource {
 
      public List<Usuario> getAllUsuarios() {
         // Lista que almacenara el resultado
-        List<Usuario> usuarios = new ArrayList<Usuario>();
+        List<Usuario> usuarios = new ArrayList<>();
          open();
         //hacemos una query porque queremos devolver un cursor
          String[] allColumns = {   "EMAIL","NOMBRE".toUpperCase(), "CIUDAD", "FECHA_ALTA","PASSWORD","ACTIVO","TELEFONO", "IMAGEN" };
@@ -139,7 +157,9 @@ public class DdbbDataSource {
                  user.setFecha_alta(Timestamp.valueOf(cursor.getString(cursor.getColumnIndex("FECHA_ALTA"))));
                  user.setActivo(cursor.getInt(cursor.getColumnIndex("ACTIVO")) > 0);
                  user.setTelefono(cursor.getInt(cursor.getColumnIndex("TELEFONO")));
-                 user.setImagen(cursor.getBlob(cursor.getColumnIndex("IMAGEN")));
+                 byte[] imgByte = cursor.getBlob(cursor.getColumnIndex("IMAGEN"));
+                 if(imgByte!=null)
+                     user.setImagen(BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length));
                  usuarios.add(user);
                  cursor.moveToNext();
              }
@@ -152,11 +172,9 @@ public class DdbbDataSource {
 
 
 
-    public int sizeTable(String nombreTabla) {
+    private int sizeTable(String nombreTabla) {
         open();
-        String[] allColumns = {   "EMAIL","NOMBRE".toUpperCase(), "CIUDAD", "FECHA_ALTA","PASSWORD","ACTIVO","TELEFONO","IMAGEN" };
-
-        Cursor cursor = database.query(Esquemas.TABLA_USUARIO, allColumns,
+        Cursor cursor = database.query(nombreTabla, null,
                 null, null, null, null, null);
         if (cursor != null) {
             return cursor.getCount();
@@ -194,7 +212,7 @@ public class DdbbDataSource {
                 user.setFecha_alta(Timestamp.valueOf(cursor.getString(cursor.getColumnIndex("FECHA_ALTA"))));
                 user.setActivo(cursor.getInt(cursor.getColumnIndex("ACTIVO"))>0);
                 user.setTelefono(cursor.getInt(cursor.getColumnIndex("TELEFONO")));
-                user.setImagen(cursor.getBlob(cursor.getColumnIndex("IMAGEN")));
+                //user.setImagen(cursor.getBlob(cursor.getColumnIndex("IMAGEN")));
             }
             cursor.close();
             close();
@@ -208,6 +226,13 @@ public class DdbbDataSource {
 
     //metodos comida
     //---------------------------------------------------------------------------------------------------------------
+
+    private void deleteAllComidas(){
+        open();
+        String selectQuery =  "DELETE FROM COMIDAS";
+        database.execSQL(selectQuery);
+        close();
+    }
 
     /**
      * @param id
@@ -223,9 +248,9 @@ public class DdbbDataSource {
             Comida comida=null;
             if (cursor.moveToFirst()) {//forma de recorrer la tabla, equivalente a resultset
                 comida = new Comida();
-                comida.setId(cursor.getLong(cursor.getColumnIndex("ID")));
+                comida.setId(cursor.getInt(cursor.getColumnIndex("ID")));
                 comida.setEmail_usuario(cursor.getString(cursor.getColumnIndex("EMAIL_USUARIO")));
-                comida.setNombre(cursor.getString(cursor.getColumnIndex("NOMBRE")));
+                comida.setTitulo(cursor.getString(cursor.getColumnIndex("TITULO")));
                 comida.setRaciones(cursor.getInt(cursor.getColumnIndex("RACIONES")));
                 comida.setPrecio(cursor.getDouble(cursor.getColumnIndex("PRECIO")));
                 comida.setDescripcion(cursor.getString(cursor.getColumnIndex("DESCRIPCION")));
@@ -233,9 +258,10 @@ public class DdbbDataSource {
                 comida.setDulce(cursor.getInt(cursor.getColumnIndex("DULCE"))>0);
                 comida.setVegetariano(cursor.getInt(cursor.getColumnIndex("VEGETARIANO"))>0);
                 comida.setCeliaco(cursor.getInt(cursor.getColumnIndex("CELIACO"))>0);
-                comida.setCategoria(cursor.getString(cursor.getColumnIndex("CATEGORIA")));
-                comida.setImagen(cursor.getBlob(cursor.getColumnIndex("IMAGEN")));
                 comida.setCategoria(Categoria.valueOf(cursor.getString(cursor.getColumnIndex("CATEGORIA"))));
+                byte[] imgByte = cursor.getBlob(cursor.getColumnIndex("IMAGEN"));
+                if(imgByte!=null)
+                    comida.setImagen(BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length));
             }
             cursor.close();
             close();
@@ -246,11 +272,28 @@ public class DdbbDataSource {
         }
     }
 
-    public boolean insertComida(Comida comida){
+    public boolean  insertComida(Comida comida){
         try {
             open();
-            database.insert(Esquemas.TABLA_COMIDA, null, comida.toContentValues()
-            );
+            ContentValues cv = new ContentValues();
+            cv.put("EMAIL_USUARIO", comida.getEmail_usuario());
+            cv.put("TITULO", comida.getTitulo());
+            cv.put("RACIONES", comida.getRaciones());
+            cv.put("PRECIO", comida.getPrecio());
+            cv.put("DESCRIPCION", comida.getDescripcion());
+            cv.put("LUGAR", "lugar");
+            cv.put("SALADO", comida.isSalado());
+            cv.put("DULCE", comida.isDulce());
+            cv.put("VEGETARIANO", comida.isVegetariano());
+            cv.put("CELIACO", comida.isCeliaco());
+            cv.put("CATEGORIA", comida.getCategoria().toString());
+            cv.putNull("IMAGEN");
+            cv.put("LATITUD", comida.getLatitud());
+            cv.put("LONGITUD", comida.getLongitud());
+
+            database.insert(Esquemas.TABLA_COMIDA, null, cv);
+            //database.insert(Esquemas.TABLA_COMIDA, null, comida.toContentValues()
+
         }catch (Exception e) {
             return false;
         }
@@ -269,7 +312,7 @@ public class DdbbDataSource {
             Cursor cursor = database.query(
                     Esquemas.TABLA_COMIDA,
                     new String []{
-                            "ID", "DESCRIPCION", "LATITUD", "LONGITUD"
+                            "ID", "EMAIL_USUARIO", "TITULO","RACIONES","PRECIO","DESCRIPCION","SALADO","DULCE","VEGETARIANO","CELIACO","CATEGORIA","IMAGEN", "LATITUD", "LONGITUD"
                     },
                     "EMAIL_USUARIO = ?",
                     new String [] {
@@ -279,11 +322,10 @@ public class DdbbDataSource {
             List<Comida> miscomidas = new ArrayList<Comida>();
             if (cursor.moveToFirst()) {//forma de recorrer la tabla, equivalente a resultset
                 do {
-                    /*
                     Comida comida = new Comida();
-                    comida.setId(cursor.getLong(cursor.getColumnIndex("ID")));
+                    comida.setId(cursor.getInt(cursor.getColumnIndex("ID")));
                     comida.setEmail_usuario(cursor.getString(cursor.getColumnIndex("EMAIL_USUARIO")));
-                    comida.setNombre(cursor.getString(cursor.getColumnIndex("NOMBRE")));
+                    comida.setTitulo(cursor.getString(cursor.getColumnIndex("TITULO")));
                     comida.setRaciones(cursor.getInt(cursor.getColumnIndex("RACIONES")));
                     comida.setPrecio(cursor.getDouble(cursor.getColumnIndex("PRECIO")));
                     comida.setDescripcion(cursor.getString(cursor.getColumnIndex("DESCRIPCION")));
@@ -291,13 +333,7 @@ public class DdbbDataSource {
                     comida.setDulce(cursor.getInt(cursor.getColumnIndex("DULCE"))>0);
                     comida.setVegetariano(cursor.getInt(cursor.getColumnIndex("VEGETARIANO"))>0);
                     comida.setCeliaco(cursor.getInt(cursor.getColumnIndex("CELIACO"))>0);
-                    comida.setCategoria(cursor.getString(cursor.getColumnIndex("CATEGORIA")));
-                    comida.setImagen(cursor.getBlob(cursor.getColumnIndex("IMAGEN")));
-
-                    */
-                    Comida comida = new Comida();
-                    comida.setId(cursor.getLong(cursor.getColumnIndex("ID")));
-                    comida.setDescripcion(cursor.getString(cursor.getColumnIndex("DESCRIPCION")));
+                    comida.setCategoria(Categoria.valueOf(cursor.getString(cursor.getColumnIndex("CATEGORIA"))));
                     comida.setLatitud(cursor.getDouble(cursor.getColumnIndex("LATITUD")));
                     comida.setLongitud(cursor.getDouble(cursor.getColumnIndex("LONGITUD")));
 
@@ -313,6 +349,100 @@ public class DdbbDataSource {
         }
     }
 
+    public List<Comida> getComidasNoUsuario(String email){
+        try {
+            open();
+            Cursor cursor = database.query(
+                    Esquemas.TABLA_COMIDA,
+                    new String []{
+                            "ID", "EMAIL_USUARIO", "TITULO","RACIONES","PRECIO","DESCRIPCION","SALADO","DULCE","VEGETARIANO","CELIACO","CATEGORIA","IMAGEN", "LATITUD", "LONGITUD"
+                    },
+                    "EMAIL_USUARIO != ?",
+                    new String [] {
+                            email
+                    }, null, null, null);
+            // looping through all rows and adding to list
+            List<Comida> miscomidas = new ArrayList<Comida>();
+            if (cursor.moveToFirst()) {//forma de recorrer la tabla, equivalente a resultset
+                do {
+                    Comida comida = new Comida();
+                    comida.setId(cursor.getInt(cursor.getColumnIndex("ID")));
+                    comida.setEmail_usuario(cursor.getString(cursor.getColumnIndex("EMAIL_USUARIO")));
+                    comida.setTitulo(cursor.getString(cursor.getColumnIndex("TITULO")));
+                    comida.setRaciones(cursor.getInt(cursor.getColumnIndex("RACIONES")));
+                    comida.setPrecio(cursor.getDouble(cursor.getColumnIndex("PRECIO")));
+                    comida.setDescripcion(cursor.getString(cursor.getColumnIndex("DESCRIPCION")));
+                    comida.setSalado(cursor.getInt(cursor.getColumnIndex("SALADO"))>0);
+                    comida.setDulce(cursor.getInt(cursor.getColumnIndex("DULCE"))>0);
+                    comida.setVegetariano(cursor.getInt(cursor.getColumnIndex("VEGETARIANO"))>0);
+                    comida.setCeliaco(cursor.getInt(cursor.getColumnIndex("CELIACO"))>0);
+                    comida.setCategoria(Categoria.valueOf(cursor.getString(cursor.getColumnIndex("CATEGORIA"))));
+                    comida.setLatitud(cursor.getDouble(cursor.getColumnIndex("LATITUD")));
+                    comida.setLongitud(cursor.getDouble(cursor.getColumnIndex("LONGITUD")));
+                    byte[] imgByte = cursor.getBlob(cursor.getColumnIndex("IMAGEN"));
+                    if(imgByte!=null)
+                        comida.setImagen(BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length));
+                    miscomidas.add(comida);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            close();
+            return miscomidas;
+        }catch (Exception e) {
+            Log.e(null, "error en getComidasUsuario()", e);
+            return null;
+        }
+    }
+
+
+    public List<Comida> getAllComidas(){
+
+        try {
+            open();
+            String selectQuery = "SELECT * FROM COMIDAS";
+            Cursor cursor = database.rawQuery(selectQuery, null);
+            // looping through all rows and adding to list
+            List<Comida> comidas = new ArrayList<Comida>();
+            if (cursor.moveToFirst()) {//forma de recorrer la tabla, equivalente a resultset
+                Comida comida = new Comida();
+                comida.setId(cursor.getInt(cursor.getColumnIndex("ID")));
+                comida.setEmail_usuario(cursor.getString(cursor.getColumnIndex("EMAIL_USUARIO")));
+                comida.setTitulo(cursor.getString(cursor.getColumnIndex("TITULO")));
+                comida.setRaciones(cursor.getInt(cursor.getColumnIndex("RACIONES")));
+                comida.setPrecio(cursor.getDouble(cursor.getColumnIndex("PRECIO")));
+                comida.setDescripcion(cursor.getString(cursor.getColumnIndex("DESCRIPCION")));
+                comida.setSalado(cursor.getInt(cursor.getColumnIndex("SALADO"))>0);
+                comida.setDulce(cursor.getInt(cursor.getColumnIndex("DULCE"))>0);
+                comida.setVegetariano(cursor.getInt(cursor.getColumnIndex("VEGETARIANO"))>0);
+                comida.setCeliaco(cursor.getInt(cursor.getColumnIndex("CELIACO"))>0);
+                comida.setCategoria(Categoria.valueOf(cursor.getString(cursor.getColumnIndex("CATEGORIA"))));
+                comida.setLatitud(cursor.getDouble(cursor.getColumnIndex("LATITUD")));
+                comida.setLongitud(cursor.getDouble(cursor.getColumnIndex("LONGITUD")));
+                byte[] imgByte = cursor.getBlob(cursor.getColumnIndex("IMAGEN"));
+                if(imgByte!=null)
+                    comida.setImagen(BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length));
+                comidas.add(comida);
+            }
+            cursor.close();
+            close();
+            return comidas;
+        }catch(Exception e){
+            Log.e(null, "error en getComidaById");
+            return null;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+    //-----------------metodos chat---------------------
 
     /**
      * Busca las converesaciones/chats en los que ha participado el usuario

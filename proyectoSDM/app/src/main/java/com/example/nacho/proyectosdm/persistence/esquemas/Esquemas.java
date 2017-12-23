@@ -33,7 +33,7 @@ public class Esquemas {
 
 
     public static final String CREAR_TABLA_USUARIO ="CREATE TABLE " + TABLA_USUARIO + " ( " +
-            "EMAIL TEXT NOT NULL UNIQUE PRIMARY KEY, " +
+            "EMAIL TEXT NOT NULL UNIQUE PRIMARY KEY , " +
             "NOMBRE TEXT, " +
             "CIUDAD TEXT, "+
             "FECHA_ALTA TEXT,"+
@@ -42,14 +42,13 @@ public class Esquemas {
             "TELEFONO TEXT, "+
             "IMAGEN BLOB," +
             "UNIQUE(EMAIL) , " +
-            "IMAGEN BLOB," +
             "CHECK ( length(" + NOMBRE + ") > 0), " +
             "CHECK ( length("+CONTRASEÑA+") > 0)"+
             ");";
 
 
      public static final String CREAR_TABLA_COMIDA = "CREATE TABLE "+TABLA_COMIDA+" (" +
-            "ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
+            "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
             "EMAIL_USUARIO TEXT," +
             "TITULO TEXT NOT NULL," +
             "RACIONES INT," +
@@ -66,7 +65,7 @@ public class Esquemas {
             "LONGITUD DOUBLE )";
 
     public static final String CREAR_TABLA_VENDIDOS = "CREATE TABLE "+TABLA_VENDIDOS+" (" +
-            "ID_COMIDA BIGINT NOT NULL PRIMARY KEY, " +
+            "ID_COMIDA INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
             "EMAIL_COMPRADOR TEXT, " +
             "FECHA_VENTA FECHA TIMESTAMP, " +
             "VALORACION INTEGER, " +
@@ -74,7 +73,7 @@ public class Esquemas {
             "FOREIGN KEY(EMAIL_COMPRADOR) REFERENCES USUARIOS(EMAIL))";
 
     public static final String CREAR_TABLA_MENSAJES = "CREATE TABLE "+TABLA_MENSAJES+" (" +
-            "ID_CHAT BIGINT NOT NULL PRIMARY KEY, " +
+            "ID_CHAT INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
             "EMAIL_EMISOR TEXT, " +
             "MENSAJE TEXT NOT NULL, " +
             "FECHA TIMESTAMP, " +
@@ -82,7 +81,7 @@ public class Esquemas {
             "FOREIGN KEY(EMAIL_EMISOR) REFERENCES USUARIOS(EMAIL))";
 
     public static final String CREAR_TABLA_CHATS = "CREATE TABLE "+TABLA_CHATS+" (" +
-            "ID BIGINT NOT NULL PRIMARY KEY, " +
+            "ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
             "EMAIL_USER_1 TEXT, " +
             "EMAIL_USER_2 TEXT, " +
             "FOREIGN KEY(EMAIL_USER_1) REFERENCES USUARIOS(EMAIL), " +
@@ -91,6 +90,7 @@ public class Esquemas {
 
     public static List<Usuario> listaInicialUsuarios(){
         List<Usuario> usuarios = new ArrayList<Usuario>();
+        usuarios.add(new Usuario("a","a","a","Gijon",new Timestamp(2017,10,16,14,00,00,000), true, 638111100, null));
         usuarios.add(new Usuario("jon@gmail.com","Jon","password","Gijon",new Timestamp(2017,10,16,14,00,00,000), true, 638111111, null));
         usuarios.add(new Usuario("sansa@gmail.com","Sansa", "password","Oviedo",new Timestamp(2017,10,16,14,00,00,000), true, 638222222, null));
         usuarios.add(new Usuario("niguateresa@gmail.com","nigua", "1234","Oviedo",new Timestamp(2017,10,16,14,00,00,000), true, 638222222, null));
@@ -100,25 +100,12 @@ public class Esquemas {
 
     public static List<Comida> listaInicialComidas(){
 
-       /* private Long id;
-        private String email_usuario;
-        private String nombre;
-        private int raciones;
-        private double precio;
-        private String descripcion;
-        private boolean salado;
-        private boolean dulce;
-        private boolean vegetariano;
-        private boolean celiaco;
-        private Categoria categoria;
-        private ImageView imagen;
-        private double latitud;
-        private double longitud;*/
+
         List<Comida> comidas = new ArrayList<Comida>();
         Comida comida = new Comida();
         comida.setCategoria(Categoria.DESAYUNO);
         comida.setCeliaco(true);
-        comida.setNombre("Bizcocho de chocolate");
+        comida.setTitulo("Bizcocho de chocolate");
         comida.setDescripcion("Bizcocho de chocolate");
         comida.setDulce(true);
         comida.setEmail_usuario("jon@gmail.com");
@@ -129,13 +116,24 @@ public class Esquemas {
         comida = new Comida();
         comida.setCategoria(Categoria.COMIDA);
         comida.setCeliaco(true);
-        comida.setNombre("Macarrones");
+        comida.setTitulo("Macarrones");
         comida.setDescripcion("Macarrones");
         comida.setSalado(true);
         comida.setEmail_usuario("jon@gmail.com");
         comida.setRaciones(4);
         comida.setLatitud(43.540915);
         comida.setLongitud(-5.922073);
+
+        //Long id, String email_usuario, String nombre, int raciones, double precio, String descripcion, boolean salado, boolean dulce, boolean vegetariano, boolean celiaco, Categoria categoria, ImageView imagen, double latitud, double longitud) {
+        comidas.add(new Comida("jon@gmail.com", "Pizza margarita", 4, 3.15, "pizza traicional con queso y tomate", true, false, true,false,Categoria.COMIDA,null, 0, 0));
+        comidas.add(new Comida("jon@gmail.com", "Paella", 4, 5.95, "arroz amarillo", true, false, false,false,Categoria.COMIDA,null, 0, 0));
+        comidas.add(new Comida("jon@gmail.com", "Pastel", 8, 1.95, "Pastel de chocolate rico rico", false, true, true,false,Categoria.MERIENDA,null, 0, 0));
+        comidas.add(new Comida("jon@gmail.com", "Macedonia", 3, 1.00, "Manzana, naranja, plátano y pera", false, true, true,true,Categoria.MERIENDA,null, 0, 0));
+        comidas.add(new Comida("sansa@gmail.com", "Lentejas", 8, 2.15, "comida de viejas", true, false, true,false,Categoria.COMIDA,null, 0, 0));
+        comidas.add(new Comida("sansa@gmail.com", "Rosquillas", 4, 0.9, "muy redondas", false, true, false,false,Categoria.DESAYUNO,null, 0, 0));
+        comidas.add(new Comida("sansa@gmail.com", "Tortilla de patata", 6, 2.0, "producto made in spain", true, false, false,false,Categoria.MERIENDA,null, 0, 0));
+        comidas.add(new Comida("a", "Roscón", 8, 2.0, "para el 6 de enero", false, true, false,true,Categoria.DESAYUNO,null, 0, 0));
+        comidas.add(new Comida("a", "Torrijas", 9, 1.2, "la gordura máxima", false, true, false,false,Categoria.MERIENDA,null, 0, 0));
         return comidas;
     }
 

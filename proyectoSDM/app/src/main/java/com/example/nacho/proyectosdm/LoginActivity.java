@@ -2,6 +2,7 @@ package com.example.nacho.proyectosdm;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.widget.Toast;
 
 import com.example.nacho.proyectosdm.modelo.Usuario;
 import com.example.nacho.proyectosdm.persistence.utils.DdbbDataSource;
+
+import java.io.ByteArrayOutputStream;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -23,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         datos = new DdbbDataSource(getApplicationContext());
+
     }
 
     public void registrarse(View view) {

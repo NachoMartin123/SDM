@@ -48,13 +48,13 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayoutEmail">
 
-                <EditText
+
+                <android.support.design.widget.TextInputEditText
                     android:id="@+id/usuario"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:hint="usuario"
-                    android:textColorLink="@android:color/holo_red_dark"/>
+                    android:layout_centerHorizontal="false"
+                    android:hint="@string/usuario" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -68,13 +68,15 @@
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayoutUsuario"
                 app:passwordToggleEnabled="false">
 
-                <EditText
+                <android.support.design.widget.TextInputEditText
                     android:id="@+id/contrasena"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:autoText="false"
-                    android:hint="contraseña"
+                    android:hint="@string/password"
                     android:inputType="textPassword" />
+
+
 
             </android.support.design.widget.TextInputLayout>
 

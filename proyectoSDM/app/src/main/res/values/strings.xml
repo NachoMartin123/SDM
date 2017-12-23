@@ -40,5 +40,7 @@
     <string name="todos">Todos</string>
     <string name="extras">Extras</string>
     <string name="title_activity_maps">Map</string>
+    <string name="password">contraseña</string>
+    <string name="usuario">usuario</string>
 
 </resources>

@@ -15,9 +15,9 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class Comida {
 
-    private Long id;
+    private int id;
     private String email_usuario;
-    private String nombre;
+    private String titulo;
     private int raciones;
     private double precio;
     private String descripcion;
@@ -30,13 +30,28 @@ public class Comida {
     private double latitud;
     private double longitud;
 
-    public Comida(){}
+    public Comida(){
+        this.email_usuario = "";
+        this.titulo = "";
+        this.raciones = 0;
+        this.precio = 0.0;
+        this.descripcion = "";
+        this.salado = false;
+        this.dulce = false;
+        this.vegetariano = false;
+        this.celiaco = false;
+        this.imagen=null;
+        this.categoria = null;
+        this.latitud = 0;
+        this.longitud = 0;
 
-    public Comida(Long id, String email_usuario, String nombre, int raciones, double precio, String descripcion, boolean salado, boolean dulce, boolean vegetariano, boolean celiaco, Categoria categoria, ImageView imagen, double latitud, double longitud) {
+    }
+
+    public Comida(String email_usuario, String titulo, int raciones, double precio, String descripcion, boolean salado, boolean dulce, boolean vegetariano, boolean celiaco, Categoria categoria, ImageView imagen, double latitud, double longitud) {
 
         this.id = id;
         this.email_usuario = email_usuario;
-        this.nombre = nombre;
+        this.titulo = titulo;
         this.raciones = raciones;
         this.precio = precio;
         this.descripcion = descripcion;
@@ -50,11 +65,11 @@ public class Comida {
         this.longitud = longitud;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -66,12 +81,12 @@ public class Comida {
         this.email_usuario = email_usuario;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getTitulo() {
+        return titulo;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 
     public int getRaciones() {
@@ -156,23 +171,20 @@ public class Comida {
 
     public ContentValues toContentValues() {
         ContentValues cv = new ContentValues();
-        cv.put("ID", id);
-
         cv.put("EMAIL_USUARIO", email_usuario);
-        cv.put("TITULO", nombre);
+        cv.put("TITULO", titulo);
         cv.put("RACIONES", raciones);
         cv.put("PRECIO", precio);
         cv.put("DESCRIPCION", descripcion);
-        cv.putNull("LUGAR");
+        //cv.put("LUGAR", "lugar");
         cv.put("SALADO", salado);
         cv.put("DULCE", dulce);
         cv.put("VEGETARIANO", vegetariano);
         cv.put("CELIACO", celiaco);
-        cv.put("CATEGORIA", categoria.name())
-        cv.putNull("imagen");
-
-        //cv.put("LATITUD", latitud);
-        //cv.put("LONGITUD", longitud);
+        cv.put("CATEGORIA", categoria.toString());
+        cv.putNull("IMAGEN");
+        cv.put("LATITUD", latitud);
+        cv.put("LONGITUD", longitud);
         return cv;
     }
 
@@ -184,8 +196,7 @@ public class Comida {
         return imagen;
     }
 
-    public void setImagen(byte[] imagen) {
-        Bitmap bm = BitmapFactory.decodeByteArray(imagen, 0 ,imagen.length);
-        this.imagen.setImageBitmap(bm);
+    public void setImagen(Bitmap imagen) {;
+        this.imagen.setImageBitmap(imagen);
     }
 }

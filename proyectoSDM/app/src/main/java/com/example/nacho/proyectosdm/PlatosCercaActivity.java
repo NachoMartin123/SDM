@@ -1,7 +1,9 @@
 package com.example.nacho.proyectosdm;
 
+import android.app.ListActivity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.DialogFragment;
@@ -12,11 +14,16 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.nacho.proyectosdm.modelo.Comida;
 import com.example.nacho.proyectosdm.modelo.Usuario;
+import com.example.nacho.proyectosdm.persistence.utils.CustomList;
 import com.example.nacho.proyectosdm.persistence.utils.DdbbDataSource;
 
 import java.util.List;
@@ -35,9 +42,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.List;
 
 public class PlatosCercaActivity extends AppCompatActivity
-    implements NavigationView.OnNavigationItemSelectedListener,
-        SeleccionExtrasDialog.OnSeleccionExtrasRealizada,
-        OnMapReadyCallback {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        SeleccionExtrasDialog.OnSeleccionExtrasRealizada{//,
+        //Callback {
 
     private ActionBarDrawerToggle mDrawerToggle;
 
@@ -46,6 +53,10 @@ public class PlatosCercaActivity extends AppCompatActivity
     DdbbDataSource datos;//acceso a datos bbdd
     private Usuario usuarioActual=null;
     private List<Comida> comidasUsuario;
+
+    ListView list;//contiene la lista de comidas
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,22 +86,65 @@ public class PlatosCercaActivity extends AppCompatActivity
 
         String emailUsuarioActual = getIntent().getExtras().getString("emailUsuario");
         usuarioActual = datos.getUserByEmail(emailUsuarioActual);
-        comidasUsuario = datos.getComidasUsuario(usuarioActual.getEmail());
+        comidasUsuario = datos.getComidasNoUsuario(emailUsuarioActual);
 
-        actualizarCampos();
+        actualizarHeader();
+        inicializarListaComidas(comidasUsuario);
+
+        //SupportMapFragment mapFragment = (SupportMapFragment)getSupportFragmentManager()
+        //        .findFragmentById(R.id.mapa);
+        //mapFragment.getMapAsync(this);
     }
 
-    private void actualizarCampos(){
+    private void inicializarListaComidas(List<Comida> comidas){
+
+        String[] titulos = new String[comidas.size()];
+        Integer[] imageId = new Integer[comidas.size()];
+        Integer[] raciones = new Integer[comidas.size()];
+        Double[] precios = new Double[comidas.size()];
+        Boolean[] salado = new Boolean[comidas.size()];
+        Boolean[] dulce = new Boolean[comidas.size()];
+        Boolean[] celiaco = new Boolean[comidas.size()];
+        Boolean[] vegetariano = new Boolean[comidas.size()];
+
+        for(int i=0;i<comidas.size();i++){
+            titulos[i]=comidas.get(i).getTitulo();
+            imageId[i]=i;//comidas.get(i).getId()
+            raciones[i]=comidas.get(i).getRaciones();
+            precios[i]=comidas.get(i).getPrecio();
+            salado[i] = comidas.get(i).isSalado();
+            dulce[i] = comidas.get(i).isDulce();
+            celiaco[i] = comidas.get(i).isCeliaco();
+            vegetariano[i] = comidas.get(i).isVegetariano();
+        }
+
+        CustomList adapter = new CustomList(PlatosCercaActivity.this, titulos,raciones,precios,salado, dulce, celiaco, vegetariano,imageId);
+        list=(ListView)findViewById(R.id.list);
+        list.setAdapter(adapter);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                Toast.makeText(PlatosCercaActivity.this, "You Clicked at " +position, Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+    }
+
+
+    private void actualizarHeader(){
         //actualizar campos header, nombre y foto de usuario
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View hView =  navigationView.getHeaderView(0);
         TextView nombreHeader = (TextView)hView.findViewById(R.id.nomUserHeader);
         ImageView imgHeader = (ImageView)hView.findViewById(R.id.imgUserHeader);
+
         nombreHeader.setText(usuarioActual.getNombre());
-        imgHeader = (ImageView)hView.findViewById(R.id.imgUserHeader);
-        SupportMapFragment mapFragment = (SupportMapFragment)getSupportFragmentManager()
-                .findFragmentById(R.id.mapa);
-        mapFragment.getMapAsync(this);
+        if(usuarioActual.getImagen()!=null)
+            imgHeader.setImageBitmap(usuarioActual.getImagen().getDrawingCache());
+
     }
 
     @Override
@@ -168,12 +222,13 @@ public class PlatosCercaActivity extends AppCompatActivity
         this.extraSeleccionados = seleccion;
     }
 
+    /*
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
         DdbbDataSource bd = new DdbbDataSource(this);
 
-        List<Comida> comidas = bd.getComidasUsuario("jon@gmail.com");
+        List<Comida> comidas = bd.getComidasUsuario("a");
 
         LatLngBounds.Builder creadorRango = LatLngBounds.builder();
         for (Comida comida: comidas) {
@@ -187,4 +242,5 @@ public class PlatosCercaActivity extends AppCompatActivity
         googleMap.moveCamera(CameraUpdateFactory
             .newLatLngBounds(creadorRango.build(), 100));
     }
+    */
 }

@@ -93,8 +93,8 @@ public class Usuario implements Serializable{
     }
 
     public void setEmail(String email) {
-        if(!email.contains("@"))
-            throw new IllegalArgumentException("el email debe contener el caracter '@'");
+        //if(!email.contains("@"))
+        //    throw new IllegalArgumentException("el email debe contener el caracter '@'");
         this.email = email;
     }
 
@@ -120,8 +120,7 @@ public class Usuario implements Serializable{
         return imagen;
     }
 
-    public void setImagen(byte[] imagen) {
-        Bitmap bm = BitmapFactory.decodeByteArray(imagen, 0 ,imagen.length);
-        this.imagen.setImageBitmap(bm);
+    public void setImagen(Bitmap imagen) {;
+        this.imagen.setImageBitmap(imagen);
     }
 }

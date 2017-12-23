@@ -1,23 +1,13 @@
 package com.example.nacho.proyectosdm.persistence.utils;
 
-import android.content.ContentValues;
+
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
-import com.example.nacho.proyectosdm.modelo.Categoria;
-import com.example.nacho.proyectosdm.modelo.Chat;
-import com.example.nacho.proyectosdm.modelo.Comida;
-import com.example.nacho.proyectosdm.modelo.Mensaje;
-import com.example.nacho.proyectosdm.modelo.Usuario;
 import com.example.nacho.proyectosdm.persistence.esquemas.Esquemas;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+
 
 /**
  * Created by Laura Mambo on 18/10/2017.
