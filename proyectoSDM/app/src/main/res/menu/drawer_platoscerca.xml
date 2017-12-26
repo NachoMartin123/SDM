@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_subirplato"
+            android:icon="@android:drawable/ic_input_add"
+            android:title="@string/nav_subirplato" />
+        <item
+            android:id="@+id/nav_mensajes"
+            android:icon="@android:drawable/ic_dialog_email"
+            android:title="@string/nav_mensajes" />
+        <item
+            android:id="@+id/nav_misReservas"
+            android:icon="@android:drawable/btn_star_big_on"
+            android:title="@string/nav_misreservas" />
+        <item
+            android:id="@+id/nav_misPlatos"
+            android:icon="@mipmap/ic_launcher_round"
+            android:title="@string/nav_misplatos" />
+    </group>
+    <group android:checkableBehavior="single">
+        <menu>
+            <item
+                android:id="@+id/nav_configuracion"
+                android:icon="@android:drawable/ic_menu_preferences"
+                android:title="@string/nav_configuracion" />
+            <item
+                android:id="@+id/nav_acerda_de"
+                android:icon="@android:drawable/ic_menu_info_details"
+                android:title="@string/nav_acerda_de" />
+        </menu>
+    </group>
+
+</menu>

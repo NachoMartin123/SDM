@@ -8,10 +8,17 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.nacho.proyectosdm.R;
+import com.example.nacho.proyectosdm.modelo.Comida;
+import com.example.nacho.proyectosdm.modelo.Usuario;
 import com.example.nacho.proyectosdm.persistence.esquemas.Esquemas;
+import com.example.nacho.proyectosdm.persistence.utils.CustomList;
+import com.example.nacho.proyectosdm.persistence.utils.DdbbDataSource;
 import com.example.nacho.proyectosdm.persistence.utils.MyDBHelper;
 
 import java.io.ByteArrayInputStream;
@@ -22,6 +29,11 @@ import java.util.List;
 public class MisPlatosActivity extends AppCompatActivity {
 
 
+    DdbbDataSource datos;//acceso a datos bbdd
+    private Usuario usuarioActual=null;
+    private List<Comida> comidasUsuario;
+
+    ListView list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +41,52 @@ public class MisPlatosActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mis_platos);
 
-        ListView listViewMisPlatos = (ListView)findViewById(R.id.listViewMisPlatos);
-        //listViewMisPlatos.setAdapter();
+        datos = new DdbbDataSource(getApplicationContext());
+
+        String emailUsuarioActual = getIntent().getExtras().getString("emailUsuario");
+        usuarioActual = datos.getUserByEmail(emailUsuarioActual);
+        comidasUsuario = datos.getComidasUsuario(emailUsuarioActual);
+
+        inicializarListaComidas(comidasUsuario);
+
+    }
+
+
+    private void inicializarListaComidas(List<Comida> comidas){
+
+        String[] titulos = new String[comidas.size()];
+        Integer[] imageId = new Integer[comidas.size()];
+        Integer[] raciones = new Integer[comidas.size()];
+        Double[] precios = new Double[comidas.size()];
+        Boolean[] salado = new Boolean[comidas.size()];
+        Boolean[] dulce = new Boolean[comidas.size()];
+        Boolean[] celiaco = new Boolean[comidas.size()];
+        Boolean[] vegetariano = new Boolean[comidas.size()];
+
+        for(int i=0;i<comidas.size();i++){
+            titulos[i]=comidas.get(i).getTitulo();
+            imageId[i]=i;//comidas.get(i).getId()
+            raciones[i]=comidas.get(i).getRaciones();
+            precios[i]=comidas.get(i).getPrecio();
+            salado[i] = comidas.get(i).isSalado();
+            dulce[i] = comidas.get(i).isDulce();
+            celiaco[i] = comidas.get(i).isCeliaco();
+            vegetariano[i] = comidas.get(i).isVegetariano();
+        }
+
+        CustomList adapter = new CustomList(MisPlatosActivity.this, titulos,raciones,precios,salado, dulce, celiaco, vegetariano,imageId);
+        list=(ListView)findViewById(R.id.list);
+        list.setAdapter(adapter);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                Toast.makeText(MisPlatosActivity.this, "You Clicked at " +position, Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
     }
 
 

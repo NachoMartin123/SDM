@@ -1,5 +1,7 @@
 package com.example.nacho.proyectosdm;
 
+import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -11,9 +13,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -47,6 +51,7 @@ public class PlatosCercaActivity extends AppCompatActivity
         //Callback {
 
     private ActionBarDrawerToggle mDrawerToggle;
+    FragmentTransaction fragmentTransaction;
 
     private boolean[] extraSeleccionados = {true, true, true, true};
 
@@ -64,23 +69,21 @@ public class PlatosCercaActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_platoscerca);
 
-        DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        final DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         NavigationView navigationView = (NavigationView)findViewById(R.id.nav_view);
 
         mDrawerToggle = new ActionBarDrawerToggle(
-                this,
-                drawerLayout,
-                R.string.drawer_open,
-                R.string.drawer_close
+                this, drawerLayout, R.string.drawer_open, R.string.drawer_close
         );
 
         drawerLayout.addDrawerListener(mDrawerToggle);
+
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
         navigationView.setNavigationItemSelectedListener(this);
-
+        navigationView.bringToFront();
 
         datos = new DdbbDataSource(getApplicationContext());
 
@@ -95,6 +98,7 @@ public class PlatosCercaActivity extends AppCompatActivity
         //        .findFragmentById(R.id.mapa);
         //mapFragment.getMapAsync(this);
     }
+
 
     private void inicializarListaComidas(List<Comida> comidas){
 
@@ -127,9 +131,15 @@ public class PlatosCercaActivity extends AppCompatActivity
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 Toast.makeText(PlatosCercaActivity.this, "You Clicked at " +position, Toast.LENGTH_SHORT).show();
+                Log.i(null,"aaaaaaaaaaa entro en listener");
+                if (position == 1) {
+                    //code specific to first list item
+                    Log.i(null,"entro en listener");
+                }
 
             }
         });
+        list.bringToFront();
 
     }
 
@@ -139,9 +149,11 @@ public class PlatosCercaActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View hView =  navigationView.getHeaderView(0);
         TextView nombreHeader = (TextView)hView.findViewById(R.id.nomUserHeader);
+        TextView emailHeader = (TextView)hView.findViewById(R.id.emailUserHeader);
         ImageView imgHeader = (ImageView)hView.findViewById(R.id.imgUserHeader);
 
         nombreHeader.setText(usuarioActual.getNombre());
+        emailHeader.setText(usuarioActual.getEmail());
         if(usuarioActual.getImagen()!=null)
             imgHeader.setImageBitmap(usuarioActual.getImagen().getDrawingCache());
 
@@ -155,43 +167,42 @@ public class PlatosCercaActivity extends AppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
+        // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.subirplato) {
-            final Intent intento = new Intent(PlatosCercaActivity.this, SubirPlatoActivity.class);
-            startActivity(intento);
-            return true;
-        }
-        else if(id == R.id.mensajes){
-            final Intent intento = new Intent(PlatosCercaActivity.this, MensajesActivity.class);
-            startActivity(intento);
-            return true;
-        }
-        else if(id == R.id.misReservas){
-            final Intent intento = new Intent(PlatosCercaActivity.this, MisReservasActivity.class);
-            startActivity(intento);
-            return true;
-        }
-        else if(id == R.id.misPlatos){
-            final Intent intento = new Intent(PlatosCercaActivity.this, MisPlatosActivity.class);
-            startActivity(intento);
-            return true;
-        }
-        else if(id == R.id.configuracion){
-            final Intent intento = new Intent(PlatosCercaActivity.this, ConfiguracionActivity.class);
-            startActivity(intento);
-            return true;
-        }
-        else if(id == R.id.ayuda){ //mejos un toast?
-            //final Intent intento = new Intent(PlatosCercaActivity.this, activityNuevaVal.class);
-            //startActivity(intento);
-            return true;
+        switch(id) {
+            case R.id.nav_subirplato:
+                lanzarNavActivity(SubirPlatoActivity.class);
+                break;
+            case R.id.nav_mensajes:
+                lanzarNavActivity(MensajesActivity.class);
+                break;
+            case R.id.nav_misPlatos:
+                lanzarNavActivity(MisPlatosActivity.class);
+                break;
+            case R.id.nav_configuracion:
+                lanzarNavActivity(ConfiguracionActivity.class);
+                break;
+            case R.id.nav_misReservas:
+                lanzarNavActivity(MisReservasActivity.class);
+                break;
+            case R.id.nav_acerda_de:
+                //startActivity(intento);
+                Toast.makeText(PlatosCercaActivity.this, "Creadores: Ana, Laura y Nacho\n SDM 207/18 Uniovi", Toast.LENGTH_SHORT).show();
+                break;
+
         }
 
-        return false;
+        return true;
     }
+
+    private void lanzarNavActivity(Class clase){
+        Intent intento = new Intent(PlatosCercaActivity.this, clase);
+        intento.putExtra("emailUsuario", usuarioActual.getEmail());
+        startActivity(intento);
+    }
+
+
 
     //metodos menu
     @Override
@@ -202,8 +213,11 @@ public class PlatosCercaActivity extends AppCompatActivity
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
 
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
+        if (mDrawerToggle.onOptionsItemSelected(item)) {//opens the drawer
             return true;
         }
         else if (item.getItemId() == R.id.itemExtras) {
