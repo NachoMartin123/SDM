@@ -83,7 +83,7 @@ public class PlatosCercaActivity extends AppCompatActivity
         getSupportActionBar().setHomeButtonEnabled(true);
 
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.bringToFront();
+        navigationView.bringToFront();//NO TOCAR
 
         datos = new DdbbDataSource(getApplicationContext());
 
@@ -139,7 +139,7 @@ public class PlatosCercaActivity extends AppCompatActivity
 
             }
         });
-        list.bringToFront();
+
 
     }
 

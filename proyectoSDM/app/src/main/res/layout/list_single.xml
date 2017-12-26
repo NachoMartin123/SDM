@@ -8,30 +8,41 @@
         <ImageView
             android:id="@+id/img"
             android:layout_width="162dp"
-            android:layout_height="107dp" />
+            android:layout_height="107dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"/>
 
         <LinearLayout
             android:layout_width="221dp"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:padding="4dp">
 
             <TextView
                 android:id="@+id/titulo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="titulo" />
+                android:text="titulo"
+                android:focusable="false"
+                android:focusableInTouchMode="false"/>
 
             <TextView
                 android:id="@+id/raciones"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="raciones" />
+                android:text="raciones"
+                android:focusable="false"
+                android:focusableInTouchMode="false"/>
 
             <TextView
                 android:id="@+id/precio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="precio" />
+                android:text="precio"
+                android:focusable="false"
+                android:focusableInTouchMode="false"/>
 
             <TextView
                 android:id="@+id/sabores"
@@ -44,7 +55,9 @@
                 android:scrollHorizontally="false"
                 android:minLines="1"
                 android:gravity="top|left"
-                android:text="sabores" />
+                android:text="sabores"
+                android:focusable="false"
+                android:focusableInTouchMode="false"/>
 
         </LinearLayout>
 
