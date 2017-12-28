@@ -1,12 +1,24 @@
 package com.example.nacho.proyectosdm.persistence.esquemas;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.provider.BaseColumns;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.VectorEnabledTintResources;
 
+import com.example.nacho.proyectosdm.R;
 import com.example.nacho.proyectosdm.modelo.Categoria;
 import com.example.nacho.proyectosdm.modelo.Comida;
 import com.example.nacho.proyectosdm.modelo.Usuario;
 
+import java.io.ByteArrayOutputStream;
+import java.nio.ByteBuffer;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +28,7 @@ import java.util.List;
  */
 
 //Variables estaticas
-public class Esquemas {
+public class Esquemas extends AppCompatActivity {
 
     // Nombre de la tabla valoratios y sus columnas
     public static final String TABLA_USUARIO = "USUARIOS";
@@ -48,7 +60,7 @@ public class Esquemas {
 
 
      public static final String CREAR_TABLA_COMIDA = "CREATE TABLE "+TABLA_COMIDA+" (" +
-            "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "ID INTEGER PRIMARY KEY NOT NULL AUTOINCREMENT," +
             "EMAIL_USUARIO TEXT," +
             "TITULO TEXT NOT NULL," +
             "RACIONES INT," +
@@ -65,7 +77,7 @@ public class Esquemas {
             "LONGITUD DOUBLE )";
 
     public static final String CREAR_TABLA_VENDIDOS = "CREATE TABLE "+TABLA_VENDIDOS+" (" +
-            "ID_COMIDA INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+            "ID_COMIDA INTEGER PRIMARY KEY NOT NULL, " +
             "EMAIL_COMPRADOR TEXT, " +
             "FECHA_VENTA FECHA TIMESTAMP, " +
             "VALORACION INTEGER, " +
@@ -73,7 +85,7 @@ public class Esquemas {
             "FOREIGN KEY(EMAIL_COMPRADOR) REFERENCES USUARIOS(EMAIL))";
 
     public static final String CREAR_TABLA_MENSAJES = "CREATE TABLE "+TABLA_MENSAJES+" (" +
-            "ID_CHAT INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+            "ID_CHAT INTEGER PRIMARY KEY NOT NULL AUTOINCREMENT, " +
             "EMAIL_EMISOR TEXT, " +
             "MENSAJE TEXT NOT NULL, " +
             "FECHA TIMESTAMP, " +
@@ -81,24 +93,31 @@ public class Esquemas {
             "FOREIGN KEY(EMAIL_EMISOR) REFERENCES USUARIOS(EMAIL))";
 
     public static final String CREAR_TABLA_CHATS = "CREATE TABLE "+TABLA_CHATS+" (" +
-            "ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+            "ID INTEGER PRIMARY KEY NOT NULL AUTOINCREMENT, " +
             "EMAIL_USER_1 TEXT, " +
             "EMAIL_USER_2 TEXT, " +
             "FOREIGN KEY(EMAIL_USER_1) REFERENCES USUARIOS(EMAIL), " +
             "FOREIGN KEY(EMAIL_USER_2) REFERENCES USUARIOS(EMAIL))";
 
 
-    public static List<Usuario> listaInicialUsuarios(){
+    public Esquemas(Context context){
+        this.context = context;
+    }
+
+    private Context context;
+
+
+    public List<Usuario> listaInicialUsuarios(){
         List<Usuario> usuarios = new ArrayList<Usuario>();
         usuarios.add(new Usuario("a","a","a","Gijon",new Timestamp(2017,10,16,14,00,00,000), true, 638111100, null));
-        usuarios.add(new Usuario("jon@gmail.com","Jon","password","Gijon",new Timestamp(2017,10,16,14,00,00,000), true, 638111111, null));
-        usuarios.add(new Usuario("sansa@gmail.com","Sansa", "password","Oviedo",new Timestamp(2017,10,16,14,00,00,000), true, 638222222, null));
+        usuarios.add(new Usuario("jon@gmail.com","Jon","a","Gijon",new Timestamp(2017,10,16,14,00,00,000), true, 638111111, BitmapFactory.decodeResource(context.getResources(),R.drawable.jon)));
+        usuarios.add(new Usuario("sansa@gmail.com","Sansa", "a","Oviedo",new Timestamp(2017,10,16,14,00,00,000), true, 638222222, BitmapFactory.decodeResource(context.getResources(),R.drawable.sansa)));
         usuarios.add(new Usuario("niguateresa@gmail.com","nigua", "1234","Oviedo",new Timestamp(2017,10,16,14,00,00,000), true, 638222222, null));
         return usuarios;
     }
 
 
-    public static List<Comida> listaInicialComidas(){
+    public List<Comida> listaInicialComidas(){
 
 
         List<Comida> comidas = new ArrayList<Comida>();
@@ -125,48 +144,17 @@ public class Esquemas {
         comida.setLongitud(-5.922073);
 
         //Long id, String email_usuario, String nombre, int raciones, double precio, String descripcion, boolean salado, boolean dulce, boolean vegetariano, boolean celiaco, Categoria categoria, ImageView imagen, double latitud, double longitud) {
-        comidas.add(new Comida("jon@gmail.com", "Pizza margarita", 4, 3.15, "pizza traicional con queso y tomate", true, false, true,false,Categoria.COMIDA,null, 0, 0));
-        comidas.add(new Comida("jon@gmail.com", "Paella", 4, 5.95, "arroz amarillo", true, false, false,false,Categoria.COMIDA,null, 0, 0));
-        comidas.add(new Comida("jon@gmail.com", "Pastel", 8, 1.95, "Pastel de chocolate rico rico", false, true, true,false,Categoria.MERIENDA,null, 0, 0));
-        comidas.add(new Comida("jon@gmail.com", "Macedonia", 3, 1.00, "Manzana, naranja, plátano y pera", false, true, true,true,Categoria.MERIENDA,null, 0, 0));
-        comidas.add(new Comida("sansa@gmail.com", "Lentejas", 8, 2.15, "comida de viejas", true, false, true,false,Categoria.COMIDA,null, 0, 0));
-        comidas.add(new Comida("sansa@gmail.com", "Rosquillas", 4, 0.9, "muy redondas", false, true, false,false,Categoria.DESAYUNO,null, 0, 0));
-        comidas.add(new Comida("sansa@gmail.com", "Tortilla de patata", 6, 2.0, "producto made in spain", true, false, false,false,Categoria.MERIENDA,null, 0, 0));
-        comidas.add(new Comida("a", "Roscón", 8, 2.0, "para el 6 de enero", false, true, false,true,Categoria.DESAYUNO,null, 0, 0));
-        comidas.add(new Comida("a", "Torrijas", 9, 1.2, "la gordura máxima", false, true, false,false,Categoria.MERIENDA,null, 0, 0));
+        comidas.add(new Comida("jon@gmail.com", "Pizza margarita", 4, 3.15, "pizza traicional con queso y tomate", true, false, true,false,Categoria.COMIDA,BitmapFactory.decodeResource(context.getResources(), R.drawable.pizza),43.540531, -5.654908));
+        comidas.add(new Comida("jon@gmail.com", "Paella", 4, 5.95, "arroz amarillo", true, false, false,false,Categoria.COMIDA,BitmapFactory.decodeResource(context.getResources(), R.drawable.paella), 43.540531, -5.654908));
+        comidas.add(new Comida("jon@gmail.com", "Pastel", 8, 1.95, "Pastel de chocolate rico rico", false, true, true,false,Categoria.MERIENDA,BitmapFactory.decodeResource(context.getResources(), R.drawable.pastel), 43.540531, -5.654908));
+        comidas.add(new Comida("jon@gmail.com", "Macedonia", 3, 1.00, "Manzana, naranja, plátano y pera", false, true, true,true,Categoria.MERIENDA,BitmapFactory.decodeResource(context.getResources(), R.drawable.macedonia), 43.540531, -5.654908));
+        comidas.add(new Comida("sansa@gmail.com", "Lentejas", 8, 2.15, "comida de viejas", true, false, true,false,Categoria.COMIDA,BitmapFactory.decodeResource(context.getResources(), R.drawable.lentejas), 43.354241, -5.844521));
+        comidas.add(new Comida("sansa@gmail.com", "Rosquillas", 4, 0.9, "muy redondas", false, true, false,false,Categoria.DESAYUNO,BitmapFactory.decodeResource(context.getResources(), R.drawable.rosquillas), 43.354241, -5.844521));
+        comidas.add(new Comida("sansa@gmail.com", "Tortilla de patata", 6, 2.0, "producto made in spain", true, false, false,false,Categoria.MERIENDA,BitmapFactory.decodeResource(context.getResources(), R.drawable.tortilla), 43.354241, -5.844521));
+        comidas.add(new Comida("a", "Roscón", 8, 2.0, "para el 6 de enero", false, true, false,true,Categoria.DESAYUNO,BitmapFactory.decodeResource(context.getResources(), R.drawable.roscon), 43.361784, -5.847610));
+        comidas.add(new Comida("a", "Torrijas", 9, 1.2, "la gordura máxima", false, true, false,false,Categoria.MERIENDA,BitmapFactory.decodeResource(context.getResources(), R.drawable.torrijas), 43.361784, -5.847610));
         return comidas;
     }
-
-
-
-
-/*
-    public static final String SCRIPT_USUARIOS=
-            "INSERT INTO USUARIOS (EMAIL,NOMBRE,CIUDAD,FECHA_ALTA, PASSWORD, ACTIVO, TELEFONO) VALUES ('jon@gmail.com','Jon','Gijon','2017-10-16 14:00:00.000', 'password', true, 638111111)";
-
-   //         "INSERT INTO USUARIOS (EMAIL,NOMBRE,CIUDAD,FECHA_ALTA, PASSWORD, ACTIVO, TELEFONO) VALUES('sansa@gmail.com','Sansa','Oviedo','2017-10-16 14:00:00.000', 'password', true, 638222222);\n"+
-    //        "INSERT INTO USUARIOS (EMAIL,NOMBRE,CIUDAD,FECHA_ALTA, PASSWORD, ACTIVO, TELEFONO) VALUES('bran@gmail.com','Bran','Gijon','2017-10-16 14:00:00.000', 'password', true, 638333333);\n" +
-     //       "INSERT INTO USUARIOS (EMAIL,NOMBRE,CIUDAD,FECHA_ALTA, PASSWORD, ACTIVO, TELEFONO) VALUES('aria@gmail.com','Aria','Oviedo','2017-10-16 14:00:00.000', 'password', true, 638444444);";
-
-
-    public static final String SCRIPT_COMIDAS =
-           /* "INSERT INTO COMIDAS VALUES(1, 'sansa@gmail.com', 'Macarrones carbonara', 5, 5.95, 'macarrones como los que hacia mi abuela', true, false, false,true,'comida');\n"+
-            "INSERT INTO COMIDAS VALUES(2, 'jon@gmail.com', 'Pizza margarita', 4, 3.15, 'pizza traicional con queso y tomate', true, false, true,false,'comida');\n"+
-            "INSERT INTO COMIDAS VALUES(3, 'aria@gmail.com', 'Paella', 4, 5.95, 'pizza traicional con queso y tomate', true, false, false,false,'comida');\n"+
-            "INSERT INTO COMIDAS VALUES(4, 'bran@gmail.com', 'Pastel', 8, 1.95, 'Pastel de chocolate rico rico', false, true, true,false,'Merienda');\n"+
-            "INSERT INTO COMIDAS VALUES(5, 'jon@gmail.com', 'Macedonia', 3, 1.00, 'Manzana, naranja, plátano y pera', false, true, true,true,'Merienda');\n"+
-            "INSERT INTO COMIDAS VALUES(6, 'sansa@gmail.com', 'Lentejas', 8, 2.15, 'comida de viejas', true, false, true,false,'comida');\n"+
-            "INSERT INTO COMIDAS VALUES(7, 'bran@gmail.com', 'Rosquillas', 4, 1.20, 'muy redondas', false, true, false,false,'Desayuno');\n"+
-            "INSERT INTO COMIDAS VALUES(8, 'aria@gmail.com', 'Tortilla de patata', 6, , 'producto spanish', true, false, false,false,'Merienda');";
-            */
-//    public static final String SCRIPT_RESTO=
-           /*
-            "INSERT INTO MENSAJES VALUES(1, 'sansa@gmail.com', 'La foto de esos macarrones de cuando es?', '2017-11-15 17:00:00.000000');\n"+
-            "INSERT INTO MENSAJES VALUES(1, 'jon@gmail.com', 'De hoy por la mismo', '2017-11-14 18:00:00.000000');\n"+
-            "INSERT INTO MENSAJES VALUES(1, 'sansa@gmail.com', 'No te creo', '2017-11-15 19:00:00.000000');\n"+
-            "INSERT INTO CHATS VALUES(1, 'jon@gmail.com', 'sansa@gmail.com');";;
-            */
-
 
 }
 

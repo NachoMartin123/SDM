@@ -6,11 +6,11 @@
     <TableRow>
 
         <ImageView
-            android:id="@+id/img"
+            android:id="@+id/imgSingle"
             android:layout_width="162dp"
             android:layout_height="107dp"
             android:focusable="false"
-            android:focusableInTouchMode="false"/>
+            android:focusableInTouchMode="false" />
 
         <LinearLayout
             android:layout_width="221dp"
@@ -21,43 +21,44 @@
             android:padding="4dp">
 
             <TextView
-                android:id="@+id/titulo"
+                android:id="@+id/singleTitulo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
                 android:text="titulo"
-                android:focusable="false"
-                android:focusableInTouchMode="false"/>
+                android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/raciones"
+                android:id="@+id/singleRaciones"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="raciones"
                 android:focusable="false"
-                android:focusableInTouchMode="false"/>
+                android:focusableInTouchMode="false"
+                android:text="raciones" />
 
             <TextView
-                android:id="@+id/precio"
+                android:id="@+id/singlePrecio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="precio"
                 android:focusable="false"
-                android:focusableInTouchMode="false"/>
+                android:focusableInTouchMode="false"
+                android:text="precio" />
 
             <TextView
-                android:id="@+id/sabores"
+                android:id="@+id/singleCiudad"
                 android:layout_width="match_parent"
-                android:layout_height="43dp"
-                android:scrollbars="none"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:gravity="top|left"
                 android:inputType="textMultiLine|textCapSentences"
                 android:lines="2"
-                android:singleLine="false"
-                android:scrollHorizontally="false"
                 android:minLines="1"
-                android:gravity="top|left"
-                android:text="sabores"
-                android:focusable="false"
-                android:focusableInTouchMode="false"/>
+                android:scrollHorizontally="false"
+                android:scrollbars="none"
+                android:singleLine="false"
+                android:text="ciudad" />
 
         </LinearLayout>
 

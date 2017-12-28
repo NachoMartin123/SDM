@@ -15,6 +15,7 @@ import java.sql.Timestamp;
 
 // Objeto abogado == Usuario
 public class Usuario implements Serializable{
+    private int id;
     private String email;
     private String nombre;
     private String password;
@@ -22,7 +23,7 @@ public class Usuario implements Serializable{
     private Timestamp fecha_alta;
     private boolean activo;
     private int telefono;
-    private ImageView imagen;
+    private Bitmap imagen;
 
 
     public Usuario(String nombre, String password, String email){
@@ -42,7 +43,7 @@ public class Usuario implements Serializable{
      * @param fecha_alta
      * @param telefono
      */
-    public Usuario(String email, String nombre, String password, String ciudad, Timestamp fecha_alta, boolean activo, int telefono, ImageView imagen) {
+    public Usuario(String email, String nombre, String password, String ciudad, Timestamp fecha_alta, boolean activo, int telefono, Bitmap imagen) {
         this.email = email;
         this.nombre = nombre;
         this.password = password;
@@ -55,6 +56,13 @@ public class Usuario implements Serializable{
 
     public Usuario(){}
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getNombre() {
         return nombre;
@@ -116,11 +124,11 @@ public class Usuario implements Serializable{
         this.telefono = telefono;
     }
 
-    public ImageView getImagen() {
+    public Bitmap getImagen() {
         return imagen;
     }
 
     public void setImagen(Bitmap imagen) {;
-        this.imagen.setImageBitmap(imagen);
+        this.imagen=imagen;
     }
 }

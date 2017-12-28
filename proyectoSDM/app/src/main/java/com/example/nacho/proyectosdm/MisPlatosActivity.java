@@ -1,29 +1,24 @@
 package com.example.nacho.proyectosdm;
 
 import android.content.pm.ActivityInfo;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.location.Address;
+import android.location.Geocoder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.nacho.proyectosdm.R;
 import com.example.nacho.proyectosdm.modelo.Comida;
 import com.example.nacho.proyectosdm.modelo.Usuario;
-import com.example.nacho.proyectosdm.persistence.esquemas.Esquemas;
-import com.example.nacho.proyectosdm.persistence.utils.CustomList;
 import com.example.nacho.proyectosdm.persistence.utils.DdbbDataSource;
-import com.example.nacho.proyectosdm.persistence.utils.MyDBHelper;
 
-import java.io.ByteArrayInputStream;
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 
 public class MisPlatosActivity extends AppCompatActivity {
@@ -52,76 +47,58 @@ public class MisPlatosActivity extends AppCompatActivity {
     }
 
 
-    private void inicializarListaComidas(List<Comida> comidas){
+    private void inicializarListaComidas(List<Comida> comidas) {
+        if (comidas.size() > 0) {
+            String[] titulos = new String[comidas.size()];
+            Integer[] imageId = new Integer[comidas.size()];
+            Integer[] raciones = new Integer[comidas.size()];
+            Double[] precios = new Double[comidas.size()];
+            String[] ciudades = new String[comidas.size()];
+            Bitmap[] imagenes = new Bitmap[comidas.size()];
 
-        String[] titulos = new String[comidas.size()];
-        Integer[] imageId = new Integer[comidas.size()];
-        Integer[] raciones = new Integer[comidas.size()];
-        Double[] precios = new Double[comidas.size()];
-        Boolean[] salado = new Boolean[comidas.size()];
-        Boolean[] dulce = new Boolean[comidas.size()];
-        Boolean[] celiaco = new Boolean[comidas.size()];
-        Boolean[] vegetariano = new Boolean[comidas.size()];
+            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+            for (int i = 0; i < comidas.size(); i++) {
+                List<Address> addresses = null;
+                try {
+                    addresses = geocoder.getFromLocation(comidas.get(i).getLatitud(), comidas.get(i).getLongitud(), 1);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                String cityName = addresses.get(0).getAddressLine(0);
+                String stateName = addresses.get(0).getAddressLine(1);
+                String countryName = addresses.get(0).getAddressLine(2);
 
-        for(int i=0;i<comidas.size();i++){
-            titulos[i]=comidas.get(i).getTitulo();
-            imageId[i]=i;//comidas.get(i).getId()
-            raciones[i]=comidas.get(i).getRaciones();
-            precios[i]=comidas.get(i).getPrecio();
-            salado[i] = comidas.get(i).isSalado();
-            dulce[i] = comidas.get(i).isDulce();
-            celiaco[i] = comidas.get(i).isCeliaco();
-            vegetariano[i] = comidas.get(i).isVegetariano();
-        }
-
-        CustomList adapter = new CustomList(MisPlatosActivity.this, titulos,raciones,precios,salado, dulce, celiaco, vegetariano,imageId);
-        list=(ListView)findViewById(R.id.list);
-        list.setAdapter(adapter);
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                Toast.makeText(MisPlatosActivity.this, "You Clicked at " +position, Toast.LENGTH_SHORT).show();
-
+                titulos[i] = comidas.get(i).getTitulo();
+                imageId[i] = i;//comidas.get(i).getId()
+                raciones[i] = comidas.get(i).getRaciones();
+                precios[i] = comidas.get(i).getPrecio();
+                ciudades[i] = cityName+", "+stateName+", "+countryName;
+                imagenes[i] = comidas.get(i).getImagen();
             }
-        });
 
+            CustomList adapter = new CustomList(MisPlatosActivity.this, titulos, raciones, precios, ciudades, imagenes);
+            list = (ListView) findViewById(R.id.list);
+            list.setAdapter(adapter);
+            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,
+                                        int position, long id) {
+                    Toast.makeText(MisPlatosActivity.this, "You Clicked at " + position, Toast.LENGTH_SHORT).show();
+
+                    if (position == 1) {
+                        //code specific to first list item
+                        Log.i(null, "entro en listener");
+                    }
+
+                }
+            });
+        }else{
+            list = (ListView) findViewById(R.id.list);
+            list.setAdapter(null);
+        }
     }
 
 
 
-    // OBTIENES LA IMAGEN DEL ID DE LA TABLA
-    public Bitmap buscarImagen(Long id){
-
-        MyDBHelper conn = new MyDBHelper(this, "chefya.db", null, 1);
-
-        SQLiteDatabase db = conn.getReadableDatabase();
-
-        String sql = String.format("SELECT * FROM" + Esquemas.TABLA_COMIDA+ " WHERE id = %d", id);
-        Cursor cursor = db.rawQuery(sql, new String[] {});
-        /*
-        cursor = db.query(
-                Esquemas.TABLA_COMIDA,
-                new String [] {
-                    "*"
-                },
-                "id = ?",
-                new String [] {
-                   id.toString()
-                },
-                null, null, null);
-        */
-        Bitmap bitmap = null;
-        if(cursor.moveToFirst()){
-            byte[] blob = cursor.getBlob(1);
-            ByteArrayInputStream bais = new ByteArrayInputStream(blob);
-            bitmap = BitmapFactory.decodeStream(bais);
-        }
-        if (cursor != null && !cursor.isClosed()) {
-            cursor.close();
-        }
-        db.close();
-        return bitmap;
-    }
 }

@@ -9,6 +9,9 @@ import android.widget.ImageView;
 import android.content.ContentValues;
 
 import com.google.android.gms.maps.model.LatLng;
+
+import java.io.ByteArrayOutputStream;
+
 /**
  * Created by Nacho on 15/11/2017.
  */
@@ -26,7 +29,7 @@ public class Comida {
     private boolean vegetariano;
     private boolean celiaco;
     private Categoria categoria;
-    private ImageView imagen;
+    private Bitmap imagen;
     private double latitud;
     private double longitud;
 
@@ -47,9 +50,8 @@ public class Comida {
 
     }
 
-    public Comida(String email_usuario, String titulo, int raciones, double precio, String descripcion, boolean salado, boolean dulce, boolean vegetariano, boolean celiaco, Categoria categoria, ImageView imagen, double latitud, double longitud) {
+    public Comida(String email_usuario, String titulo, int raciones, double precio, String descripcion, boolean salado, boolean dulce, boolean vegetariano, boolean celiaco, Categoria categoria, Bitmap imagen, double latitud, double longitud) {
 
-        this.id = id;
         this.email_usuario = email_usuario;
         this.titulo = titulo;
         this.raciones = raciones;
@@ -182,7 +184,7 @@ public class Comida {
         cv.put("VEGETARIANO", vegetariano);
         cv.put("CELIACO", celiaco);
         cv.put("CATEGORIA", categoria.toString());
-        cv.putNull("IMAGEN");
+        cv.put("IMAGEN", getBitmapAsByteArray(getImagen()));
         cv.put("LATITUD", latitud);
         cv.put("LONGITUD", longitud);
         return cv;
@@ -192,11 +194,17 @@ public class Comida {
         return new LatLng(latitud, longitud);
     }
 
-    public ImageView getImagen() {
+    public Bitmap getImagen() {
         return imagen;
     }
 
     public void setImagen(Bitmap imagen) {;
-        this.imagen.setImageBitmap(imagen);
+        this.imagen=imagen;
+    }
+
+    public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
+        return outputStream.toByteArray();
     }
 }
