@@ -40,7 +40,7 @@ public class Esquemas extends AppCompatActivity {
 
     public static final String TABLA_COMIDA = "COMIDAS";
     public static final String TABLA_MENSAJES = "MENSAJES";
-    public static final String TABLA_VENDIDOS = "VENDIDOS";
+    public static final String TABLA_RESERVAS = "RESERVAS";//"VENDIDOS";
     public static final String TABLA_CHATS = "CHATS";
 
 
@@ -60,13 +60,12 @@ public class Esquemas extends AppCompatActivity {
 
 
      public static final String CREAR_TABLA_COMIDA = "CREATE TABLE "+TABLA_COMIDA+" (" +
-            "ID INTEGER PRIMARY KEY NOT NULL AUTOINCREMENT," +
+            "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
             "EMAIL_USUARIO TEXT," +
             "TITULO TEXT NOT NULL," +
             "RACIONES INT," +
             "PRECIO DOUBLE," +
             "DESCRIPCION TEXT," +
-            "LUGAR TEXT," +
             "SALADO BOOLEAN," +
             "DULCE BOOLEAN," +
             "IMAGEN BLOB," +
@@ -76,13 +75,15 @@ public class Esquemas extends AppCompatActivity {
             "LATITUD DOUBLE," +
             "LONGITUD DOUBLE )";
 
-    public static final String CREAR_TABLA_VENDIDOS = "CREATE TABLE "+TABLA_VENDIDOS+" (" +
-            "ID_COMIDA INTEGER PRIMARY KEY NOT NULL, " +
-            "EMAIL_COMPRADOR TEXT, " +
-            "FECHA_VENTA FECHA TIMESTAMP, " +
+    public static final String CREAR_TABLA_RESERVAS = "CREATE TABLE "+TABLA_RESERVAS+" (" +
+            "ID_COMIDA INTEGER NOT NULL, " +
+            "EMAIL_COMPRADOR TEXT NOT NULL, " +
+            "FECHA_VENTA TIMESTAMP NOT NULL, " +
+            "CANTIDAD INTEGER, " +
             "VALORACION INTEGER, " +
             "FOREIGN KEY(ID_COMIDA) REFERENCES COMIDAS(ID), " +
-            "FOREIGN KEY(EMAIL_COMPRADOR) REFERENCES USUARIOS(EMAIL))";
+            "FOREIGN KEY(EMAIL_COMPRADOR) REFERENCES USUARIOS(EMAIL), " +
+            "PRIMARY KEY(ID_COMIDA, EMAIL_COMPRADOR, FECHA_VENTA))";
 
     public static final String CREAR_TABLA_MENSAJES = "CREATE TABLE "+TABLA_MENSAJES+" (" +
             "ID_CHAT INTEGER PRIMARY KEY NOT NULL AUTOINCREMENT, " +

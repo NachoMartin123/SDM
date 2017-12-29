@@ -47,6 +47,7 @@ public class PlatosCercaActivity extends AppCompatActivity
     DdbbDataSource datos;//acceso a datos bbdd
     private Usuario usuarioActual = null;
     private List<Comida> comidasUsuario;
+    private List<Integer> idsComidasFiltradas;
 
     ListView list;//contiene la lista de comidas
 
@@ -77,9 +78,8 @@ public class PlatosCercaActivity extends AppCompatActivity
 
         String emailUsuarioActual = getIntent().getExtras().getString("emailUsuario");
         usuarioActual = datos.getUserByEmail(emailUsuarioActual);
-        int tam = datos.sizeTable(Esquemas.TABLA_COMIDA);
         comidasUsuario = datos.getComidasNoUsuario(emailUsuarioActual);
-
+        idsComidasFiltradas = new ArrayList<>();
         actualizarHeader();
         inicializarListaComidas(comidasUsuario);
 
@@ -88,35 +88,50 @@ public class PlatosCercaActivity extends AppCompatActivity
         //mapFragment.getMapAsync(this);
     }
 
+    private int tamRacionesMayorCero(List<Comida> comidas){
+        int tam=0;
+        for(int i=0;i<comidas.size();i++) {
+            if(comidas.get(i).getRaciones()>0)
+                tam++;
+        }
+        return tam;
+    }
 
     private void inicializarListaComidas(List<Comida> comidas) {
         if (comidas.size() > 0) {
-            String[] titulos = new String[comidas.size()];
-            Integer[] raciones = new Integer[comidas.size()];
-            Double[] precios = new Double[comidas.size()];
-            String[] ciudades = new String[comidas.size()];
-            Bitmap[] imagenes = new Bitmap[comidas.size()];
+            int tam = tamRacionesMayorCero(comidas);
+            String[] titulos = new String[tam];
+            Integer[] raciones = new Integer[tam];
+            Double[] precios = new Double[tam];
+            String[] ciudades = new String[tam];
+            Bitmap[] imagenes = new Bitmap[tam];
 
             Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+            idsComidasFiltradas.clear();
+            int position = 0;
             for (int i = 0; i < comidas.size(); i++) {
-                List<Address> addresses = null;
-                try {
-                    addresses = geocoder.getFromLocation(comidas.get(i).getLatitud(), comidas.get(i).getLongitud(), 1);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                String cityName="", stateName="", countryName="";
-                if (addresses != null && addresses.size()  != 0) {
-                    cityName = addresses.get(0).getAddressLine(0);
-                    stateName = addresses.get(0).getAddressLine(1);
-                    countryName = addresses.get(0).getAddressLine(2);
-                }
+                if(comidas.get(i).getRaciones()>0) {
+                    idsComidasFiltradas.add(comidas.get(i).getId());
+                    List<Address> addresses = null;
+                    try {
+                        addresses = geocoder.getFromLocation(comidas.get(i).getLatitud(), comidas.get(i).getLongitud(), 1);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    String cityName = "", stateName = "", countryName = "";
+                    if (addresses != null && addresses.size() != 0) {
+                        cityName = addresses.get(0).getAddressLine(0);
+                        stateName = addresses.get(0).getAddressLine(1);
+                        countryName = addresses.get(0).getAddressLine(2);
+                    }
 
-                titulos[i] = comidas.get(i).getTitulo();
-                raciones[i] = comidas.get(i).getRaciones();
-                precios[i] = comidas.get(i).getPrecio();
-                ciudades[i] = cityName+", "+stateName+", "+countryName;
-                imagenes[i] = comidas.get(i).getImagen();
+                    titulos[position] = comidas.get(i).getTitulo();
+                    raciones[position] = comidas.get(i).getRaciones();
+                    precios[position] = comidas.get(i).getPrecio();
+                    ciudades[position] = cityName + ", " + stateName + ", " + countryName;
+                    imagenes[position] = comidas.get(i).getImagen();
+                    position++;
+                }
             }
 
             CustomList adapter = new CustomList(PlatosCercaActivity.this, titulos, raciones, precios, ciudades, imagenes);
@@ -127,12 +142,11 @@ public class PlatosCercaActivity extends AppCompatActivity
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
-                    Toast.makeText(PlatosCercaActivity.this, "You Clicked at " + position, Toast.LENGTH_SHORT).show();
-
-                    if (position == 1) {
-                        //code specific to first list item
-                        Log.i(null, "entro en listener");
-                    }
+                    //Toast.makeText(PlatosCercaActivity.this, "You Clicked at " + position, Toast.LENGTH_SHORT).show();
+                    Intent  miIntent = new Intent(PlatosCercaActivity.this,ReservarComidaActivity.class);
+                    miIntent.putExtra("idComidaActual", idsComidasFiltradas.get(position));
+                    miIntent.putExtra("emailUsuarioComprador", usuarioActual.getEmail());
+                    startActivity(miIntent);
 
                 }
             });
@@ -247,12 +261,13 @@ public class PlatosCercaActivity extends AppCompatActivity
         if(categoria==null) {
             inicializarListaComidas(comidasUsuario);
         }else {
-            List<Comida> comidasFiltradas = new ArrayList<Comida>();
+            List<Comida> misComidasFiltradas = new ArrayList<Comida>();
             for (Comida c : comidasUsuario) {
-                if (c.getCategoria() == categoria)
-                    comidasFiltradas.add(c);
+                if (c.getCategoria() == categoria) {
+                    misComidasFiltradas.add(c);
+                }
             }
-            inicializarListaComidas(comidasFiltradas);
+            inicializarListaComidas(misComidasFiltradas);
         }
         //resetItemsFiltrar(categoria);
 

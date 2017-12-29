@@ -8,12 +8,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
-import android.widget.ImageView;
 
 import com.example.nacho.proyectosdm.modelo.Categoria;
 import com.example.nacho.proyectosdm.modelo.Chat;
 import com.example.nacho.proyectosdm.modelo.Comida;
 import com.example.nacho.proyectosdm.modelo.Mensaje;
+import com.example.nacho.proyectosdm.modelo.Reserva;
 import com.example.nacho.proyectosdm.modelo.Usuario;
 import com.example.nacho.proyectosdm.persistence.esquemas.Esquemas;
 
@@ -58,10 +58,10 @@ public class DdbbDataSource {
 
     private void reiniciarBBDD(Context context){
         //int tam1 = sizeTable(Esquemas.TABLA_USUARIO);
-        deleteAllUsuarios();
-        int tam1 = sizeTable(Esquemas.TABLA_COMIDA);
+        deleteAllReservas();
         deleteAllComidas();
-        int tam2 = sizeTable(Esquemas.TABLA_COMIDA);
+        deleteAllUsuarios();
+
         Esquemas e = new Esquemas(context);
         List<Usuario> usuariosIniciales = e.listaInicialUsuarios();
         List<Comida> comidasIniciales = e.listaInicialComidas();
@@ -70,6 +70,7 @@ public class DdbbDataSource {
         }
         int tam1a = sizeTable(Esquemas.TABLA_USUARIO);
         int tam3 = sizeTable(Esquemas.TABLA_COMIDA);
+
 
          for (Comida comida: comidasIniciales ) {
             insertComida(comida);
@@ -252,7 +253,6 @@ public class DdbbDataSource {
             cv.put("RACIONES", comida.getRaciones());
             cv.put("PRECIO", comida.getPrecio());
             cv.put("DESCRIPCION", comida.getDescripcion());
-            cv.put("LUGAR", "lugar");
             cv.put("SALADO", comida.isSalado());
             cv.put("DULCE", comida.isDulce());
             cv.put("VEGETARIANO", comida.isVegetariano());
@@ -311,6 +311,27 @@ public class DdbbDataSource {
         }catch(Exception e){
             Log.e(null, "error en getComidaById");
             return null;
+        }
+    }
+
+
+    private void setImagenYtituloYPrecio(Reserva reserva){
+
+        try {
+            open();
+            String selectQuery = "SELECT TITULO, PRECIO, IMAGEN FROM COMIDAS WHERE ID="+reserva.getId_comida();
+            Cursor cursor = database.rawQuery(selectQuery, null);
+            if (cursor.moveToFirst()) {
+                reserva.setTitulo(cursor.getString(cursor.getColumnIndex("TITULO")));
+                reserva.setPrecio(cursor.getDouble(cursor.getColumnIndex("PRECIO")));
+                byte[] imgByte = cursor.getBlob(cursor.getColumnIndex("IMAGEN"));
+                if(imgByte!=null)
+                    reserva.setImagen(BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length));
+            }
+            cursor.close();
+            close();
+        }catch(Exception e){
+            Log.e(null, "error en getComidaById");
         }
     }
 
@@ -440,9 +461,86 @@ public class DdbbDataSource {
         }
     }
 
+    private boolean updateRacionesComida(int idComida, int cantidad){
+        try {
+            Comida c = getComidaById(idComida);
+            c.setRaciones(c.getRaciones()-cantidad);
+            open();
+            database.update(Esquemas.TABLA_COMIDA, c.toContentValues(), "ID = ?", new String[] {
+                    String.valueOf(idComida)
+            });
+
+        }catch (Exception e) {
+            return false;
+        }finally {
+            close();
+        }
+        return true;
+    }
+
+    //-----------------metodos reservas---------------------
 
 
+    private void deleteAllReservas(){
+        open();
+        String selectQuery =  "DELETE FROM "+Esquemas.TABLA_RESERVAS;
+        database.execSQL(selectQuery);
+        close();
+    }
 
+
+    public boolean insertReserva(int idComida, String emailComprador, Timestamp fechaVenta, int cantidad){
+        try {
+            open();
+            ContentValues cv = new ContentValues();
+            cv.put("ID_COMIDA", idComida);
+            cv.put("EMAIL_COMPRADOR", emailComprador);
+            cv.put("FECHA_VENTA", String.valueOf(fechaVenta));
+            cv.put("CANTIDAD", cantidad);
+            database.insert(Esquemas.TABLA_RESERVAS, null, cv);
+
+        }catch (Exception e) {
+            return false;
+        }finally {
+            close();
+        }
+        return updateRacionesComida(idComida, cantidad);
+    }
+
+    public List<Reserva> getReservasUsuario(String email){
+        try {
+            open();
+            Cursor cursor = database.query(
+                    Esquemas.TABLA_RESERVAS,
+                    new String []{
+                            "ID_COMIDA","EMAIL_COMPRADOR","FECHA_VENTA","CANTIDAD"
+                    },
+                    "EMAIL_COMPRADOR = ?",
+                    new String [] {
+                            email
+                    }, null, null, null);
+
+            List<Reserva> reservas = new ArrayList<>();
+            if (cursor.moveToFirst()) {
+                do {
+                    Reserva r = new Reserva();
+                    r.setId_comida(cursor.getInt(cursor.getColumnIndex("ID_COMIDA")));
+                    r.setEmail_usuario(cursor.getString(cursor.getColumnIndex("EMAIL_COMPRADOR")));
+                    r.setCantidad(cursor.getInt(cursor.getColumnIndex("CANTIDAD")));
+                    r.setFecha_venta( Timestamp.valueOf(cursor.getString(cursor.getColumnIndex("FECHA_VENTA"))));
+                    reservas.add(r);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            close();
+            for(int i=0;i<reservas.size();i++)
+                setImagenYtituloYPrecio(reservas.get(i));
+            return reservas;
+        }catch (Exception e) {
+            Log.e(null, "error en getReservasUsuario()", e);
+            return null;
+        }
+    }
 
 
 

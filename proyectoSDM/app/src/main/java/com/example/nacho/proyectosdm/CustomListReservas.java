@@ -11,42 +11,47 @@ import android.widget.TextView;
 
 import com.example.nacho.proyectosdm.R;
 
+import java.sql.Timestamp;
+
 /**
- * Created by Nacho on 23/12/2017.
+ * Created by Nacho on 29/12/2017.
  */
-public class CustomList extends ArrayAdapter<String> {
+
+public class CustomListReservas extends ArrayAdapter<String> {
 
     private final Activity context;
     private final String[] titulos;
-    private final Integer[] raciones;
+    private final Integer[] cantidades;
     private final Double[] precios;
+    private final Timestamp[] fechas_ventas;
     private final Bitmap[] imagenes;
-    private final String[] ciudades;
+    
 
-    public CustomList(Activity context, String[] titulos, Integer[] raciones, Double[] precios, String[] ciudades, Bitmap[] imagenes) {
+    public CustomListReservas(Activity context, String[] titulos, Integer[] cantidades, Double[] precios, Timestamp[] fechas_ventas, Bitmap[] imagenes) {
         super(context, R.layout.list_single, titulos);
         this.context = context;
         this.titulos = titulos;
-        this.imagenes = imagenes;
+        this.cantidades = cantidades;
         this.precios = precios;
-        this.raciones = raciones;
-        this.ciudades = ciudades;
+        this.fechas_ventas = fechas_ventas;
+        this.imagenes = imagenes;
 
     }
     @Override
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
         View rowView= inflater.inflate(R.layout.list_single, null, true);
+        //reutilizo campos de list_single
         TextView txtTitulo = (TextView) rowView.findViewById(R.id.singleTitulo);
-        TextView txtRaciones= (TextView) rowView.findViewById(R.id.singleRaciones);
+        TextView txtCantidades= (TextView) rowView.findViewById(R.id.singleRaciones);
         TextView txtPrecios= (TextView) rowView.findViewById(R.id.singlePrecio);
-        TextView txtCiudades= (TextView) rowView.findViewById(R.id.singleCiudad);
+        TextView txtFecha= (TextView) rowView.findViewById(R.id.singleCiudad);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.imgSingle);
 
         txtTitulo.setText(titulos[position]);
-        txtRaciones.setText("Raciones restantes: "+raciones[position]);
-        txtPrecios.setText("Precio: "+precios[position]);
-        txtCiudades.setText("Dirección: "+ciudades[position]);
+        txtCantidades.setText("Raciones compradas: "+cantidades[position]);
+        txtPrecios.setText("Precio/ud: "+precios[position]+"€");
+        txtFecha.setText("Fecha compra: "+fechas_ventas[position].toString().substring(0, fechas_ventas[position].toString().length()-7));
 
         if(imagenes[position]!=null)
             imageView.setImageBitmap(Bitmap.createScaledBitmap(imagenes[position], 550, 370, false));

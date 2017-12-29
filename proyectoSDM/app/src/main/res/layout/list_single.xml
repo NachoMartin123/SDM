@@ -58,7 +58,7 @@
                 android:scrollHorizontally="false"
                 android:scrollbars="none"
                 android:singleLine="false"
-                android:text="ciudad" />
+                android:text="dirección" />
 
         </LinearLayout>
 

@@ -4,6 +4,7 @@ package com.example.nacho.proyectosdm.persistence.utils;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.example.nacho.proyectosdm.persistence.esquemas.Esquemas;
 
@@ -24,20 +25,25 @@ public class MyDBHelper extends SQLiteOpenHelper {
 
 
     public MyDBHelper(Context context, String name,SQLiteDatabase.CursorFactory factory, int version){
-
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-
-       // super(context, name, factory, version);
+        //onCreate(this.getWritableDatabase());
     }
+
 
     // genera las tablas
     @Override
     public void onCreate(SQLiteDatabase db) {
 
         // creamos la base de datos
+        //db.execSQL("DROP TABLE IF EXISTS "+Esquemas.TABLA_RESERVAS);
+        //db.execSQL("DROP TABLE IF EXISTS "+Esquemas.TABLA_USUARIO);
+        //db.execSQL("DROP TABLE IF EXISTS "+Esquemas.TABLA_COMIDA);
+
+
+        //db.execSQL(Esquemas.CREAR_TABLA_RESERVAS);
         db.execSQL(Esquemas.CREAR_TABLA_USUARIO);
         db.execSQL(Esquemas.CREAR_TABLA_COMIDA);
-        db.execSQL(Esquemas.CREAR_TABLA_VENDIDOS);
+        db.execSQL(Esquemas.CREAR_TABLA_RESERVAS);
         db.execSQL(Esquemas.CREAR_TABLA_MENSAJES);
         db.execSQL(Esquemas.CREAR_TABLA_CHATS);
     }
@@ -50,7 +56,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + Esquemas.TABLA_USUARIO);
         db.execSQL("DROP TABLE IF EXISTS " + Esquemas.TABLA_COMIDA);
         db.execSQL("DROP TABLE IF EXISTS " + Esquemas.TABLA_MENSAJES);
-        db.execSQL("DROP TABLE IF EXISTS " + Esquemas.TABLA_VENDIDOS);
+        db.execSQL("DROP TABLE IF EXISTS " + Esquemas.TABLA_RESERVAS);
         db.execSQL("DROP TABLE IF EXISTS " + Esquemas.TABLA_CHATS);
         onCreate(db);
     }

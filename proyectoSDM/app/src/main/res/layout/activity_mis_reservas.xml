@@ -6,4 +6,13 @@
     android:layout_height="match_parent"
     tools:context="com.example.nacho.proyectosdm.MisReservasActivity">
 
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+    </ListView>
+
+
 </android.support.constraint.ConstraintLayout>

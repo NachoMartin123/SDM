@@ -33,7 +33,7 @@ public class Comida {
     private double latitud;
     private double longitud;
 
-    public Comida(){
+    public Comida() {
         this.email_usuario = "";
         this.titulo = "";
         this.raciones = 0;
@@ -43,7 +43,7 @@ public class Comida {
         this.dulce = false;
         this.vegetariano = false;
         this.celiaco = false;
-        this.imagen=null;
+        this.imagen = null;
         this.categoria = null;
         this.latitud = 0;
         this.longitud = 0;
@@ -61,7 +61,7 @@ public class Comida {
         this.dulce = dulce;
         this.vegetariano = vegetariano;
         this.celiaco = celiaco;
-        this.imagen=imagen;
+        this.imagen = imagen;
         this.categoria = categoria;
         this.latitud = latitud;
         this.longitud = longitud;
@@ -173,21 +173,29 @@ public class Comida {
 
     public ContentValues toContentValues() {
         ContentValues cv = new ContentValues();
-        cv.put("EMAIL_USUARIO", email_usuario);
-        cv.put("TITULO", titulo);
-        cv.put("RACIONES", raciones);
-        cv.put("PRECIO", precio);
-        cv.put("DESCRIPCION", descripcion);
-        //cv.put("LUGAR", "lugar");
-        cv.put("SALADO", salado);
-        cv.put("DULCE", dulce);
-        cv.put("VEGETARIANO", vegetariano);
-        cv.put("CELIACO", celiaco);
-        cv.put("CATEGORIA", categoria.toString());
-        cv.put("IMAGEN", getBitmapAsByteArray(getImagen()));
-        cv.put("LATITUD", latitud);
-        cv.put("LONGITUD", longitud);
+        cv.put("EMAIL_USUARIO", getEmail_usuario());
+        cv.put("TITULO", getTitulo());
+        cv.put("RACIONES", getRaciones());
+        cv.put("PRECIO", getPrecio());
+        cv.put("DESCRIPCION", getDescripcion());
+        cv.put("SALADO", isSalado());
+        cv.put("DULCE", isDulce());
+        cv.put("VEGETARIANO", isVegetariano());
+        cv.put("CELIACO", isCeliaco());
+        cv.put("CATEGORIA", getCategoria().toString());
+        byte[] data = getImageAsByteArray(getImagen());
+        cv.put("IMAGEN", data);
+        cv.put("LATITUD", getLatitud());
+        cv.put("LONGITUD", getLongitud());
         return cv;
+    }
+
+    private static byte[] getImageAsByteArray(Bitmap miImagen) {
+        if (miImagen == null)
+            return null;
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        miImagen.compress(Bitmap.CompressFormat.JPEG, 0, outputStream);
+        return outputStream.toByteArray();
     }
 
     public LatLng crearPosicion() {
@@ -198,13 +206,8 @@ public class Comida {
         return imagen;
     }
 
-    public void setImagen(Bitmap imagen) {;
-        this.imagen=imagen;
-    }
-
-    public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
-        return outputStream.toByteArray();
+    public void setImagen(Bitmap imagen) {
+        this.imagen = imagen;
     }
 }
+
