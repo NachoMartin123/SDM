@@ -44,6 +44,7 @@ public class MisPlatosActivity extends AppCompatActivity {
 
         inicializarListaComidas(comidasUsuario);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 

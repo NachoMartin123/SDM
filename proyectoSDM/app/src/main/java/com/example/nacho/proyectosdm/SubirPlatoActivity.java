@@ -120,6 +120,7 @@ public class SubirPlatoActivity extends AppCompatActivity {
             }
         }
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
 

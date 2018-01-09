@@ -11,5 +11,7 @@ public class MensajesActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); // para que no se gire
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mensajes);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }

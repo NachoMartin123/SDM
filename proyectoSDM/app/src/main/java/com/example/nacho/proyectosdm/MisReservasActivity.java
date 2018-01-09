@@ -44,6 +44,8 @@ public class MisReservasActivity extends AppCompatActivity {
         comidasReservadas = datos.getReservasUsuario(emailUsuarioActual);
 
         inicializarListaMisReservas(comidasReservadas);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 

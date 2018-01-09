@@ -53,13 +53,4 @@ public class MapaActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .newLatLngBounds(creadorRango.build(), 100));
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

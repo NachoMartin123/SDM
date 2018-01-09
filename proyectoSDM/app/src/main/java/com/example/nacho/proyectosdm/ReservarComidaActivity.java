@@ -43,6 +43,7 @@ public class ReservarComidaActivity extends AppCompatActivity {
 
         inicializarDatos();
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void inicializarDatos() {
