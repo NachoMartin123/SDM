@@ -48,6 +48,7 @@ public class PlatosCercaActivity extends AppCompatActivity
     private Usuario usuarioActual = null;
     private List<Comida> comidasUsuario;
     private List<Integer> idsComidasFiltradas;
+    private Categoria categoria;
 
     ListView list;//contiene la lista de comidas
 
@@ -80,6 +81,7 @@ public class PlatosCercaActivity extends AppCompatActivity
         usuarioActual = datos.getUserByEmail(emailUsuarioActual);
         comidasUsuario = datos.getComidasNoUsuario(emailUsuarioActual);
         idsComidasFiltradas = new ArrayList<>();
+        categoria = Categoria.TODAS;
         actualizarHeader();
         inicializarListaComidas(comidasUsuario);
     }
@@ -235,17 +237,25 @@ public class PlatosCercaActivity extends AppCompatActivity
             DialogFragment dialogo = SeleccionExtrasDialog.crear(extraSeleccionados);
             dialogo.show(getSupportFragmentManager(), "dialogoExtras");
         } else if (item.getItemId() == R.id.itemDesayunos) {
-            filtrarComidas(Categoria.DESAYUNO);
+            item.setChecked(true);
+            categoria = Categoria.DESAYUNO;
+            filtrarComidas();
         } else if (item.getItemId() == R.id.itemComidas){
-            filtrarComidas(Categoria.COMIDA);
+            item.setChecked(true);
+            categoria = Categoria.COMIDA;
+            filtrarComidas();
         }else if(item.getItemId()==R.id.itemMeriendas){
-            filtrarComidas(Categoria.MERIENDA);
+            item.setChecked(true);
+            categoria = Categoria.MERIENDA;
+            filtrarComidas();
         }else if (item.getItemId() == R.id.itemCenas) {
-            filtrarComidas(Categoria.CENA);
+            item.setChecked(true);
+            categoria = Categoria.CENA;
+            filtrarComidas();
         }else if (item.getItemId() == R.id.itemTodos) {
-            filtrarComidas(null);
-        }else {
-            item.setChecked(!item.isChecked());
+            item.setChecked(true);
+            categoria = Categoria.TODAS;
+            filtrarComidas();
         }
 
         return super.onOptionsItemSelected(item);
@@ -254,10 +264,11 @@ public class PlatosCercaActivity extends AppCompatActivity
     @Override
     public void onSeleccionExtraRealizada(boolean[] seleccion) {
         this.extraSeleccionados = seleccion;
+
     }
 
-    private void filtrarComidas(Categoria categoria){
-        if(categoria==null) {
+    private void filtrarComidas(){
+        if(categoria==Categoria.TODAS) {
             inicializarListaComidas(comidasUsuario);
         }else {
             List<Comida> misComidasFiltradas = new ArrayList<Comida>();
