@@ -82,10 +82,6 @@ public class PlatosCercaActivity extends AppCompatActivity
         idsComidasFiltradas = new ArrayList<>();
         actualizarHeader();
         inicializarListaComidas(comidasUsuario);
-
-        //SupportMapFragment mapFragment = (SupportMapFragment)getSupportFragmentManager()
-        //        .findFragmentById(R.id.mapa);
-        //mapFragment.getMapAsync(this);
     }
 
     private int tamRacionesMayorCero(List<Comida> comidas){
@@ -187,6 +183,9 @@ public class PlatosCercaActivity extends AppCompatActivity
         switch (id) {
             case R.id.nav_subirplato:
                 lanzarNavActivity(SubirPlatoActivity.class);
+                break;
+            case R.id.nav_mapa:
+                lanzarNavActivity(MapaActivity.class);
                 break;
             case R.id.nav_mensajes:
                 lanzarNavActivity(MensajesActivity.class);
@@ -298,25 +297,4 @@ public class PlatosCercaActivity extends AppCompatActivity
 
     }
 
-    /*
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-
-        DdbbDataSource bd = new DdbbDataSource(this);
-
-        List<Comida> comidas = bd.getComidasUsuario("a");
-
-        LatLngBounds.Builder creadorRango = LatLngBounds.builder();
-        for (Comida comida: comidas) {
-            LatLng posicion = comida.crearPosicion();
-            googleMap.addMarker(new MarkerOptions()
-                    .position(posicion)
-                    .title(comida.getDescripcion()));
-            creadorRango.include(posicion);
-        }
-
-        googleMap.moveCamera(CameraUpdateFactory
-            .newLatLngBounds(creadorRango.build(), 100));
-    }
-    */
 }

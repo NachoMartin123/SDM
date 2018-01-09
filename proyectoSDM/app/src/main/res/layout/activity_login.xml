@@ -7,8 +7,8 @@
     tools:context="com.example.nacho.proyectosdm.LoginActivity">
 
     <ScrollView
-        android:layout_width="368dp"
-        android:layout_height="495dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -54,7 +54,9 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="false"
-                    android:hint="@string/usuario" />
+                    android:hint="@string/usuario"
+                    android:singleLine="true"
+                    android:imeOptions="actionNext"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -74,7 +76,9 @@
                     android:layout_height="wrap_content"
                     android:autoText="false"
                     android:hint="@string/password"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"
+                    android:singleLine="true"
+                    android:imeOptions="actionDone"/>
 
 
 

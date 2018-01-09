@@ -42,5 +42,7 @@
     <string name="title_activity_maps">Map</string>
     <string name="password">contraseña</string>
     <string name="usuario">usuario</string>
+    <string name="ver_mapa">Ver mapa</string>
+    <string name="title_activity_mapa">MapaActivity</string>
 
 </resources>

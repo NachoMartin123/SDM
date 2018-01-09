@@ -86,7 +86,7 @@ public class Esquemas extends AppCompatActivity {
             "PRIMARY KEY(ID_COMIDA, EMAIL_COMPRADOR, FECHA_VENTA))";
 
     public static final String CREAR_TABLA_MENSAJES = "CREATE TABLE "+TABLA_MENSAJES+" (" +
-            "ID_CHAT INTEGER PRIMARY KEY NOT NULL AUTOINCREMENT, " +
+            "ID_CHAT INTEGER PRIMARY KEY AUTOINCREMENT, " +
             "EMAIL_EMISOR TEXT, " +
             "MENSAJE TEXT NOT NULL, " +
             "FECHA TIMESTAMP, " +
@@ -94,7 +94,7 @@ public class Esquemas extends AppCompatActivity {
             "FOREIGN KEY(EMAIL_EMISOR) REFERENCES USUARIOS(EMAIL))";
 
     public static final String CREAR_TABLA_CHATS = "CREATE TABLE "+TABLA_CHATS+" (" +
-            "ID INTEGER PRIMARY KEY NOT NULL AUTOINCREMENT, " +
+            "ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
             "EMAIL_USER_1 TEXT, " +
             "EMAIL_USER_2 TEXT, " +
             "FOREIGN KEY(EMAIL_USER_1) REFERENCES USUARIOS(EMAIL), " +
@@ -132,6 +132,7 @@ public class Esquemas extends AppCompatActivity {
         comida.setRaciones(4);
         comida.setLatitud(43.362119);
         comida.setLongitud(-5.850375);
+        comidas.add(comida);
 
         comida = new Comida();
         comida.setCategoria(Categoria.COMIDA);
@@ -143,6 +144,7 @@ public class Esquemas extends AppCompatActivity {
         comida.setRaciones(4);
         comida.setLatitud(43.540915);
         comida.setLongitud(-5.922073);
+        comidas.add(comida);
 
         //Long id, String email_usuario, String nombre, int raciones, double precio, String descripcion, boolean salado, boolean dulce, boolean vegetariano, boolean celiaco, Categoria categoria, ImageView imagen, double latitud, double longitud) {
         comidas.add(new Comida("jon@gmail.com", "Pizza margarita", 4, 3.15, "pizza traicional con queso y tomate", true, false, true,false,Categoria.COMIDA,BitmapFactory.decodeResource(context.getResources(), R.drawable.pizza),43.540531, -5.654908));
