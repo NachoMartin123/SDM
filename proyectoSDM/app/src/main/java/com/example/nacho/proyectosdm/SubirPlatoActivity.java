@@ -1,6 +1,7 @@
 package com.example.nacho.proyectosdm;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -38,7 +39,10 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.nacho.proyectosdm.modelo.Categoria;
+import com.example.nacho.proyectosdm.modelo.Comida;
 import com.example.nacho.proyectosdm.persistence.esquemas.Esquemas;
+import com.example.nacho.proyectosdm.persistence.utils.DdbbDataSource;
 import com.example.nacho.proyectosdm.persistence.utils.MyDBHelper;
 
 import java.io.ByteArrayOutputStream;
@@ -78,11 +82,17 @@ public class SubirPlatoActivity extends AppCompatActivity {
 
     RadioGroup mradioGroup;
 
+    private RadioButton radioButtonDesayuno;
+    private RadioButton radioButtonMerienda;
+    private RadioButton radioButtonComida;
+    private RadioButton radioButtonCena;
 
     CheckBox mvegetariano;
     CheckBox mceliaco;
     CheckBox msalado;
     CheckBox mdulce;
+
+    private String emailUsuario;
 
 
 
@@ -120,11 +130,18 @@ public class SubirPlatoActivity extends AppCompatActivity {
             }
         }
 
+        emailUsuario = getIntent().getStringExtra("emailUsuario");
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
 
     private void init() {
+
+        radioButtonDesayuno = (RadioButton)findViewById(R.id.radioButtonDesayuno);
+        radioButtonMerienda = (RadioButton)findViewById(R.id.radioButtonMerienda);
+        radioButtonComida = (RadioButton)findViewById(R.id.radioButtonComida);
+        radioButtonCena = (RadioButton)findViewById(R.id.radioButtonCena);
 
 
         mImageButton =(Button) findViewById(R.id.btonSubirFoto);
@@ -225,43 +242,35 @@ public class SubirPlatoActivity extends AppCompatActivity {
         }
 
         else{
-            try{
-        MyDBHelper conn = new MyDBHelper(this, "chefya.db", null, 1);
-        SQLiteDatabase database = conn.getWritableDatabase();
-        ContentValues values = new ContentValues();
 
+            DdbbDataSource bd = new DdbbDataSource(this);
 
-     //   values.put("IMAGEN",  imageViewToByte(mImageFoto)
-        values.put("ID", CategoriaMax()+1 );
-        values.put("TITULO", mtitulo.getText().toString());
-        values.put("DESCRIPCION", mdescripcion.getText().toString());
-        values.put("PRECIO", mprecio.getText().toString());
-        values.put("LUGAR", mlugar.getText().toString());
-        values.put("RACIONES", mracion.getContext().toString());
-        values.put( "CATEGORIA", mradioGroup.getContext().toString());
-        values.put( "VEGETARIANO",  mvegetariano.isChecked());
-        values.put( "CELIACO", mceliaco.isChecked());
-        values.put( "SALADO",  msalado.isChecked());
-        values.put( "DULCE", mdulce.isChecked());
+            Comida comida = new Comida();
+            comida.setLatitud(0);
+            comida.setLongitud(0);
+            comida.setDescripcion(mdescripcion.getText().toString());
+            comida.setSalado(msalado.isChecked());
+            comida.setRaciones(mracion.getSelectedItemPosition() + 1);
+            comida.setEmail_usuario(emailUsuario);
+            comida.setDulce(mdulce.isChecked());
+            comida.setCeliaco(mceliaco.isChecked());
+            comida.setPrecio(Double.parseDouble(mprecio.getText().toString()));
+            if (radioButtonDesayuno.isChecked())
+                comida.setCategoria(Categoria.DESAYUNO);
+            else if (radioButtonCena.isChecked())
+                comida.setCategoria(Categoria.CENA);
+            else if (radioButtonComida.isChecked())
+                comida.setCategoria(Categoria.COMIDA);
+            else
+                comida.setCategoria(Categoria.MERIENDA);
+            comida.setImagen(bitmap);
 
-       Long idResultante = database.insert(Esquemas.TABLA_COMIDA, "TITULO", values);
+            bd.insertComida(comida);
 
-        Toast.makeText(getApplicationContext(), "Plato Subido Correctamente " + idResultante, Toast.LENGTH_SHORT).show();
-        Intent miIntent = null;
-
-        miIntent = new Intent(SubirPlatoActivity.this, PlatosCercaActivity.class);
-        if (miIntent != null) {
-            startActivity(miIntent); }
-                database.close();
-
-
-            } catch (Exception e){
-                Toast.makeText(getApplicationContext(), "No se ha podido subir el plato", Toast.LENGTH_SHORT).show();
-
-            }
-       }
-
+            finish();
+        }
     }
+
     public static byte[] imageViewToByte(ImageView image) {
         Bitmap bitmap = ((BitmapDrawable)image.getDrawable()).getBitmap();
         ByteArrayOutputStream stream = new ByteArrayOutputStream(20480);
@@ -374,41 +383,10 @@ public class SubirPlatoActivity extends AppCompatActivity {
 
 
     private void abriCamara() {
-        File miFile=new File(Environment.getExternalStorageDirectory(),DIRECTORIO_IMAGEN);
-        boolean isCreada=miFile.exists();
 
-        if(isCreada==false){
-            isCreada=miFile.mkdirs();
-        }
 
-        if(isCreada==true){
-            Long consecutivo= System.currentTimeMillis()/1000;
-            String nombre=consecutivo.toString()+".jpg";
-
-            path=Environment.getExternalStorageDirectory()+File.separator+DIRECTORIO_IMAGEN
-                    +File.separator+nombre;//indicamos la ruta de almacenamiento
-
-            fileImagen=new File(path);
-
-            Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT,Uri.fromFile(fileImagen));
-
-            ////
-            if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N)
-            {
-                String authorities=SubirPlatoActivity.this.getPackageName()+".provider";
-                Uri imageUri= FileProvider.getUriForFile(SubirPlatoActivity.this,authorities,fileImagen);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-            }else
-            {
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(fileImagen));
-            }
-            startActivityForResult(intent,COD_FOTO);
-
-            ////
-
-        }
-
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, COD_FOTO);
     }
 
 
@@ -416,34 +394,26 @@ public class SubirPlatoActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        switch (requestCode){
-            case COD_SELECCIONA:
-                Uri miPath=data.getData();
-                mImageFoto.setImageURI(miPath);
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case COD_SELECCIONA:
+                    Uri miPath = data.getData();
+                    mImageFoto.setImageURI(miPath);
 
-                try {
-                    bitmap=MediaStore.Images.Media.getBitmap(SubirPlatoActivity.this.getContentResolver(),miPath);
-                    mImageFoto.setImageBitmap(bitmap);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(SubirPlatoActivity.this.getContentResolver(), miPath);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
-                break;
-            case COD_FOTO:
-                MediaScannerConnection.scanFile(SubirPlatoActivity.this, new String[]{path}, null,
-                        new MediaScannerConnection.OnScanCompletedListener() {
-                            @Override
-                            public void onScanCompleted(String path, Uri uri) {
-                                Log.i("Path",""+path);
-                            }
-                        });
-
-                bitmap= BitmapFactory.decodeFile(path);
-                mImageFoto.setImageBitmap(bitmap);
-
-                break;
+                    break;
+                case COD_FOTO:
+                    bitmap = (Bitmap)data.getExtras().get("data");
+                    break;
+            }
+            bitmap = redimensionarImagen(bitmap, 600, 800);
+            mImageFoto.setImageBitmap(bitmap);
         }
-        bitmap=redimensionarImagen(bitmap,600,800);
     }
 
 

@@ -65,15 +65,20 @@ public class MisPlatosActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                String cityName = addresses.get(0).getAddressLine(0);
-                String stateName = addresses.get(0).getAddressLine(1);
-                String countryName = addresses.get(0).getAddressLine(2);
+                if (addresses.isEmpty()) {
+                    ciudades[i] = "Desconocida";
+                }
+                else {
+                    String cityName = addresses.get(0).getAddressLine(0);
+                    String stateName = addresses.get(0).getAddressLine(1);
+                    String countryName = addresses.get(0).getAddressLine(2);
+                    ciudades[i] = cityName+", "+stateName+", "+countryName;
+                }
 
                 titulos[i] = comidas.get(i).getTitulo();
                 imageId[i] = i;//comidas.get(i).getId()
                 raciones[i] = comidas.get(i).getRaciones();
                 precios[i] = comidas.get(i).getPrecio();
-                ciudades[i] = cityName+", "+stateName+", "+countryName;
                 imagenes[i] = comidas.get(i).getImagen();
             }
 
