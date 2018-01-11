@@ -1,119 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="8dp"
     tools:context="com.example.nacho.proyectosdm.ConfiguracionActivity">
 
-    <ScrollView
-        android:layout_width="368dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="0dp">
+        android:orientation="vertical">
 
-        <LinearLayout
+        <ImageView
+            android:id="@+id/imagenChefYa"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@mipmap/chef_ya" />
+
+
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/textActualizarNombreUsuario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/imagenChefYa"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@mipmap/chef_ya" />
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="8dp"
+            android:hint="Actualizar Nombre Usuario"
+            android:inputType="textLongMessage"
+            android:imeOptions="actionNext"
+            />
 
 
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/textActualizarNombreUsuario"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="8dp"
-                android:hint="Actualizar Nombre Usuario"
-                android:inputType="textLongMessage" />
-
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/textActualizarEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="8dp"
-                android:hint="Actualizar Email"
-                android:inputType="textLongMessage" />
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/txtActualizarTelefono"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="8dp"
-                android:hint="Actualizar Telefono:"
-                android:inputType="numberDecimal"
-
-
-                />
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/textLayoutContraseña"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutUsuario"
-                app:passwordToggleEnabled="false" >
-
-            <EditText
-                android:id="@+id/contraseña"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="Cambiar contraseña"
-                android:inputType="textPassword"
-                android:textColorLink="@android:color/holo_red_dark"/>
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/textLayoutReContraseña"
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/txtActualizarTelefono"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textLayoutUsuario"
-            app:passwordToggleEnabled="false">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="8dp"
+            android:hint="Actualizar Telefono:"
+            android:inputType="numberDecimal"
+            android:imeOptions="actionNext"
+            />
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/textContrasena"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="8dp"
+            android:hint="Contraseña:"
+            android:inputType="textPassword"
+            android:imeOptions="actionNext"
+            />
 
-            <EditText
-                android:id="@+id/Recontraseña"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:hint="Repetir contraseña"
-                android:inputType="textPassword"
-                android:textColorLink="@android:color/holo_red_dark"/>
-
-        </android.support.design.widget.TextInputLayout>
-
-            <Button
-                android:id="@+id/btnActualizar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-
-
-                android:onClick="actualizar"
-                android:text="Actualizar Datos"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-        </LinearLayout>
-    </ScrollView>
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/textRecontrasena"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="8dp"
+            android:hint="Confirmar contraseña:"
+            android:inputType="textPassword"
+            android:imeOptions="actionDone"
+            />
 
 
-</android.support.constraint.ConstraintLayout>
+        <Button
+            android:id="@+id/btnActualizar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:onClick="actualizar"
+            android:text="Actualizar Datos"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </LinearLayout>
+</ScrollView>

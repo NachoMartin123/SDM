@@ -613,4 +613,17 @@ public class DdbbDataSource {
     }
 
 
+    public void updateUsuario(Usuario usuario) {
+        open();
+        ContentValues values = new ContentValues();
+        values.put("NOMBRE", usuario.getNombre());
+        values.put("TELEFONO", usuario.getTelefono());
+        values.put("PASSWORD", usuario.getPassword());
+        database.update(Esquemas.TABLA_USUARIO, values,
+                "EMAIL = ?",
+                new String [] {
+                    usuario.getEmail()
+                });
+        close();
+    }
 }
