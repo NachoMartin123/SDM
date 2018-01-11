@@ -209,5 +209,21 @@ public class Comida {
     public void setImagen(Bitmap imagen) {
         this.imagen = imagen;
     }
+
+    public boolean cumpleCaracteristicas(boolean salado, boolean dulce, boolean vegetariano, boolean celiaco) {
+        if (salado && !this.salado) {
+            return false;
+        }
+        if (dulce && !this.dulce) {
+            return false;
+        }
+        if (vegetariano && !this.vegetariano) {
+            return false;
+        }
+        if (celiaco && !this.celiaco) {
+            return false;
+        }
+        return true;
+    }
 }
 

@@ -42,7 +42,7 @@ public class PlatosCercaActivity extends AppCompatActivity
     private ActionBarDrawerToggle mDrawerToggle;
     FragmentTransaction fragmentTransaction;
 
-    private boolean[] extraSeleccionados = {true, true, true, true};
+    private boolean[] extraSeleccionados = {false, false, false, false};
 
     DdbbDataSource datos;//acceso a datos bbdd
     private Usuario usuarioActual = null;
@@ -264,21 +264,22 @@ public class PlatosCercaActivity extends AppCompatActivity
     @Override
     public void onSeleccionExtraRealizada(boolean[] seleccion) {
         this.extraSeleccionados = seleccion;
-
+        filtrarComidas();
     }
 
     private void filtrarComidas(){
-        if(categoria==Categoria.TODAS) {
-            inicializarListaComidas(comidasUsuario);
-        }else {
-            List<Comida> misComidasFiltradas = new ArrayList<Comida>();
-            for (Comida c : comidasUsuario) {
-                if (c.getCategoria() == categoria) {
-                    misComidasFiltradas.add(c);
-                }
+        List<Comida> misComidasFiltradas = new ArrayList<Comida>();
+        for (Comida c : comidasUsuario) {
+            if ((categoria == Categoria.TODAS || c.getCategoria() == categoria)
+                    && c.cumpleCaracteristicas(
+                            extraSeleccionados[2],
+                            extraSeleccionados[3],
+                            extraSeleccionados[0],
+                            extraSeleccionados[1])) {
+                misComidasFiltradas.add(c);
             }
-            inicializarListaComidas(misComidasFiltradas);
         }
+        inicializarListaComidas(misComidasFiltradas);
         //resetItemsFiltrar(categoria);
 
     }
