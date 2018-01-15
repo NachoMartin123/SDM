@@ -23,10 +23,13 @@ public class MyDBHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "chefYa.db";
     private static final int DATABASE_VERSION = 1;
 
+    private DdbbDataSource dataSource;
+    private Context context;
 
-    public MyDBHelper(Context context, String name,SQLiteDatabase.CursorFactory factory, int version){
+    public MyDBHelper(Context context, DdbbDataSource ddbbDataSource) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        //onCreate(this.getWritableDatabase());
+        this.dataSource = ddbbDataSource;
+        this.context = context;
     }
 
 
@@ -46,6 +49,8 @@ public class MyDBHelper extends SQLiteOpenHelper {
         db.execSQL(Esquemas.CREAR_TABLA_RESERVAS);
         db.execSQL(Esquemas.CREAR_TABLA_MENSAJES);
         db.execSQL(Esquemas.CREAR_TABLA_CHATS);
+
+        this.dataSource.reiniciarBBDD(db, context);
     }
 
 // cada vez que iniciamos la app revisa si existe los datos buscados en la base de datos

@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.nacho.proyectosdm.persistence.esquemas.Esquemas;
+import com.example.nacho.proyectosdm.persistence.utils.DdbbDataSource;
 import com.example.nacho.proyectosdm.persistence.utils.MyDBHelper;
 
 public class RegistroActivity extends AppCompatActivity {
@@ -72,7 +73,7 @@ public class RegistroActivity extends AppCompatActivity {
 
         else {
 
-            MyDBHelper conn = new MyDBHelper(this, "chefya.db", null, 1);
+            MyDBHelper conn = new MyDBHelper(this, new DdbbDataSource(this));
             SQLiteDatabase database = conn.getWritableDatabase();
             ContentValues values = new ContentValues();
 

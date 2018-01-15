@@ -50,30 +50,30 @@ public class DdbbDataSource {
      */
     public DdbbDataSource(Context context) {
         //PRUEBAS DE FUNCINAMIENTO DE METODOS
-        dbHelper = new MyDBHelper(context, null, null, 1);
+        dbHelper = new MyDBHelper(context, this);
 
         //reiniciarBBDD(context);
 
     }
 
-    private void reiniciarBBDD(Context context){
+    public void reiniciarBBDD(SQLiteDatabase db, Context context){
         //int tam1 = sizeTable(Esquemas.TABLA_USUARIO);
-        deleteAllReservas();
-        deleteAllComidas();
-        deleteAllUsuarios();
+        //deleteAllReservas();
+        //deleteAllComidas();
+        //deleteAllUsuarios();
 
         Esquemas e = new Esquemas(context);
         List<Usuario> usuariosIniciales = e.listaInicialUsuarios();
         List<Comida> comidasIniciales = e.listaInicialComidas();
         for (Usuario user: usuariosIniciales ) {
-            insertUsuario(user);
+            insertUsuario(user, db);
         }
-        int tam1a = sizeTable(Esquemas.TABLA_USUARIO);
-        int tam3 = sizeTable(Esquemas.TABLA_COMIDA);
+//        int tam1a = sizeTable(Esquemas.TABLA_USUARIO);
+//        int tam3 = sizeTable(Esquemas.TABLA_COMIDA);
 
 
          for (Comida comida: comidasIniciales ) {
-            insertComida(comida);
+            insertComida(comida, db);
         }
     }
 
@@ -129,6 +129,27 @@ public class DdbbDataSource {
         // Insertamos la valoracion
         long insertId = database.insert(Esquemas.TABLA_USUARIO, null, values);
         close();
+        return insertId;
+    }
+
+    /**
+     *
+     * @param u
+     * @return numero de elementos insertados
+     */
+    public long insertUsuario(Usuario u, SQLiteDatabase db){
+        ContentValues values = new ContentValues();
+        values.put("EMAIL", u.getEmail());
+        values.put("NOMBRE", u.getNombre());
+        values.put("CIUDAD", u.getCiudad());
+        values.put("FECHA_ALTA", String.valueOf(u.getFecha_alta()));
+        values.put("PASSWORD", u.getPassword());
+        values.put("ACTIVO", u.isActivo());
+        values.put("TELEFONO", u.getTelefono());
+        byte[] data = getImageAsByteArray(u.getImagen());
+        values.put("IMAGEN", data);
+        // Insertamos la valoracion
+        long insertId = db.insert(Esquemas.TABLA_USUARIO, null, values);
         return insertId;
     }
 
@@ -271,6 +292,27 @@ public class DdbbDataSource {
         }
         close();
         return true;
+    }
+
+    public void insertComida(Comida comida, SQLiteDatabase db){
+
+        ContentValues cv = new ContentValues();
+        cv.put("EMAIL_USUARIO", comida.getEmail_usuario());
+        cv.put("TITULO", comida.getTitulo());
+        cv.put("RACIONES", comida.getRaciones());
+        cv.put("PRECIO", comida.getPrecio());
+        cv.put("DESCRIPCION", comida.getDescripcion());
+        cv.put("SALADO", comida.isSalado());
+        cv.put("DULCE", comida.isDulce());
+        cv.put("VEGETARIANO", comida.isVegetariano());
+        cv.put("CELIACO", comida.isCeliaco());
+        cv.put("CATEGORIA", comida.getCategoria().toString());
+        byte[] data = getImageAsByteArray(comida.getImagen());
+        cv.put("IMAGEN", data);
+        cv.put("LATITUD", comida.getLatitud());
+        cv.put("LONGITUD", comida.getLongitud());
+
+        db.insert(Esquemas.TABLA_COMIDA, null, cv);
     }
 
     /**

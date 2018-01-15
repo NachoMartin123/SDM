@@ -227,25 +227,6 @@ public class SubirPlatoActivity extends AppCompatActivity
 
     }
 
-    public String CategoriaMax() {
-        MyDBHelper conn = new MyDBHelper(this, "chefya.db", null, 1);
-        String sql = "select * from " + Esquemas.TABLA_COMIDA;
-        SQLiteDatabase db = conn.getReadableDatabase();
-        List lista1 = new ArrayList();
-        Cursor cursor = db.rawQuery(sql, null);
-        String id = "";
-        if (cursor.moveToFirst()) {
-            do {
-                id = cursor.getString(0);
-                lista1.add(id);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        // return String.valueOf(lista1);
-        return id; //lleva el último valor
-    }
-
-
     public void escribirMyDB() {
         if (mtitulo.getText().toString().length() == 0) {
             Toast.makeText(getApplicationContext(), "Inserte un titulo", Toast.LENGTH_SHORT).show();
