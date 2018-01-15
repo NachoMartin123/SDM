@@ -122,29 +122,6 @@ public class Esquemas extends AppCompatActivity {
 
 
         List<Comida> comidas = new ArrayList<Comida>();
-        Comida comida = new Comida();
-        comida.setCategoria(Categoria.DESAYUNO);
-        comida.setCeliaco(true);
-        comida.setTitulo("Bizcocho de chocolate");
-        comida.setDescripcion("Bizcocho de chocolate");
-        comida.setDulce(true);
-        comida.setEmail_usuario("jon@gmail.com");
-        comida.setRaciones(4);
-        comida.setLatitud(43.362119);
-        comida.setLongitud(-5.850375);
-        comidas.add(comida);
-
-        comida = new Comida();
-        comida.setCategoria(Categoria.COMIDA);
-        comida.setCeliaco(true);
-        comida.setTitulo("Macarrones");
-        comida.setDescripcion("Macarrones");
-        comida.setSalado(true);
-        comida.setEmail_usuario("jon@gmail.com");
-        comida.setRaciones(4);
-        comida.setLatitud(43.540915);
-        comida.setLongitud(-5.922073);
-        comidas.add(comida);
 
         //Long id, String email_usuario, String nombre, int raciones, double precio, String descripcion, boolean salado, boolean dulce, boolean vegetariano, boolean celiaco, Categoria categoria, ImageView imagen, double latitud, double longitud) {
         comidas.add(new Comida("jon@gmail.com", "Pizza margarita", 4, 3.15, "pizza traicional con queso y tomate", true, false, true,false,Categoria.COMIDA,BitmapFactory.decodeResource(context.getResources(), R.drawable.pizza),43.540531, -5.654908));
