@@ -227,6 +227,11 @@
             app:layout_constraintTop_toBottomOf="@+id/textViewRaciones"
             app:layout_constraintVertical_bias="0.0" />
 
+        <TextView
+            android:id="@+id/textViewCoordenadasNoDisponibles"
+            android:text="Aún no puedes subir el plato. Esperando a las coordenadas de tu posición"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
         <Button
             android:id="@+id/buttonSubirPlato"
             android:layout_width="match_parent"
